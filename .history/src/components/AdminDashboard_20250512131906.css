@@ -1,0 +1,241 @@
+/* AdminDashboard.css */
+.admin-dashboard {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #f9fafb;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.admin-dashboard h2 {
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  text-align: center;
+  color: #1a202c;
+  font-weight: 700;
+}
+
+.admin-stats {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  flex: 1;
+  max-width: 300px;
+  margin: 0 0.5rem;
+  padding: 1.5rem;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  text-align: center;
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+.stat-card:hover {
+  box-shadow: 0 14px 28px rgba(0,0,0,0.1), 0 10px 10px rgba(0,0,0,0.08);
+}
+
+.stat-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #3182ce;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  font-size: 1rem;
+  color: #4a5568;
+}
+
+.table-responsive {
+  overflow-x: auto;
+  margin-bottom: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background-color: white;
+}
+
+.admin-table th, 
+.admin-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.admin-table th {
+  background-color: #f7fafc;
+  font-weight: 600;
+  color: #4a5568;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-table tbody tr:hover {
+  background-color: #f7fafc;
+}
+
+.admin-select {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #cbd5e0;
+  background-color: #edf2f7;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+}
+
+.admin-select:focus {
+  outline: none;
+  border-color: #3182ce;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+}
+
+.user-name-cell {
+  display: flex;
+  align-items: center;
+}
+
+.user-thumbnail {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-right: 0.75rem;
+  object-fit: cover;
+}
+
+.share-link {
+  display: inline-block;
+  color: #3182ce;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.share-link:hover {
+  color: #2b6cb0;
+  text-decoration: underline;
+}
+
+.qr-code-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.qr-code-placeholder {
+  width: 40px;
+  height: 40px;
+  background-color: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.qr-download-link {
+  font-size: 0.75rem;
+  color: #3182ce;
+  text-decoration: none;
+}
+
+.expiration-date {
+  font-size: 0.75rem;
+  color: #718096;
+  margin-top: 0.25rem;
+}
+
+.action-button {
+  padding: 0.25rem 0.75rem;
+  background-color: #3182ce;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.action-button:hover {
+  background-color: #2b6cb0;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 0;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e2e8f0;
+  border-top: 4px solid #3182ce;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+.no-users-message {
+  text-align: center;
+  padding: 2rem 0;
+  color: #718096;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 992px) {
+  .admin-dashboard {
+    padding: 1rem;
+  }
+  
+  .admin-stats {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .stat-card {
+    width: 100%;
+    max-width: 100%;
+    margin: 0.5rem 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-table th,
+  .admin-table td {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .admin-dashboard h2 {
+    font-size: 1.5rem;
+  }
+  
+  .admin-table th,
+  .admin-table td {
+    padding: 0.5rem 0.25rem;
+    font-size: 0.75rem;
+  }
+}

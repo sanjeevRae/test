@@ -1,0 +1,74 @@
+/* Dashboard.css */
+.dashboard {
+  max-width: 540px;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 24px rgba(49,130,206,0.08);
+  padding: 2.5rem 2rem 2rem 2rem;
+}
+.dashboard h2 {
+  text-align: center;
+  color: #2d3748;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
+.form-row input[type="file"] {
+  flex: 1;
+}
+.profile-form input {
+  flex: 1;
+  padding: 0.7rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  background: #f8fafc;
+  transition: border 0.2s;
+}
+.profile-form input:focus {
+  border: 1.5px solid #3182ce;
+  outline: none;
+}
+.profile-photo {
+  display: block;
+  margin: 1rem auto 0 auto;
+  width: 110px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0 2px 12px rgba(49,130,206,0.10);
+}
+.profile-form button {
+  margin-top: 1.5rem;
+  background: #3182ce;
+  color: #fff;
+  border: none;
+  padding: 0.8rem 0;
+  border-radius: 999px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.profile-form button:disabled {
+  background: #a0aec0;
+  cursor: not-allowed;
+}
+@media (max-width: 600px) {
+  .dashboard {
+    padding: 1.2rem 0.5rem;
+  }
+  .form-row {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
