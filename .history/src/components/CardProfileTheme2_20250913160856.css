@@ -1,3 +1,7 @@
+
+/* Theme2 - polished responsive layout inspired by mobile card design */
+
+/* Root */
 .card-profile-theme2,
 .card-profile-container.theme2 {
   min-height: 100vh;
@@ -8,6 +12,7 @@
   background: linear-gradient(180deg, #f6f9ff 0%, #fbfdff 100%);
 }
 
+/* Desktop / large card */
 .digital-card-theme2,
 .card-profile-container.theme2 .digital-card {
   width: 100%;
@@ -34,6 +39,8 @@
   color: #fff;
   position: relative;
 }
+
+/* Decorative wave in the top-right of the left column */
 .digital-card-theme2 .theme2-left::after,
 .card-profile-container.theme2 .profile-hero::after {
   content: '';
@@ -410,8 +417,8 @@ Base container
     position: relative;
     top: 0;
   }
-  }
-  .card-title-row, .card-company {
+  
+  .card-company {
     display: block !important;
     text-align: center !important;
     margin: 0 0 2px 0 !important;
@@ -749,64 +756,35 @@ Base container
     padding: 0;
   }
   .theme2-left {
-    width: 100%;
-    min-width: 0;
+    width: 25vw;
+    min-width: 25vw;
+    max-width: 25vw;
     border-radius: 24px 0 0 24px;
     padding: 18px 0 10px 0;
-    min-height: 120px;
+    min-height: 100vh;
+    height: 100vh;
     background: linear-gradient(120deg, #4f8cff 0%, #6ee7b7 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0;
-    height: 100vh;
-    z-index: 10;
     grid-column: 1;
-    grid-row: 1;
-      flex: 1;
-      padding: 32px 24px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      background: #fff;
-      box-sizing: border-box;
-    max-width: 100%;
-    padding: 18px 2vw 28px 2vw;
-    box-sizing: border-box;
-    background: #fff;
-    border-radius: 0 24px 24px 0;
-    overflow-y: auto;
-    overflow-x: hidden;
-    min-height: 100vh;
-    height: 100vh;
-    grid-column: 2;
     grid-row: 1;
   }
 
   
   .theme2-right {
-    width: 100%;
-    padding: 18px 2vw 28px 2vw;
-    box-sizing: border-box;
-    background: #fff;
-    border-radius: 0 0 24px 24px;
-    flex: 1 1 0;
-    overflow-y: auto;
-    margin: 0;
-    min-height: 100vh;
-  }
-    
-  
-  .theme2-right {
-    width: 70vw;
+    width: 75vw;
     padding: 18px 2vw 28px 2vw;
     box-sizing: border-box;
     background: #fff;
     border-radius: 0 24px 24px 0;
-    flex: 1 1 70vw;
     overflow-y: auto;
     margin: 0;
     min-height: 100vh;
+    height: 100vh;
+    grid-column: 2;
+    grid-row: 1;
   }
   .profile-photo-wrapper {
     width: 80px;
@@ -1634,41 +1612,11 @@ div.bio-section {
     box-sizing: border-box !important;
   }
   .qr-code {
-  max-width: 150px;
-  margin: 0 auto;
-  padding-left: 5rem;
-  padding-top: 3rem;
-}
-
-}
-
-@media (min-width: 400px) {
-  .digital-card {
-    max-width: 500px;
+    max-width: 150px;
     margin: 0 auto;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    padding-left: 3.2rem;
+    padding-top: 3rem;
   }
-  
-  .profile-info {
-    padding: 25px;
-  }
-  
-  .bio-section {
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-  
-  .card-bio {
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-  }
-  .qr-code {
-  max-width: 150px;
-  margin: 0 auto;
-  padding-left: 3.2rem;
-  padding-top: 3rem;
-}
 
 }
 

@@ -1,3 +1,7 @@
+
+/* Theme2 - polished responsive layout inspired by mobile card design */
+
+/* Root */
 .card-profile-theme2,
 .card-profile-container.theme2 {
   min-height: 100vh;
@@ -8,6 +12,7 @@
   background: linear-gradient(180deg, #f6f9ff 0%, #fbfdff 100%);
 }
 
+/* Desktop / large card */
 .digital-card-theme2,
 .card-profile-container.theme2 .digital-card {
   width: 100%;
@@ -34,6 +39,8 @@
   color: #fff;
   position: relative;
 }
+
+/* Decorative wave in the top-right of the left column */
 .digital-card-theme2 .theme2-left::after,
 .card-profile-container.theme2 .profile-hero::after {
   content: '';

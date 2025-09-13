@@ -1,3 +1,7 @@
+
+/* Theme2 - polished responsive layout inspired by mobile card design */
+
+/* Root */
 .card-profile-theme2,
 .card-profile-container.theme2 {
   min-height: 100vh;
@@ -8,6 +12,7 @@
   background: linear-gradient(180deg, #f6f9ff 0%, #fbfdff 100%);
 }
 
+/* Desktop / large card */
 .digital-card-theme2,
 .card-profile-container.theme2 .digital-card {
   width: 100%;
@@ -34,6 +39,8 @@
   color: #fff;
   position: relative;
 }
+
+/* Decorative wave in the top-right of the left column */
 .digital-card-theme2 .theme2-left::after,
 .card-profile-container.theme2 .profile-hero::after {
   content: '';
@@ -410,8 +417,8 @@ Base container
     position: relative;
     top: 0;
   }
-  }
-  .card-title-row, .card-company {
+  
+  .card-company {
     display: block !important;
     text-align: center !important;
     margin: 0 0 2px 0 !important;
@@ -581,13 +588,13 @@ Base container
   margin-top: 8px;
 }
 
-.social-section .social-links {
+.social-links {
   display: flex !important;
   flex-wrap: wrap !important;
   gap: 10px !important;
 }
 
-.social-section .social-link {
+.social-link {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -600,54 +607,15 @@ Base container
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
 }
 
-.social-section .social-link svg {
-  width: 24px !important;
-  height: 24px !important;
-  fill: #ffffff !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  display: block !important;
-}
-
-.social-section .social-link svg path {
-  fill: #ffffff !important;
-  opacity: 1 !important;
-}
-.social-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.social-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-  color: #fff;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
 .social-link:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
 .social-link svg {
-  width: 24px;
-  height: 24px;
+  width: 24px !important;
+  height: 24px !important;
   fill: currentColor !important;
-}
-
-.card-profile-theme2 .social-link svg,
-.digital-card-theme2 .social-link svg,
-.theme2-right .social-link svg {
-  fill: currentColor !important;
-  color: inherit !important;
 }
 
 .social-link.linkedin {
@@ -716,13 +684,12 @@ Base container
   }
   .theme2-right {
     padding: 24px 10px;
-      flex: 0 0 180px;
-      max-width: 220px;
-      min-width: 160px;
-      background: linear-gradient(120deg, #4f8cff 0%, #6ee7b7 100%);
-      border-radius: 20px 0 0 20px;
-      padding: 32px 12px;
-      min-height: 400px;
+    flex: 0 0 180px;
+    max-width: 220px;
+    min-width: 160px;
+    background: linear-gradient(120deg, #4f8cff 0%, #6ee7b7 100%);
+    border-radius: 20px 0 0 20px;
+    min-height: 400px;
   }
 }
 
@@ -749,64 +716,35 @@ Base container
     padding: 0;
   }
   .theme2-left {
-    width: 100%;
-    min-width: 0;
+    width: 25vw;
+    min-width: 25vw;
+    max-width: 25vw;
     border-radius: 24px 0 0 24px;
     padding: 18px 0 10px 0;
-    min-height: 120px;
+    min-height: 100vh;
+    height: 100vh;
     background: linear-gradient(120deg, #4f8cff 0%, #6ee7b7 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0;
-    height: 100vh;
-    z-index: 10;
     grid-column: 1;
-    grid-row: 1;
-      flex: 1;
-      padding: 32px 24px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      background: #fff;
-      box-sizing: border-box;
-    max-width: 100%;
-    padding: 18px 2vw 28px 2vw;
-    box-sizing: border-box;
-    background: #fff;
-    border-radius: 0 24px 24px 0;
-    overflow-y: auto;
-    overflow-x: hidden;
-    min-height: 100vh;
-    height: 100vh;
-    grid-column: 2;
     grid-row: 1;
   }
 
   
   .theme2-right {
-    width: 100%;
-    padding: 18px 2vw 28px 2vw;
-    box-sizing: border-box;
-    background: #fff;
-    border-radius: 0 0 24px 24px;
-    flex: 1 1 0;
-    overflow-y: auto;
-    margin: 0;
-    min-height: 100vh;
-  }
-    
-  
-  .theme2-right {
-    width: 70vw;
+    width: 75vw;
     padding: 18px 2vw 28px 2vw;
     box-sizing: border-box;
     background: #fff;
     border-radius: 0 24px 24px 0;
-    flex: 1 1 70vw;
     overflow-y: auto;
     margin: 0;
     min-height: 100vh;
+    height: 100vh;
+    grid-column: 2;
+    grid-row: 1;
   }
   .profile-photo-wrapper {
     width: 80px;
@@ -1634,41 +1572,11 @@ div.bio-section {
     box-sizing: border-box !important;
   }
   .qr-code {
-  max-width: 150px;
-  margin: 0 auto;
-  padding-left: 5rem;
-  padding-top: 3rem;
-}
-
-}
-
-@media (min-width: 400px) {
-  .digital-card {
-    max-width: 500px;
+    max-width: 150px;
     margin: 0 auto;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    padding-left: 3.2rem;
+    padding-top: 3rem;
   }
-  
-  .profile-info {
-    padding: 25px;
-  }
-  
-  .bio-section {
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-  
-  .card-bio {
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-  }
-  .qr-code {
-  max-width: 150px;
-  margin: 0 auto;
-  padding-left: 3.2rem;
-  padding-top: 3rem;
-}
 
 }
 
@@ -1716,24 +1624,6 @@ div.bio-section {
 .theme2-left .social-link.website svg path,
 .theme2-right .social-link.website svg path {
   fill: #1e88e5 !important;
-}
-
-/* Force SVG icons to be visible with maximum specificity */
-.card-profile-theme2 .social-link svg {
-  width: 24px !important;
-  height: 24px !important;
-  display: block !important;
-  fill: #ffffff !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  position: relative !important;
-  z-index: 999 !important;
-}
-
-.card-profile-theme2 .social-link svg path {
-  fill: #ffffff !important;
-  opacity: 1 !important;
-  display: block !important;
 }
 
 /* Theme2 Social Links - Match CardProfile.css quality */
