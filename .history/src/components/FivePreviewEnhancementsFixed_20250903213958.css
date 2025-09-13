@@ -1,3 +1,6 @@
+/* Additional visual enhancements for five-section preview - Fixed version */
+
+/* Add subtle glow effect to all sections */
 .five-preview-container .preview-section {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 
               0 0 0 1px rgba(255, 255, 255, 0.1);
@@ -5,6 +8,7 @@
   transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
+/* Add subtle animated gradient overlay */
 .five-preview-container .preview-section::after {
   content: '';
   position: absolute;
