@@ -1,0 +1,175 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {    // Helper function to get user data, with error handling
+    function getUserData() {
+      let userDoc = get(/databases/$(database)/documents/users/$(request.auth.uid));
+      return userDoc != null && userDoc.data != null ? userDoc.data : { role: 'user' };
+    }
+    
+    // Check if the current user is an admin
+    function isAdmin() {
+      return request.auth != null && 
+             ("role" in getUserData() ? getUserData().role == 'admin' : false);
+    }
+    
+    // Check if the current user is a leader
+    function isLeader() {
+      return request.auth != null && 
+             ("role" in getUserData() ? getUserData().role == 'leader' : false);
+    }
+      // Check if the user belongs to a specific organization
+    function isInOrganization(orgId) {
+      return request.auth != null && 
+             "organizationId" in getUserData() && 
+             getUserData().organizationId == orgId;
+    }
+      // Check if the user is a leader of a specific organization
+    function isLeaderOfOrganization(orgId) {
+      // Extra validation to make sure we don't get null pointer exceptions
+      return isLeader() && 
+             "organizationId" in getUserData() && 
+             getUserData().organizationId == orgId;
+    }
+      // Match users collection
+    match /users/{userId} {
+      // Function to check if a user belongs to same organization as the leader
+      function userInLeadersOrg(targetUserId) {
+        let targetUserData = get(/databases/$(database)/documents/users/$(targetUserId)).data;
+        return targetUserData.organizationId == getUserData().organizationId;
+      }
+      
+      // Allow users to read:
+      // - Their own data
+      // - If they are admin (all users)
+      // - If they are a leader and the user is in their organization
+      allow read: if request.auth != null && 
+                    (request.auth.uid == userId || 
+                     isAdmin() || 
+                     (isLeader() && userInLeadersOrg(userId)));
+      
+      // Allow new users to create their own document
+      allow create: if request.auth != null && 
+                     request.auth.uid == userId &&
+                     request.resource.data.role == 'user';
+      
+      // Rules for updating user data
+      allow update: if request.auth != null && 
+                     (
+                       // Users can update their own data except role and organization fields
+                       (request.auth.uid == userId && 
+                        request.resource.data.role == resource.data.role &&
+                        request.resource.data.organizationId == resource.data.organizationId) ||
+                       // Admin can update any user data
+                       isAdmin() ||
+                       // Leaders can update users in their organization but cannot change:
+                       // - user's role from/to leader or admin 
+                       // - user's organization
+                       (isLeader() && 
+                        userInLeadersOrg(userId) &&
+                        resource.data.role == 'user' &&
+                        request.resource.data.role == 'user' &&
+                        request.resource.data.organizationId == resource.data.organizationId)
+                     );
+                     
+      // Only admins can delete user data
+      allow delete: if isAdmin();
+      
+      // Allow admins to list all users, and leaders to list users in their org
+      allow list: if isAdmin() || isLeader();
+    }
+      // Match profiles collection (for card profiles)
+    match /profiles/{profileId} {
+      // Anyone can read profile data
+      allow read: if true;
+      
+      // Function to check if the profile belongs to user's organization
+      function profileBelongsToUsersOrg() {
+        let profile = resource.data;
+        let profileUserId = profile.userId;
+        
+        // Get the profile owner's user document
+        let profileUserData = get(/databases/$(database)/documents/users/$(profileUserId)).data;
+        
+        // Check if the profile owner is in the same organization as the current user
+        return profileUserData.organizationId == getUserData().organizationId;
+      }
+      
+      // Allow creation if:
+      // - User is creating their own profile
+      // - User is an admin
+      allow create: if request.auth != null && 
+                     (
+                       // For new documents, check the userId in incoming data
+                       request.resource.data.userId == request.auth.uid || 
+                       isAdmin()
+                     );
+                     
+      // Allow updates or deletion if:
+      // - User owns the profile
+      // - User is an admin
+      // - User is a leader and the profile belongs to a user in their organization
+      allow update, delete: if request.auth != null && 
+                     (
+                       // Owner check using the stored userId
+                       resource.data.userId == request.auth.uid || 
+                       isAdmin() ||
+                       (isLeader() && profileBelongsToUsersOrg())
+                     );
+    }
+    
+    // Match analytics collection
+    match /analytics/{analyticsId} {
+      // Allow users to read analytics for their profiles
+      // Check if the profileId belongs to the current user
+      function profileBelongsToUser() {
+        let profileDoc = get(/databases/$(database)/documents/profiles/$(resource.data.profileId));
+        return profileDoc != null && profileDoc.data != null && 
+               profileDoc.data.userId == request.auth.uid;
+      }
+      
+      allow read: if request.auth != null && 
+                   (profileBelongsToUser() || isAdmin());
+      
+      // Allow writes from anyone with authentication
+      // Analytics tracking should be open for all users
+      allow write: if request.auth != null;
+    }
+    
+    // Match audit_logs collection - important for security
+    match /audit_logs/{logId} {
+      // Only admins can read all logs
+      allow read: if isAdmin();
+      
+      // Allow authenticated users to create logs, but never update/delete them
+      allow create: if request.auth != null;
+      allow update, delete: if false;
+    }
+    
+    // Match security_alerts collection
+    match /security_alerts/{alertId} {
+      // Only admins can access security alerts
+      allow read, write: if isAdmin();
+    }    // Organizations collection rules - SUPER PERMISSIVE MODE
+    match /organizations/{orgId} {
+      // DEVELOPMENT MODE: Allow anyone to do anything with organizations
+      // WARNING: Completely open access - remove in production!
+      
+      // ⚠️⚠️⚠️ COMPLETELY OPEN ACCESS FOR DEBUGGING ⚠️⚠️⚠️
+      allow create, read, write, update, delete, list: if true;
+        // Members subcollection
+      match /members/{memberId} {
+        // DEVELOPMENT MODE: Completely open access to members subcollection
+        allow read, write, create, update, delete, list: if true;
+      }
+    }    // SUPER PERMISSIVE MODE - Allow everything for quick debugging
+    match /{document=**} {
+      // Allow anyone to do anything (only use temporarily for debugging)
+      allow read, write, create, update, delete, list: if true;
+      
+      /* PRODUCTION RULE - UNCOMMENT WHEN READY
+      // Catch-all rule - deny all other access
+      // allow read, write: if false;
+      */
+    }
+  }
+}

@@ -1,0 +1,66 @@
+/* AdminDashboard.css */
+.admin-dashboard {
+  max-width: 1100px;
+  margin: 2.5rem auto;
+  background: #fff;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 24px rgba(49,130,206,0.08);
+  padding: 2.5rem 2rem 2rem 2rem;
+}
+.admin-dashboard h2 {
+  text-align: center;
+  color: #2d3748;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  font-size: 1rem;
+}
+.admin-table th, .admin-table td {
+  padding: 0.9rem 0.7rem;
+  border-bottom: 1px solid #e2e8f0;
+  text-align: left;
+}
+.admin-table th {
+  background: #f8fafc;
+  color: #2d3748;
+  font-weight: 600;
+}
+.admin-table tr:last-child td {
+  border-bottom: none;
+}
+.admin-table select {
+  padding: 0.4rem 0.7rem;
+  border-radius: 0.5rem;
+  border: 1px solid #cbd5e1;
+  background: #f1f5f9;
+  font-size: 1rem;
+}
+.admin-table a {
+  color: #3182ce;
+  text-decoration: underline;
+  font-weight: 500;
+}
+@media (max-width: 900px) {
+  .admin-dashboard {
+    padding: 1.2rem 0.5rem;
+  }
+  .admin-table th, .admin-table td {
+    padding: 0.6rem 0.3rem;
+    font-size: 0.95rem;
+  }
+}
+@media (max-width: 600px) {
+  .admin-dashboard {
+    padding: 0.5rem 0.1rem;
+  }
+  .admin-table {
+    font-size: 0.9rem;
+  }
+  .admin-table th, .admin-table td {
+    padding: 0.4rem 0.1rem;
+  }
+}

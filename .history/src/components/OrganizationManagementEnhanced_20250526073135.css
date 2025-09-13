@@ -1,0 +1,165 @@
+/* Enhanced styles for organization management */
+
+/* Make organizations more visible with better contrast and shadowing */
+.org-item {
+  padding: 12px !important;
+  margin-bottom: 12px !important;
+  border-radius: 6px !important;
+  background-color: #f8f9fa !important;
+  border: 1px solid #dee2e6 !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+  transition: all 0.3s ease !important;
+}
+
+.org-item:hover {
+  background-color: #e9f2ff !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+  border-color: #b8daff !important;
+}
+
+.org-item.active {
+  background-color: #e7f5ff !important;
+  border-color: #4dabf7 !important;
+  border-left: 5px solid #228be6 !important;
+}
+
+/* Make organization names stand out more */
+.org-name {
+  color: #212529 !important;
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+  margin-bottom: 6px !important;
+  display: block !important;
+}
+
+/* Better styling for organization descriptions */
+.org-desc {
+  color: #495057 !important;
+  font-size: 0.875rem !important;
+  line-height: 1.4 !important;
+  display: block !important;
+}
+
+/* Improve the organization list container */
+.org-list {
+  background-color: #f8f9fa !important;
+  border-radius: 6px 0 0 6px !important;
+}
+
+/* Better header for organization list */
+.org-list h4 {
+  font-size: 1.1rem !important;
+  padding: 12px 0 !important;
+  margin-bottom: 12px !important;
+  color: #343a40 !important;
+  border-bottom: 2px solid #dee2e6 !important;
+}
+
+/* Style the "no organizations" message better */
+.no-orgs {
+  background-color: #f8f9fa !important;
+  border: 1px dashed #ced4da !important;
+  border-radius: 8px !important;
+  padding: 24px 12px !important;
+  text-align: center !important;
+  margin-top: 16px !important;
+}
+
+.hint-text {
+  color: #6c757d !important;
+  font-style: italic !important;
+  margin-top: 8px !important;
+}
+
+/* Improve the add organization button */
+.add-org-btn {
+  background-color: #2b8a3e !important;
+  font-weight: 500 !important;
+  transition: all 0.2s !important;
+}
+
+.add-org-btn:hover {
+  background-color: #2b7a3e !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Role badge styling */
+.role-badge {
+  display: inline-block !important;
+  padding: 5px 10px !important;
+  border-radius: 4px !important;
+  font-size: 0.85rem !important;
+  font-weight: 500 !important;
+  text-align: center !important;
+}
+
+.role-badge.leader {
+  background-color: #e6f4ff !important;
+  color: #0066cc !important;
+  border: 1px solid #99ccff !important;
+}
+
+.role-badge.user {
+  background-color: #e9ecef !important;
+  color: #495057 !important;
+  border: 1px solid #ced4da !important;
+}
+
+/* Style for role display container */
+.role-display {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+.role-selector {
+  padding: 4px 8px !important;
+  border-radius: 4px !important;
+  border: 1px solid #ced4da !important;
+  background-color: #fff !important;
+  font-size: 0.85rem !important;
+}
+
+/* Button styling */
+button:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  background-color: #f0f0f0 !important;
+  color: #888 !important;
+  border: 1px solid #ddd !important;
+}
+
+/* Remove button for disabled leader actions */
+.remove-user-btn:disabled {
+  background-color: #f8d7da !important;
+  border-color: #f5c6cb !important;
+  color: #721c24 !important;
+  opacity: 0.6 !important;
+}
+
+/* Better loading indicators */
+.loading {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 24px !important;
+  color: #495057 !important;
+  font-weight: 500 !important;
+}
+
+.loading::before {
+  content: '⟳' !important;
+  display: inline-block !important;
+  margin-right: 8px !important;
+  animation: spin 1s infinite linear !important;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

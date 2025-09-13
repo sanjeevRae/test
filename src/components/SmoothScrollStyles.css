@@ -1,0 +1,38 @@
+/* Smooth scrolling enhancements */
+html, body {
+  scroll-behavior: smooth !important;
+  overflow-x: hidden;
+}
+
+/* Better scrolling on iOS */
+* {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Smooth animation for all transitions */
+* {
+  transition: background-color 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Smooth scrolling for all scroll containers */
+.home-page,
+.section,
+.team-content,
+.features-showcase,
+.pricing-section,
+.contact-section {
+  scroll-behavior: smooth !important;
+}
+
+/* Add GPU acceleration for smoother animations */
+.home-page {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+a[href^="#"] {
+  scroll-behavior: smooth;
+  transition: color 0.3s ease;
+}

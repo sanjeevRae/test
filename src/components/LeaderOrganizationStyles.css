@@ -1,0 +1,50 @@
+/* Leader-specific styles for Organization Management */
+
+.leader-org-view {
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.leader-actions {
+  margin-top: 15px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-left: 4px solid #f0ad4e;
+  border-radius: 4px;
+}
+
+.leader-actions p {
+  margin: 8px 0;
+}
+
+/* Added button styles for organization management */
+.org-action-btn {
+  background-color: #5bc0de;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-right: 10px;
+}
+
+.org-action-btn:hover {
+  background-color: #31b0d5;
+}
+
+/* Leader dashboard link */
+.leader-dashboard-link {
+  display: inline-block;
+  margin-top: 10px;
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.leader-dashboard-link:hover {
+  text-decoration: underline;
+}

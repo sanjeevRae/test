@@ -1,0 +1,360 @@
+/* Five-section stacked cards styling */
+.five-preview-container {
+  height: 120vh;
+  width: 100%;
+  padding: 6rem 2rem;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 2rem 0;
+  background-color: #000; /* Added black background */
+}
+
+.five-preview-container .stacked-cards {
+  position: relative;
+  max-width: 1200px;
+  width: 100%;
+  height: 100vh;
+  margin: 0 auto;
+  overflow: visible;
+}
+
+.five-preview-container .preview-section {
+  position: absolute;
+  background: white;
+  border-radius: 16px;
+  padding: 0;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+  overflow: hidden;
+  will-change: transform, box-shadow, filter;
+}
+
+.five-preview-container .preview-section:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+/* Initial stacked state */
+.five-preview-container .section-left-1 {
+  width: 260px;
+  height: 200px;
+  top: 35%;
+  left: 42%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  z-index: 5;
+  transform: translateX(-15px) translateY(-5px) rotate(-5deg);
+}
+
+.five-preview-container .section-left-2 {
+  width: 220px;
+  height: 180px;
+  top: 38%;
+  left: 40%;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  z-index: 4;
+  transform: translateX(-8px) translateY(8px) rotate(-3deg);
+}
+
+.five-preview-container .section-center {
+  width: 300px;
+  height: 380px;
+  top: 25%;
+  left: 38%;
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  z-index: 7;
+}
+
+.five-preview-container .section-right-1 {
+  width: 260px;
+  height: 200px;
+  top: 35%;
+  right: 30%;
+  left: auto;
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  z-index: 6;
+  transform: translateX(15px) translateY(-5px) rotate(5deg);
+}
+
+.five-preview-container .section-right-2 {
+  width: 220px;
+  height: 180px;
+  top: 38%;
+  right: 32%;
+  left: auto;
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  z-index: 3;
+  transform: translateX(8px) translateY(8px) rotate(3deg);
+}
+
+/* Spread animation - when scrolled into view */
+.five-preview-container.spread .section-left-1 {
+  left: 5%;
+  top: 25%;
+  transform: scale(1.05) translateX(-50px) rotate(-2deg);
+  transition-delay: 0.1s;
+}
+
+.five-preview-container.spread .section-left-2 {
+  left: 10%;
+  top: 55%;
+  transform: scale(1.05) translateX(-30px) rotate(2deg);
+  transition-delay: 0.2s;
+}
+
+.five-preview-container.spread .section-center {
+  left: 38%;
+  top: 20%;
+  transform: scale(1.1);
+  transition-delay: 0.3s;
+}
+
+.five-preview-container.spread .section-right-1 {
+  right: 5%;
+  left: auto;
+  top: 25%;
+  transform: scale(1.05) translateX(50px) rotate(2deg);
+  transition-delay: 0.4s;
+}
+
+.five-preview-container.spread .section-right-2 {
+  right: 10%;
+  left: auto;
+  top: 55%;
+  transform: scale(1.05) translateX(30px) rotate(-2deg);
+  transition-delay: 0.5s;
+}
+
+/* End animation - when scrolled further */
+.five-preview-container.spread.end-animation .section-left-1 {
+  left: 2%;
+  top: 20%;
+  transform: scale(1.1) translateX(-60px) rotate(-3deg);
+  box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
+  filter: brightness(1.1);
+  transition-duration: 0.8s;
+}
+
+.five-preview-container.spread.end-animation .section-left-2 {
+  left: 5%;
+  top: 60%;
+  transform: scale(1.1) translateX(-40px) rotate(1deg);
+  box-shadow: 0 20px 60px rgba(240, 147, 251, 0.3);
+  filter: brightness(1.1);
+  transition-duration: 0.8s;
+}
+
+.five-preview-container.spread.end-animation .section-center {
+  left: 38%;
+  top: 15%;
+  transform: scale(1.15);
+  box-shadow: 0 20px 60px rgba(79, 172, 254, 0.3);
+  filter: brightness(1.1);
+  transition-duration: 0.8s;
+}
+
+.five-preview-container.spread.end-animation .section-right-1 {
+  right: 2%;
+  left: auto;
+  top: 20%;
+  transform: scale(1.1) translateX(60px) rotate(3deg);
+  box-shadow: 0 20px 60px rgba(67, 233, 123, 0.3);
+  filter: brightness(1.1);
+  transition-duration: 0.8s;
+}
+
+.five-preview-container.spread.end-animation .section-right-2 {
+  right: 5%;
+  left: auto;
+  top: 60%;
+  transform: scale(1.1) translateX(40px) rotate(-1deg);
+  box-shadow: 0 20px 60px rgba(250, 112, 154, 0.3);
+  filter: brightness(1.1);
+  transition-duration: 0.8s;
+}
+
+/* Pulse animations */
+.five-preview-container.spread.end-animation.pulse .section-left-1 {
+  animation: pulseLeft1 3s infinite ease-in-out;
+}
+
+.five-preview-container.spread.end-animation.pulse .section-left-2 {
+  animation: pulseLeft2 3s infinite ease-in-out;
+  animation-delay: 0.2s;
+}
+
+.five-preview-container.spread.end-animation.pulse .section-center {
+  animation: pulseCenter 3s infinite ease-in-out;
+  animation-delay: 0.3s;
+}
+
+.five-preview-container.spread.end-animation.pulse .section-right-1 {
+  animation: pulseRight1 3s infinite ease-in-out;
+  animation-delay: 0.4s;
+}
+
+.five-preview-container.spread.end-animation.pulse .section-right-2 {
+  animation: pulseRight2 3s infinite ease-in-out;
+  animation-delay: 0.5s;
+}
+
+@keyframes pulseLeft1 {
+  0%, 100% { 
+    transform: scale(1.1) translateX(-60px) rotate(-3deg); 
+  }
+  50% { 
+    transform: scale(1.15) translateX(-65px) translateY(-8px) rotate(-4deg); 
+  }
+}
+
+@keyframes pulseLeft2 {
+  0%, 100% { 
+    transform: scale(1.1) translateX(-40px) rotate(1deg); 
+  }
+  50% { 
+    transform: scale(1.15) translateX(-45px) translateY(-8px) rotate(2deg); 
+  }
+}
+
+@keyframes pulseCenter {
+  0%, 100% { 
+    transform: scale(1.15); 
+  }
+  50% { 
+    transform: scale(1.2) translateY(-12px); 
+  }
+}
+
+@keyframes pulseRight1 {
+  0%, 100% { 
+    transform: scale(1.1) translateX(60px) rotate(3deg); 
+  }
+  50% { 
+    transform: scale(1.15) translateX(65px) translateY(-8px) rotate(4deg); 
+  }
+}
+
+@keyframes pulseRight2 {
+  0%, 100% { 
+    transform: scale(1.1) translateX(40px) rotate(-1deg); 
+  }
+  50% { 
+    transform: scale(1.15) translateX(45px) translateY(-8px) rotate(-2deg); 
+  }
+}
+
+/* Section content styling */
+.five-preview-container .section-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+.five-preview-container .section-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 16px;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 992px) {
+  .five-preview-container {
+    height: 120vh;
+  }
+  
+  .five-preview-container.spread .section-left-1,
+  .five-preview-container.spread .section-left-2 {
+    transform: scale(0.9) translateX(-30px);
+  }
+  
+  .five-preview-container.spread .section-right-1,
+  .five-preview-container.spread .section-right-2 {
+    transform: scale(0.9) translateX(30px);
+  }
+  
+  .five-preview-container.spread .section-center {
+    transform: scale(1);
+  }
+  
+  .five-preview-container.spread.end-animation .section-right-1,
+  .five-preview-container.spread.end-animation .section-right-2 {
+    right: 5%;
+  }
+  
+  .five-preview-container.spread.end-animation .section-left-1,
+  .five-preview-container.spread.end-animation .section-left-2 {
+    left: 5%;
+  }
+}
+
+@media (max-width: 768px) {
+  .five-preview-container {
+    height: 140vh;
+  }
+  
+  .five-preview-container.spread .section-left-1,
+  .five-preview-container.spread .section-left-2 {
+    transform: scale(0.8) translateX(-20px);
+    left: 10%;
+  }
+  
+  .five-preview-container.spread .section-right-1,
+  .five-preview-container.spread .section-right-2 {
+    transform: scale(0.8) translateX(20px);
+    right: 10%;
+  }
+  
+  .five-preview-container.spread .section-center {
+    transform: scale(0.9);
+  }
+}
+
+@media (max-width: 576px) {
+  .five-preview-container {
+    height: 160vh;
+  }
+  
+  .five-preview-container.spread .section-left-1 {
+    left: 5%;
+    top: 15%;
+    transform: scale(0.7);
+  }
+  
+  .five-preview-container.spread .section-left-2 {
+    left: 5%;
+    top: 40%;
+    transform: scale(0.7);
+  }
+  
+  .five-preview-container.spread .section-center {
+    left: 32%;
+    top: 5%;
+    transform: scale(0.8);
+  }
+  
+  .five-preview-container.spread .section-right-1 {
+    right: 5%;
+    top: 15%;
+    transform: scale(0.7);
+  }
+  
+  .five-preview-container.spread .section-right-2 {
+    right: 5%;
+    top: 40%;
+    transform: scale(0.7);
+  }
+}

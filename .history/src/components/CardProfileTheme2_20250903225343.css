@@ -1,0 +1,309 @@
+/* Theme2 - polished responsive layout inspired by mobile card design */
+
+/* Root */
+.card-profile-theme2,
+.card-profile-container.theme2 {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 12px;
+  background: linear-gradient(180deg, #f6f9ff 0%, #fbfdff 100%);
+}
+
+/* Desktop / large card */
+.digital-card-theme2,
+.card-profile-container.theme2 .digital-card {
+  width: 100%;
+  max-width: 980px;
+  display: flex;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(34, 50, 80, 0.12);
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+  border: 1px solid rgba(24, 48, 88, 0.06);
+}
+
+/* Left gradient column (also acts as top header on small screens) */
+.digital-card-theme2 .theme2-left,
+.card-profile-container.theme2 .profile-hero {
+  width: 220px;
+  min-width: 160px;
+  padding: 32px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #4f8cff 0%, #6ee7b7 100%);
+  color: #fff;
+  position: relative;
+}
+
+/* Decorative wave in the top-right of the left column */
+.digital-card-theme2 .theme2-left::after,
+.card-profile-container.theme2 .profile-hero::after {
+  content: '';
+  position: absolute;
+  right: -10px;
+  bottom: -18px;
+  width: 140px;
+  height: 60px;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60'><path fill='%23ffffff' d='M0 40 C40 0 160 60 200 20 L200 60 L0 60 Z'/></svg>") no-repeat center/contain;
+  transform: translateY(8px);
+  opacity: 0.98;
+}
+
+/* Avatar */
+.digital-card-theme2 .profile-photo-wrapper,
+.card-profile-container.theme2 .profile-photo-wrapper {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 5px solid rgba(255,255,255,0.18);
+  box-shadow: 0 10px 36px rgba(79,140,255,0.18);
+  background: #eaf4ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+}
+
+.digital-card-theme2 img.profile-photo,
+.card-profile-container.theme2 .profile-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* small 'tag' that can be used for role like WORK */
+.digital-card-theme2 .card-tag,
+.card-profile-container.theme2 .card-tag {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.65);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+}
+
+/* Name, title */
+.digital-card-theme2 .card-name,
+.card-profile-container.theme2 .card-name { margin-top: 6px; font-size: 1.15rem; font-weight: 800; color: #fff; text-align: center; }
+.digital-card-theme2 .card-title-row,
+.card-profile-container.theme2 .card-title { margin-top: 6px; font-size: 0.95rem; color: rgba(255,255,255,0.95); }
+
+/* Right content */
+.digital-card-theme2 .theme2-right,
+.card-profile-container.theme2 .profile-info {
+  flex: 1;
+  padding: 26px 28px 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: transparent;
+}
+
+/* On narrow screens we want a white rounded content panel */
+.mobile-content-panel {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 12px 36px rgba(34,50,80,0.08);
+  padding: 18px 18px 28px 18px;
+}
+
+.digital-card-theme2 .status-row { display:flex; align-items:center; gap:10px }
+.digital-card-theme2 .status-text { color:#0f1724; font-weight:600 }
+
+.digital-card-theme2 .profile-action-buttons { display:flex; gap:12px }
+.digital-card-theme2 .action-button.primary-button { background:#0b6bff; color:#fff; padding:10px 16px; border-radius:10px; font-weight:700 }
+.digital-card-theme2 .action-button.outline-button { background:transparent; border:1px solid rgba(11,107,255,0.12); color:#0b6bff; padding:9px 14px; border-radius:10px }
+
+.digital-card-theme2 .bio-section .card-bio,
+.card-profile-container.theme2 .card-bio { color:#374151; line-height:1.5 }
+
+/* Contact list styled as vertical items with circular icons */
+.digital-card-theme2 .contact-grid { display:flex; flex-direction:column; gap:12px }
+.digital-card-theme2 .contact-item,
+.card-profile-container.theme2 .contact-item { display:flex; gap:12px; align-items:center }
+.digital-card-theme2 .contact-icon,
+.card-profile-container.theme2 .contact-icon { width:40px; height:40px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; background:#eef6ff; color:#0b6bff; font-size:18px }
+.digital-card-theme2 .contact-info { display:flex; flex-direction:column }
+.digital-card-theme2 .contact-label { font-size:0.8rem; color:#94a3b8 }
+.digital-card-theme2 .contact-value { font-weight:700; color:#0f1724 }
+
+/* Social pills */
+.digital-card-theme2 .social-links { display:flex; gap:10px; flex-wrap:wrap }
+.digital-card-theme2 .social-link { padding:8px 12px; border-radius:999px; background:#f0f7ff; color:#0b6bff; font-weight:700; display:inline-flex; gap:8px; align-items:center }
+
+/* Verified badge style */
+.verified-badge { display:inline-block; margin-left:8px; background:#e6f0ff; color:#0b6bff; padding:4px 6px; border-radius:6px; font-weight:700; font-size:0.85rem }
+
+/* Responsive: mobile and small-tablet adjustments */
+@media (max-width: 720px) {
+  .digital-card-theme2,
+  .card-profile-container.theme2 .digital-card {
+    max-width: 640px;
+    flex-direction: column;
+    border-radius: 16px;
+    overflow: visible;
+    margin: 0 auto;
+  }
+
+  /* Top hero becomes full-width header */
+  .digital-card-theme2 .theme2-left,
+  .card-profile-container.theme2 .profile-hero {
+    width: 100%;
+    padding: 0;
+    height: 160px;
+    border-radius: 16px 16px 0 0;
+    display: block;
+    position: relative;
+    background: linear-gradient(135deg, #4f8cff 0%, #6ee7b7 100%);
+  }
+
+  .digital-card-theme2 .theme2-left::after,
+  .card-profile-container.theme2 .profile-hero::after {
+    right: -8px;
+    bottom: -8px;
+    width: 220px;
+    height: 80px;
+    transform: none;
+  }
+
+  /* Avatar overlaps the white panel */
+  .digital-card-theme2 .profile-photo-wrapper,
+  .card-profile-container.theme2 .profile-photo-wrapper {
+    position: absolute;
+    left: 50%;
+    top: 48px;
+    transform: translateX(-50%);
+    width: 118px;
+    height: 118px;
+    border-width: 6px;
+  }
+
+  /* Make the right column look like a white card that overlaps the hero */
+  .digital-card-theme2 .theme2-right,
+  .card-profile-container.theme2 .profile-info {
+    margin-top: -48px;
+    padding: 18px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 12px 36px rgba(34,50,80,0.06);
+  }
+
+  .digital-card-theme2 .theme2-right > * { max-width: 100%; }
+
+  /* contact list stack and touch sizes */
+  .digital-card-theme2 .contact-grid { gap: 10px }
+  .digital-card-theme2 .contact-item { padding: 12px; border-radius: 12px }
+  .digital-card-theme2 .contact-icon { width:40px; height:40px; font-size:18px }
+
+  .card-profile-theme2 { padding: 14px }
+}
+
+/* Extra small screens (phones) */
+@media (max-width: 440px) {
+  .digital-card-theme2,
+  .card-profile-container.theme2 .digital-card {
+    max-width: 100vw;
+    min-width: 0;
+    flex-direction: column;
+    border-radius: 18px;
+    margin: 0 auto;
+    box-shadow: 0 6px 24px rgba(34,50,80,0.13);
+    background: #fff;
+    overflow: visible;
+  }
+
+  .digital-card-theme2 .theme2-left,
+  .card-profile-container.theme2 .profile-hero {
+    width: 100%;
+    min-width: 0;
+    height: 120px;
+    padding: 0;
+    border-radius: 18px 18px 0 0;
+    background: linear-gradient(135deg, #4f8cff 0%, #6ee7b7 100%);
+    position: relative;
+    overflow: visible;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .digital-card-theme2 .theme2-left::after,
+  .card-profile-container.theme2 .profile-hero::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    bottom: -18px;
+    width: 100vw;
+    max-width: 360px;
+    height: 48px;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 360 48'><path fill='%23ffffff' d='M0 32 C72 0 288 48 360 16 L360 48 L0 48 Z'/></svg>") no-repeat center/contain;
+    opacity: 1;
+    z-index: 2;
+  }
+
+  .digital-card-theme2 .profile-photo-wrapper,
+  .card-profile-container.theme2 .profile-photo-wrapper {
+    position: absolute;
+    left: 50%;
+    top: 60px;
+    transform: translateX(-50%);
+    width: 96px;
+    height: 96px;
+    border-width: 5px;
+    z-index: 3;
+    box-shadow: 0 4px 18px rgba(79,140,255,0.18);
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .digital-card-theme2 .theme2-right,
+  .card-profile-container.theme2 .profile-info {
+    margin-top: 56px;
+    padding: 18px 10px 24px 10px;
+    background: #fff;
+    border-radius: 0 0 18px 18px;
+    box-shadow: 0 2px 12px rgba(34,50,80,0.06);
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .digital-card-theme2 .card-name,
+  .digital-card-theme2 .card-title-row,
+  .digital-card-theme2 .card-company {
+    text-align: center;
+    width: 100%;
+  }
+  .digital-card-theme2 .card-name { font-size: 1.18rem; margin-bottom: 2px; }
+  .digital-card-theme2 .card-title-row { font-size: 0.98rem; margin-bottom: 2px; }
+  .digital-card-theme2 .card-company { font-size: 0.92rem; margin-bottom: 6px; }
+
+  .digital-card-theme2 .bio-section .card-bio { font-size: 0.98rem; margin-bottom: 10px; text-align: center; }
+
+  .digital-card-theme2 .profile-action-buttons { flex-direction: column; gap: 8px; margin: 12px 0; width: 100%; }
+  .digital-card-theme2 .action-button { width: 100%; padding: 13px; border-radius: 12px; font-size: 1.05rem; }
+
+  .digital-card-theme2 .contact-grid { gap: 8px; width: 100%; }
+  .digital-card-theme2 .contact-item { padding: 10px 4px; border-radius: 10px; width: 100%; }
+  .digital-card-theme2 .contact-icon { width: 36px; height: 36px; font-size: 1.1rem; }
+  .digital-card-theme2 .contact-label { font-size: 0.78rem; }
+  .digital-card-theme2 .contact-value { font-size: 0.98rem; }
+
+  .digital-card-theme2 .social-links { gap: 7px; width: 100%; justify-content: center; }
+  .digital-card-theme2 .social-link { padding: 7px 10px; font-size: 0.93rem; border-radius: 999px; }
+
+  .digital-card-theme2 .qr-label { font-size: 0.85rem; }
+}
+
+

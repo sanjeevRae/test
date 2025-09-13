@@ -1,0 +1,67 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to check if user owns the file
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    
+    // Helper function to check if user is admin by querying Firestore
+    function isAdmin() {
+      return isAuthenticated() && 
+             firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // Validate image content type and size
+    function isValidImage() {
+      return request.resource.contentType.matches('image/.*') && 
+             request.resource.size < 5 * 1024 * 1024; // 5MB max
+    }
+    
+    // Rules for profile images
+    match /profiles/{userId}/{fileName} {
+      // Anyone can view profile images
+      allow read: if true;
+      
+      // Only the owner or admin can upload/modify/delete
+      allow write: if isAuthenticated() && (isOwner(userId) || isAdmin()) && isValidImage();
+    }
+    
+    // Rules for card images
+    match /cards/{cardId}/{fileName} {
+      // Anyone can read card images
+      allow read: if true;
+      
+      // For uploads, first check Firestore to ensure the user owns the card
+      allow write: if isAuthenticated() &&
+                     (firestore.get(/databases/(default)/documents/profiles/$(cardId)).data.userId == request.auth.uid || 
+                     isAdmin()) &&
+                     isValidImage();
+    }
+    
+    // Rules for temporary uploads
+    match /temp/{userId}/{fileName} {
+      // Only the user can see their own temp files
+      allow read: if isAuthenticated() && isOwner(userId);
+      
+      // Only the user can upload their own temp files
+      allow create, update: if isAuthenticated() && 
+                            isOwner(userId) && 
+                            isValidImage() &&
+                            request.resource.size < 2 * 1024 * 1024; // 2MB limit for temp files
+      
+      // Only the owner can delete temp files, or they expire after 1 day
+      allow delete: if isAuthenticated() && isOwner(userId);
+    }
+    
+    // Default deny all other access
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,69 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Function to check if user is admin
+    function isAdmin() {
+      return isAuthenticated() && request.auth.token.admin == true;
+    }
+    
+    // Function to check if user is accessing own data
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    // Users collection rules
+    match /users/{userId} {
+      // User can read their own profile, admins can read all profiles
+      allow read: if isOwner(userId) || isAdmin();
+      
+      // Only admins can create users directly (normal users go through Auth)
+      allow create: if isAdmin();
+      
+      // Users can update their own data (except role field), admins can update anyone
+      allow update: if (isOwner(userId) && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role'])) || isAdmin();
+      
+      // Only admins can delete user documents
+      allow delete: if isAdmin();
+    }
+    
+    // Profiles collection rules (business cards)
+    match /profiles/{cardId} {
+      function ownsCard() {
+        return isAuthenticated() && resource.data.userId == request.auth.uid;
+      }
+      
+      // Anyone can view active cards that are not blocked or suspended
+      allow read: if resource.data.status == 'active' && 
+                    // Check if subscription is valid or not required
+                    (!resource.data.subscriptionExpires ||
+                    resource.data.subscriptionExpires == null ||
+                    resource.data.subscriptionExpires > request.time);
+      
+      // Owners can always view their own cards
+      allow read: if ownsCard() || isAdmin();
+      
+      // Only card owners or admins can create/update
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+      allow update: if ownsCard() || isAdmin();
+      
+      // Only owners or admins can delete
+      allow delete: if ownsCard() || isAdmin();
+    }
+    
+    // Analytics collection rules
+    match /analytics/{docId} {
+      // Only admins can read analytics
+      allow read: if isAdmin();
+      
+      // Public writes only for specific fields to count QR scans
+      allow update: if isAuthenticated() && 
+                    request.resource.data.diff(resource.data).affectedKeys().hasOnly(['qrScans']) &&
+                    request.resource.data.qrScans is number;
+    }
+  }
+}

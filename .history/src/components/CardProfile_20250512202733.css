@@ -1,0 +1,515 @@
+.card-profile-container {
+  min-height: 100vh;
+  padding: 120px 2rem 3rem; /* Increased top padding to avoid navbar overlap */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+  position: relative; /* Added for proper stacking context */
+  z-index: 1; /* Ensure content stays above background elements */
+}
+
+.digital-card {
+  width: 100%;
+  max-width: 600px;
+  background: white;
+  border-radius: 24px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.1), 0 5px 25px rgba(0, 0, 0, 0.05);
+  padding: 3rem 2.5rem 2.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  backdrop-filter: blur(10px); /* Add subtle glass effect */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Add subtle border */
+}
+
+.digital-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.12), 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.card-badge {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: linear-gradient(135deg, #3182ce 0%, #2c5282 100%);
+  color: white;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  box-shadow: 0 4px 10px rgba(49, 130, 206, 0.2);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.card-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.card-header::after {
+  content: '';
+  position: absolute;
+  bottom: -1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 5px;
+  background: linear-gradient(90deg, var(--primary, #2563eb), #6696f5);
+  border-radius: 10px;
+}
+
+.card-photo-wrapper {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 1.5rem;
+  border: 4px solid white;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+.card-photo-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+  z-index: 1;
+}
+
+.card-photo-wrapper:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 35px rgba(37, 99, 235, 0.25);
+}
+
+.card-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.5s ease;
+}
+
+.card-photo-wrapper:hover .card-photo {
+  transform: scale(1.1);
+}
+
+.card-name {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  color: #2d3748;
+  background: linear-gradient(90deg, var(--dark, #1e293b), #4b5563);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  color: #4a5568;
+  margin: 0;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2.25rem;
+  margin-bottom: 2.5rem;
+}
+
+.card-section {
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(100, 116, 139, 0.15);
+  transition: transform 0.3s ease;
+  margin-bottom: 2rem;
+  scroll-margin-top: 90px;
+}
+
+.card-section:hover {
+  transform: translateY(-3px);
+}
+
+.card-section h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 0 0 1rem;
+  position: relative;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #edf2f7;
+  display: inline-block;
+}
+
+.card-section h3::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 40px;
+  height: 3px;
+  background: var(--primary, #2563eb);
+  border-radius: 2px;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.25rem;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.contact-item:hover {
+  transform: translateY(-3px);
+}
+
+.contact-icon {
+  font-size: 1.5rem;
+  margin-right: 1rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ebf8ff;
+  border-radius: 50%;
+  color: #3182ce;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+  transition: all 0.3s ease;
+}
+
+.contact-item:hover .contact-icon {
+  transform: scale(1.1) rotate(5deg);
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.18) 0%, rgba(29, 78, 216, 0.3) 100%);
+  box-shadow: 0 8px 16px rgba(37, 99, 235, 0.2);
+}
+
+.contact-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.contact-label {
+  display: block;
+  font-size: 0.85rem;
+  color: #718096;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.contact-value {
+  font-weight: 500;
+  color: #2d3748;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  word-break: break-all;
+}
+
+a.contact-value {
+  position: relative;
+  display: inline-block;
+}
+
+a.contact-value::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: var(--primary, #2563eb);
+  transform-origin: bottom right;
+  transition: transform 0.3s ease-out;
+}
+
+a.contact-value:hover {
+  color: #3182ce;
+}
+
+a.contact-value:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.card-bio {
+  line-height: 1.6;
+  color: #4a5568;
+  font-size: 1.05rem;
+  background-color: rgba(241, 245, 249, 0.5);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border-left: 3px solid var(--primary, #2563eb);
+}
+
+.social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.social-link {
+  padding: 0.6rem 1.25rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.social-link.linkedin {
+  background: #0e76a8;
+  color: white;
+}
+
+.social-link.twitter {
+  background: #1da1f2;
+  color: white;
+}
+
+.social-link.instagram {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  color: white;
+}
+
+.social-link.facebook {
+  background: #3b5998;
+  color: white;
+}
+
+.social-link:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #edf2f7;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  background: linear-gradient(to right, rgba(241, 245, 249, 0.5), rgba(248, 250, 252, 0.8));
+  margin: 0 -2.5rem -2.5rem;
+  padding: 1.5rem 2.5rem;
+  border-top: 1px solid rgba(241, 245, 249, 0.8);
+  border-radius: 0 0 24px 24px;
+}
+
+.eco-badge {
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+  color: #48bb78;
+  gap: 0.6rem;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.2) 100%);
+  color: var(--accent, #10b981);
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.6rem 1.25rem;
+  border-radius: 50px;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
+  transition: all 0.3s ease;
+}
+
+.eco-badge:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.15);
+}
+
+.eco-icon {
+  margin-right: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.powered-by {
+  font-size: 0.85rem;
+  color: #718096;
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--gray, #64748b);
+  margin: 0;
+}
+
+.e-vox-link {
+  color: #2d3748;
+  font-weight: 600;
+  text-decoration: none;
+  font-weight: 700;
+  color: var(--dark, #1e293b);
+  text-decoration: none;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.e-vox-link:hover {
+  color: var(--primary, #2563eb);
+}
+
+.e-vox-link .highlight {
+  color: #3182ce;
+  color: var(--primary, #2563eb);
+}
+
+.loading-spinner-large {
+  width: 60px;
+  height: 60px;
+  border: 6px solid #e2e8f0;
+  border-top-color: #3182ce;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+.card-profile-container.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.not-found-content {
+  text-align: center;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.not-found-icon {
+  font-size: 5rem;
+  font-weight: 700;
+  color: #e53e3e;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+.not-found-content h2 {
+  font-size: 1.75rem;
+  color: var(--dark);
+  margin-bottom: 1rem;
+}
+
+.not-found-content p {
+  color: var(--gray);
+  margin-bottom: 2rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 600px) {
+  .card-profile-container {
+    padding: 100px 1rem 2rem;
+  }
+  
+  .digital-card {
+    padding: 2.5rem 1.5rem 1.5rem;
+    border-radius: 20px;
+  }
+  
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .card-name {
+    font-size: 1.65rem; /* Slightly smaller on mobile for better fit */
+  }
+  
+  .card-photo-wrapper {
+    width: 120px; /* Slightly smaller on mobile */
+    height: 120px;
+  }
+}
+
+/* Add styles for subscription expiration and account status messages */
+
+.card-profile-container.expired,
+.card-profile-container.blocked,
+.card-profile-container.suspended {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  background-color: #f7fafc;
+}
+
+.status-message {
+  text-align: center;
+  padding: 3rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  border-radius: 12px;
+  padding: 3rem 2rem;
+  text-align: center;
+  max-width: 500px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.status-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+}
+
+.status-message h2 {
+  margin: 0 0 1rem;
+  color: #2d3748;
+  font-size: 1.5rem;
+  color: #1a202c;
+  margin-bottom: 1rem;
+}
+
+.status-message p {
+  color: #4a5568;
+  margin: 0.5rem 0;
+  color: #4a5568;
+  margin-bottom: 0.5rem;
+}
+
+/* Different background colors based on status */
+.card-profile-container.expired .status-message {
+  border-top: 5px solid #fc8181;
+}
+
+.card-profile-container.blocked .status-message {
+  border-top: 5px solid #f56565;
+}
+
+.card-profile-container.suspended .status-message {
+  border-top: 5px solid #f6ad55;
+}
+
+/* Make sure card containers with status messages always have enough padding */
+.card-profile-container.loading,
+.card-profile-container.not-found,
+.card-profile-container.blocked,
+.card-profile-container.suspended,
+.card-profile-container.expired {
+  padding-top: 120px;
+}

@@ -1,0 +1,609 @@
+/* OrganizationManagement.css - Modern, clean, and highly responsive */
+
+.organization-management {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: linear-gradient(135deg, #f7f9fb 60%, #e0e7ef 100%);
+  padding: 32px 0;
+  min-height: 100vh;
+}
+
+.organization-management h2 {
+  text-align: center;
+  color: #1a2330;
+  margin-bottom: 32px;
+  font-size: 2.3rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.org-management-container {
+  display: flex;
+  gap: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: flex-start;
+  transition: all 0.2s;
+}
+
+.org-list {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  padding: 28px 20px;
+  min-width: 250px;
+  flex: 0 0 260px;
+  transition: box-shadow 0.2s;
+}
+
+.org-list h3 {
+  font-size: 1.18rem;
+  margin-bottom: 18px;
+  color: #1a2330;
+  font-weight: 700;
+}
+
+.org-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 18px 0;
+}
+
+.org-list li {
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  color: #2d3a4a;
+  font-size: 1.04rem;
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s, font-weight 0.15s;
+}
+
+.org-list li.active, .org-list li:hover {
+  background: #e3eaf6;
+  color: #2563eb;
+  font-weight: 700;
+}
+
+.create-org-btn, .org-form button, .add-user-btn, .delete-org-btn, .user-form button, .existing-user-form button, .remove-user-btn, .add-existing-btn {
+  background: #fff;
+  color: #222;
+  border: 1.5px solid #222;
+  border-radius: 8px;
+  padding: 10px 22px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: none;
+  transition: background 0.15s, color 0.15s, border 0.15s;
+}
+.create-org-btn:hover, .org-form button:hover, .add-user-btn:hover, .delete-org-btn:hover, .user-form button:hover, .existing-user-form button:hover, .remove-user-btn:hover, .add-existing-btn:hover {
+  background: #222;
+  color: #fff;
+  border: 1.5px solid #222;
+}
+
+.org-form {
+  margin-top: 18px;
+}
+.org-form .form-group {
+  margin-bottom: 14px;
+}
+.org-form label {
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 5px;
+  color: #2d3a4a;
+  font-weight: 500;
+}
+.org-form input, .org-form textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 1.05rem;
+  background: #f8fafc;
+  transition: border 0.15s;
+}
+.org-form input:focus, .org-form textarea:focus {
+  border: 1.5px solid #2563eb;
+  outline: none;
+}
+
+.org-details {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  padding: 32px 36px 36px 36px;
+  flex: 1 1 0;
+  min-width: 0;
+  transition: box-shadow 0.2s;
+}
+.org-details h3 {
+  font-size: 1.6rem;
+  color: #2563eb;
+  margin-bottom: 10px;
+  font-weight: 800;
+}
+.org-metadata p {
+  margin: 0 0 8px 0;
+  color: #475569;
+  font-size: 1.05rem;
+}
+.org-actions {
+  margin: 22px 0 12px 0;
+  display: flex;
+  gap: 12px;
+}
+.add-user-btn, .delete-org-btn {
+  background: linear-gradient(90deg, #f59e42 60%, #ea580c 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+  box-shadow: 0 2px 8px rgba(245,158,66,0.08);
+}
+.add-user-btn:hover {
+  background: linear-gradient(90deg, #ea580c 60%, #f59e42 100%);
+}
+.delete-org-btn {
+  background: linear-gradient(90deg, #ef4444 60%, #b91c1c 100%);
+}
+.delete-org-btn:hover {
+  background: linear-gradient(90deg, #b91c1c 60%, #ef4444 100%);
+}
+
+.user-form, .existing-user-form {
+  margin-top: 22px;
+  background: #f1f5f9;
+  border-radius: 10px;
+  padding: 18px 20px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+}
+.user-form h4, .existing-user-form h4 {
+  margin-top: 0;
+  color: #2d3a4a;
+  font-size: 1.13rem;
+  font-weight: 700;
+}
+.user-form .form-group, .existing-user-form .form-group {
+  margin-bottom: 12px;
+}
+.user-form label, .existing-user-form label {
+  font-size: 1rem;
+  color: #334155;
+  font-weight: 500;
+}
+.user-form input, .user-form select, .existing-user-form select {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid #000000;
+  border-radius: 6px;
+  font-size: 1.05rem;
+  background: #fff;
+  transition: border 0.15s;
+}
+.user-form input:focus, .user-form select:focus, .existing-user-form select:focus {
+  border: 1.5px solid #000000;
+  outline: none;
+}
+.user-form button, .existing-user-form button {
+  background: linear-gradient(90deg, #3b82f6 60%, #2563eb 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 22px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.user-form button:hover, .existing-user-form button:hover {
+  background: linear-gradient(90deg, #2563eb 60%, #3b82f6 100%);
+}
+
+.existing-user-form button[type="submit"]:disabled {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #000000 !important;
+  cursor: not-allowed !important;
+  opacity: 0.7 !important;
+}
+
+
+.member-list {
+  margin-top: 32px;
+}
+.member-list h4 {
+  color: #2d3a4a;
+  font-size: 1.13rem;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+.member-list table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #f8fafc;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+}
+.member-list th, .member-list td {
+  padding: 12px 14px;
+  text-align: left;
+  font-size: 1.05rem;
+}
+.member-list th {
+  background: #e3eaf6;
+  color: #1e293b;
+  font-weight: 800;
+}
+.member-list tr:nth-child(even) {
+  background: #f1f5f9;
+}
+.member-list tr:hover {
+  background: #e0e7ef;
+}
+.role-selector select {
+  padding: 7px 10px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  font-size: 1.05rem;
+  transition: border 0.15s;
+}
+.role-selector select:focus {
+  border: 1.5px solid #2563eb;
+  outline: none;
+}
+.role-badge {
+  display: inline-block;
+  padding: 5px 14px;
+  border-radius: 14px;
+  font-size: 1.01rem;
+  font-weight: 700;
+  color: #fff;
+  background: #64748b;
+  letter-spacing: 0.5px;
+}
+.role-badge.user {
+  background: #64748b;
+}
+.role-badge.leader {
+  background: #3b82f6;
+}
+.role-badge.admin {
+  background: #10b981;
+}
+.remove-user-btn {
+  background: linear-gradient(90deg, #ef4444 60%, #b91c1c 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.remove-user-btn:hover {
+  background: linear-gradient(90deg, #b91c1c 60%, #ef4444 100%);
+}
+
+.error-message {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 12px 18px;
+  margin-bottom: 22px;
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+}
+.loading {
+  text-align: center;
+  color: #2563eb;
+  font-size: 1.13rem;
+  margin-bottom: 22px;
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  .org-management-container {
+    flex-direction: column;
+    gap: 18px;
+  }
+  .org-list {
+    min-width: 0;
+    width: 100%;
+    margin-bottom: 18px;
+  }
+  .org-details {
+    padding: 18px 10px 24px 10px;
+  }
+}
+
+@media (max-width: 600px) {
+  .organization-management {
+    padding: 8px 0;
+  }
+  .org-management-container {
+    gap: 6px;
+  }
+  .org-list, .org-details {
+    padding: 8px 2px;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .org-details h3 {
+    font-size: 1.05rem;
+  }
+  .member-list th, .member-list td {
+    font-size: 0.93rem;
+    padding: 6px 4px;
+  }
+  .user-form, .existing-user-form {
+    padding: 10px 4px;
+  }
+}
+
+/* Edit Profile Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.edit-profile-modal {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: #1a2330;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.close-modal-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #64748b;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.close-modal-btn:hover {
+  background: #f1f5f9;
+  color: #1a2330;
+}
+
+.edit-profile-form {
+  padding: 24px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #1a2330;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  background: white;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.edit-profile-form h4 {
+  color: #1a2330;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 24px 0 16px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 20px;
+  border-top: 1px solid #e2e8f0;
+  margin-top: 24px;
+}
+
+.btn-cancel {
+  padding: 10px 20px;
+  border: 1px solid #d1d5db;
+  background: white;
+  color: #64748b;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-cancel:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+
+.btn-save {
+  padding: 10px 20px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-save:hover {
+  background: #2563eb;
+}
+
+.btn-save:disabled,
+.btn-cancel:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Member Actions Styles */
+.member-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.edit-profile-btn {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.edit-profile-btn:hover {
+  background: #059669;
+  transform: translateY(-1px);
+}
+
+.edit-profile-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.remove-user-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.remove-user-btn:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+}
+
+.remove-user-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Mobile Responsiveness for Modal */
+@media (max-width: 768px) {
+  .modal-overlay {
+    padding: 10px;
+  }
+  
+  .edit-profile-modal {
+    max-height: 95vh;
+  }
+  
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .modal-header {
+    padding: 16px 20px;
+  }
+  
+  .edit-profile-form {
+    padding: 20px;
+  }
+  
+  .member-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .edit-profile-btn,
+  .remove-user-btn {
+    font-size: 0.8rem;
+    padding: 8px 12px;
+  }
+}

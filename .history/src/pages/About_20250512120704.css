@@ -1,0 +1,281 @@
+/* About.css */
+.about-page {
+  margin-top: 4rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* About Hero Section */
+.about-hero {
+  background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent-light) 100%);
+  padding: 6rem 0 4rem;
+  text-align: center;
+  color: var(--dark);
+  position: relative;
+  overflow: hidden;
+}
+
+.about-hero h1 {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  letter-spacing: -1px;
+}
+
+.about-hero .subtitle {
+  font-size: 1.5rem;
+  font-weight: 500;
+  max-width: 700px;
+  margin: 0 auto;
+  color: var(--gray-dark);
+}
+
+/* About Content Section */
+.about-content {
+  padding: 5rem 0;
+  background: white;
+}
+
+.about-description {
+  max-width: 800px;
+  margin: 0 auto 4rem;
+  text-align: center;
+}
+
+.about-description p {
+  margin-bottom: 1.5rem;
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: var(--gray-dark);
+}
+
+/* Impact Stats */
+.impact-stats {
+  display: flex;
+  justify-content: space-around;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-top: 4rem;
+}
+
+.stat-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  min-width: 200px;
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+}
+
+.stat-box:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-lg);
+}
+
+.stat-box .stat-number {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.stat-box .stat-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--gray);
+  text-align: center;
+}
+
+/* Product Pricing Section */
+.product-pricing {
+  background: var(--light);
+  padding: 5rem 0;
+  text-align: center;
+}
+
+.product-pricing h2 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  color: var(--dark);
+}
+
+.product-pricing .subtitle {
+  font-size: 1.2rem;
+  color: var(--gray);
+  margin-bottom: 3rem;
+}
+
+.pricing-cards {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.pricing-card {
+  flex: 1;
+  min-width: 280px;
+  max-width: 350px;
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.pricing-card.featured {
+  box-shadow: 0 10px 30px rgba(37,99,235,0.2);
+  border: 2px solid var(--primary);
+  transform: translateY(-10px) scale(1.05);
+}
+
+.pricing-card:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-lg);
+}
+
+.pricing-card.featured:hover {
+  transform: translateY(-15px) scale(1.05);
+}
+
+.card-header {
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.card-header h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--dark);
+}
+
+.popular-tag, .value-tag, .elite-tag {
+  position: absolute;
+  top: 0;
+  right: -10px;
+  background: var(--accent);
+  color: white;
+  padding: 0.25rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.value-tag {
+  background: var(--primary);
+}
+
+.elite-tag {
+  background: #9333ea; /* Purple for elite */
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 1rem 0;
+}
+
+.card-description {
+  color: var(--gray);
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.card-price {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 1.5rem 0;
+  color: var(--dark);
+}
+
+.order-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 0.8rem 0;
+  width: 100%;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.order-btn:hover {
+  background: var(--primary-dark);
+}
+
+/* CTA Section */
+.cta-section {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  padding: 5rem 0;
+  text-align: center;
+  color: white;
+}
+
+.cta-section h2 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.cta-section p {
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  opacity: 0.9;
+}
+
+.cta-btn {
+  background: white;
+  color: var(--primary);
+  border: none;
+  padding: 1rem 2.5rem;
+  border-radius: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cta-btn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .about-hero h1 {
+    font-size: 2.5rem;
+  }
+  
+  .pricing-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .pricing-card {
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+  
+  .pricing-card.featured {
+    transform: scale(1);
+    order: -1;
+  }
+}

@@ -1,0 +1,133 @@
+/* Footer Styles */
+.site-footer {
+  background-color: #ffffff;
+  padding: 60px 0 30px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.footer-column h3 {
+  color: #000;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 12px;
+}
+
+.footer-links a {
+  color: #333;
+  text-decoration: none;
+  transition: color 0.2s;
+  font-size: 15px;
+  display: block;
+}
+
+.footer-links a:hover {
+  color: #000000;
+}
+
+.social-icons {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.social-icon {
+  background-color: transparent;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+  color: #000000; /* Set icon color to black */
+}
+
+.social-icon:hover {
+  transform: translateY(-3px);
+  color: #000000; /* Slightly lighter on hover for effect */
+}
+
+.social-icon img {
+  width: 18px;
+  height: 18px;
+}
+
+.social-icon svg {
+  width: 20px;
+  height: 20px;
+  color: #000000;
+}
+
+.social-icon svg path {
+  fill: #000000;
+}
+
+.social-icon svg path:hover {
+  fill: #0004ff;
+  translate: 3px, 3px;
+}
+
+.footer-bottom {
+  border-top: 1px solid #eaeaea;
+  padding-top: 20px;
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  
+  .footer-column {
+    text-align: center;
+  }
+  
+  .social-icons {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .site-footer {
+    padding: 40px 0 20px;
+  }
+  
+  .footer-column h3 {
+    font-size: 14px;
+    margin-bottom: 15px;
+  }
+  
+  .footer-links a {
+    font-size: 14px;
+  }
+  
+  .footer-bottom {
+    font-size: 12px;
+  }
+}

@@ -1,0 +1,520 @@
+/* Enhanced mobile view fixes for the five-section preview */
+
+/* Mobile layout improvements - tablet devices */
+@media (max-width: 992px) {
+  /* More reasonable container sizing */
+  .five-preview-container {
+    height: 85vh;
+    padding: 3rem 2rem;
+    background-color: #000; /* Added black background */
+  }
+  
+  .five-preview-container .stacked-cards {
+    height: 65vh;
+  }
+  
+  /* Adjust card sizes for better proportions */
+  .five-preview-container .section-left-1,
+  .five-preview-container .section-right-1 {
+    width: 220px;
+    height: 180px;
+  }
+  
+  .five-preview-container .section-left-2,
+  .five-preview-container .section-right-2 {
+    width: 200px;
+    height: 170px;
+  }
+  
+  /* Maintain center card prominence */
+  .five-preview-container .section-center {
+    width: 260px;
+    height: 320px;
+  }
+  
+  /* Better positioning that doesn't go off-screen */
+  .five-preview-container.spread .section-left-1 {
+    left: 5% !important;
+    top: 20% !important;
+    transform: translateX(0) translateY(0) rotate(-3deg) scale(0.95) !important;
+  }
+  
+  .five-preview-container.spread .section-left-2 {
+    left: 5% !important;
+    top: 60% !important;
+    transform: translateX(0) translateY(0) rotate(2deg) scale(0.95) !important;
+  }
+  
+  .five-preview-container.spread .section-right-1 {
+    right: 5% !important;
+    top: 20% !important;
+    transform: translateX(0) translateY(0) rotate(3deg) scale(0.95) !important;
+  }
+  
+  .five-preview-container.spread .section-right-2 {
+    right: 5% !important;
+    top: 60% !important;
+    transform: translateX(0) translateY(0) rotate(-2deg) scale(0.95) !important;
+  }
+  
+  /* End animation positions that stay visible on screen */
+  .five-preview-container.spread.end-animation .section-left-1 {
+    left: 2% !important;
+    top: 15% !important;
+    transform: translateX(0) translateY(0) rotate(-2deg) scale(1) !important;
+  }
+  
+  .five-preview-container.spread.end-animation .section-left-2 {
+    left: 2% !important;
+    top: 65% !important;
+    transform: translateX(0) translateY(0) rotate(1deg) scale(1) !important;
+  }
+  
+  .five-preview-container.spread.end-animation .section-right-1 {
+    right: 2% !important;
+    top: 15% !important;
+    transform: translateX(0) translateY(0) rotate(2deg) scale(1) !important;
+  }
+  
+  .five-preview-container.spread.end-animation .section-right-2 {
+    right: 2% !important;
+    top: 65% !important;
+    transform: translateX(0) translateY(0) rotate(-1deg) scale(1) !important;
+  }
+}
+
+/* Mobile layout improvements - smartphones */
+@media (max-width: 768px) {
+  /* Container adjustments */
+  .five-preview-container {
+    height: 70vh; /* Reduced height for mobile */
+    padding: 1.5rem 1rem;
+    margin: 2rem 0;
+    background-color: #000; /* Added black background */
+  }
+  
+  .five-preview-container .stacked-cards {
+    height: 60vh;
+  }
+  
+  /* Smaller card sizes that fit mobile screens */
+  .five-preview-container .section-left-1,
+  .five-preview-container .section-right-1 {
+    width: 180px;
+    height: 140px;
+  }
+  
+  .five-preview-container .section-left-2,
+  .five-preview-container .section-right-2 {
+    width: 170px;
+    height: 130px;
+  }
+    /* Fix center card positioning for mobile */
+  .five-preview-container .section-center {
+    width: 200px;
+    height: 260px;
+    top: 50% !important; 
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+  }
+  
+  /* Initial stacked state - tighter for mobile */
+  .five-preview-container .section-left-1 {
+    transform: translateX(-80px) translateY(-15px) rotate(-5deg) !important;
+  }
+  
+  .five-preview-container .section-left-2 {
+    transform: translateX(-70px) translateY(10px) rotate(-2deg) !important;
+  }
+  
+  .five-preview-container .section-right-1 {
+    transform: translateX(15px) translateY(-15px) rotate(5deg) !important;
+  }
+  
+  .five-preview-container .section-right-2 {
+    transform: translateX(5px) translateY(10px) rotate(2deg) !important;
+  }
+  
+  /* Spread position for mobile - keep cards visible on screen */
+  .five-preview-container.spread .section-left-1 {
+    left: 0% !important;
+    top: 20% !important;
+    transform: translateX(0) translateY(0) rotate(-2deg) scale(0.95) !important;
+    margin: 8px !important;
+  }
+  
+  .five-preview-container.spread .section-left-2 {
+    left: 0% !important;
+    top: 65% !important;
+    transform: translateX(0) translateY(0) rotate(1deg) scale(0.95) !important;
+    margin: 8px !important;
+  }
+  
+  /* Keep center card properly centered during spread */
+  .five-preview-container.spread .section-center {
+    top: 40% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) scale(0.95) !important;
+    margin: 8px !important;
+  }
+  
+  .five-preview-container.spread .section-right-1 {
+    right: 0% !important;
+    top: 20% !important;
+    transform: translateX(0) translateY(0) rotate(2deg) scale(0.95) !important;
+    margin: 8px !important;
+  }
+  
+  .five-preview-container.spread .section-right-2 {
+    right: 0% !important;
+    top: 65% !important;
+    transform: translateX(0) translateY(0) rotate(-1deg) scale(0.95) !important;
+    margin: 8px !important;
+  }
+  /* End animation for mobile - moderate offset to keep cards visible */
+  .five-preview-container.spread.end-animation .section-left-1 {
+    left: 0% !important;
+    top: 20% !important;
+  }
+  
+  .five-preview-container.spread.end-animation .section-left-2 {
+    left: 0% !important;
+    top: 60% !important;
+  }
+  
+  /* Ensure center card stays centered in end animation */
+  .five-preview-container.spread.end-animation .section-center {
+    top: 40% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) scale(1.05) !important;
+    z-index: 10 !important;
+  }
+  
+  .five-preview-container.spread.end-animation .section-right-1 {
+    right: 0% !important;
+    top: 20% !important;
+  }
+  
+  .five-preview-container.spread.end-animation .section-right-2 {
+    right: 0% !important;
+    top: 60% !important;
+  }
+  
+  /* Constrain the pulse animation height for mobile */
+  .five-preview-container.spread.end-animation.pulse {
+    overflow: hidden !important;
+    max-height: 70vh !important;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 576px) {
+  /* Container sizing for small screens */
+  .five-preview-container {
+    height: 60vh; /* Further reduced height for small mobile screens */
+    padding: 1rem 0.5rem;
+  }
+  
+  .five-preview-container .stacked-cards {
+    height: 50vh;
+  }
+    /* Even smaller cards that fit tiny screens */
+  .five-preview-container .section-left-1,
+  .five-preview-container .section-right-1 {
+    width: 140px;
+    height: 110px;
+  }
+  
+  .five-preview-container .section-left-2,
+  .five-preview-container .section-right-2 {
+    width: 130px;
+    height: 100px;
+  }
+    /* Fix center card position for small screens */
+  .five-preview-container .section-center {
+    width: 180px;
+    height: 240px;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+  }
+  
+  /* Initial stack - very compact */
+  .five-preview-container .section-left-1 {
+    transform: translateX(-60px) translateY(-10px) rotate(-4deg) !important;
+  }
+  
+  .five-preview-container .section-left-2 {
+    transform: translateX(-50px) translateY(8px) rotate(-2deg) !important;
+  }
+  
+  .five-preview-container .section-right-1 {
+    transform: translateX(10px) translateY(-10px) rotate(4deg) !important;
+  }
+  
+  .five-preview-container .section-right-2 {
+    transform: translateX(0px) translateY(8px) rotate(2deg) !important;
+  }
+  
+  /* Better spread for tiny screens - cards stay visible */
+  .five-preview-container.spread .section-left-1 {
+    left: 3% !important;
+    top: 30% !important;
+    transform: translateX(0) rotate(-2deg) scale(1) !important;
+  }
+    .five-preview-container.spread .section-left-2 {
+    left: 3% !important;
+    top: 50% !important;
+    transform: translateX(0) rotate(1deg) scale(1) !important;
+  }
+  
+  /* Fix center card position during spread */
+  .five-preview-container.spread .section-center {
+    top: 40% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) scale(1) !important;
+    z-index: 7 !important;
+  }
+  
+  .five-preview-container.spread .section-right-1 {
+    right: 3% !important;
+    top: 30% !important;
+    transform: translateX(0) rotate(2deg) scale(1) !important;
+  }
+  
+  .five-preview-container.spread .section-right-2 {
+    right: 3% !important;
+    top: 50% !important;
+    transform: translateX(0) rotate(-1deg) scale(1) !important;
+  }
+    /* More subtle end animation for tiny screens */
+  .five-preview-container.spread.end-animation .section-left-1 {
+    left: 1% !important;
+    top: 25% !important;
+  }
+  
+  .five-preview-container.spread.end-animation .section-left-2 {
+    left: 1% !important;
+    top: 55% !important;
+  }
+  
+  /* Keep center card properly centered in end animation on small screens */
+  .five-preview-container.spread.end-animation .section-center {
+    top: 40% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) scale(1.05) !important;
+    z-index: 10 !important;
+  }
+  
+  .five-preview-container.spread.end-animation .section-right-1 {
+    right: 1% !important;
+    top: 25% !important;
+  }
+  
+  .five-preview-container.spread.end-animation .section-right-2 {
+    right: 1% !important;
+    top: 55% !important;
+  }
+}
+
+/* Special handling for very small screens */
+@media (max-width: 400px) {
+  /* Container optimizations */
+  .five-preview-container {
+    height: 50vh; /* Even smaller height for tiny screens */
+    padding: 0.5rem 0;
+  }
+  
+  .five-preview-container .stacked-cards {
+    height: 45vh;
+  }
+    /* Tiny card sizes for very small screens */
+  .five-preview-container .section-left-1,
+  .five-preview-container .section-right-1 {
+    width: 120px;
+    height: 90px;
+  }
+  
+  .five-preview-container .section-left-2,
+  .five-preview-container .section-right-2 {
+    width: 110px;
+    height: 85px;
+  }
+    /* Center card position and size for very small screens */
+  .five-preview-container .section-center {
+    width: 160px;
+    height: 200px;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+  }
+  
+  /* Gentle rotations for initial state */
+  .five-preview-container .section-left-1 {
+    transform: translateX(-40px) translateY(-8px) rotate(-3deg) !important;
+  }
+  
+  .five-preview-container .section-left-2 {
+    transform: translateX(-35px) translateY(6px) rotate(-1deg) !important;
+  }
+  
+  .five-preview-container .section-right-1 {
+    transform: translateX(5px) translateY(-8px) rotate(3deg) !important;
+  }
+  
+  .five-preview-container .section-right-2 {
+    transform: translateX(0px) translateY(6px) rotate(1deg) !important;
+  }
+    /* More compact vertical arrangement - prevent off-screen */
+  .five-preview-container.spread .section-left-1 {
+    top: 35% !important;
+  }
+  
+  .five-preview-container.spread .section-left-2 {
+    top: 55% !important;
+  }
+  
+  /* Ensure center card stays centered during spread */
+  .five-preview-container.spread .section-center {
+    top: 45% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) scale(1.05) !important;
+    z-index: 10 !important;
+  }
+  
+  .five-preview-container.spread .section-right-1 {
+    top: 35% !important;
+  }
+  
+  .five-preview-container.spread .section-right-2 {
+    top: 55% !important;
+  }
+  
+  /* Minimal end animation for tiny screens */
+  .five-preview-container.spread.end-animation .section-left-1,
+  .five-preview-container.spread.end-animation .section-left-2,
+  .five-preview-container.spread.end-animation .section-right-1,
+  .five-preview-container.spread.end-animation .section-right-2 {
+    transform: scale(1.05) !important;
+  }
+}
+
+/* Override any !important settings from other files that might cause problems */
+.five-preview-container .preview-section::before,
+.five-preview-container .preview-section::after {
+  display: block !important;
+}
+
+/* Ensure z-index settings work properly across all screen sizes */
+.five-preview-container .section-left-1,
+.five-preview-container .section-left-2 {
+  z-index: 5 !important;
+}
+
+.five-preview-container .section-center {
+  z-index: 7 !important;
+}
+
+.five-preview-container .section-right-1,
+.five-preview-container .section-right-2 {
+  z-index: 6 !important;
+}
+
+/* Ensure better visual separations on small screens */
+@media (max-width: 768px) {
+  .five-preview-container .preview-section {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+    border: 1px solid rgba(255, 255, 255, 0.6) !important;
+  }
+  
+  /* Add subtle distinctive colors for better visualization on mobile */
+  .five-preview-container .section-left-1 {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  }
+  
+  .five-preview-container .section-left-2 {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%) !important;
+  }
+  
+  .five-preview-container .section-center {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important;
+  }
+  
+  .five-preview-container .section-right-1 {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%) !important;
+  }
+    .five-preview-container .section-right-2 {
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%) !important;
+  }
+  
+  /* Mobile-optimized pulse animations with smaller movements */
+  @keyframes mobilePulseLeft1 {
+    0%, 100% { 
+      transform: translateX(0) rotate(-2deg) scale(1); 
+    }
+    50% { 
+      transform: translateX(-5px) translateY(-3px) rotate(-3deg) scale(1.03); 
+    }
+  }
+  
+  @keyframes mobilePulseLeft2 {
+    0%, 100% { 
+      transform: translateX(0) rotate(1deg) scale(1); 
+    }
+    50% { 
+      transform: translateX(-5px) translateY(-3px) rotate(2deg) scale(1.03); 
+    }
+  }
+  
+  @keyframes mobilePulseCenter {
+    0%, 100% { 
+      transform: translate(-50%, -50%) scale(1.05); 
+    }
+    50% { 
+      transform: translate(-50%, -53%) scale(1.07); 
+    }
+  }
+  
+  @keyframes mobilePulseRight1 {
+    0%, 100% { 
+      transform: translateX(0) rotate(2deg) scale(1); 
+    }
+    50% { 
+      transform: translateX(5px) translateY(-3px) rotate(3deg) scale(1.03); 
+    }
+  }
+  
+  @keyframes mobilePulseRight2 {
+    0%, 100% { 
+      transform: translateX(0) rotate(-1deg) scale(1); 
+    }
+    50% { 
+      transform: translateX(5px) translateY(-3px) rotate(-2deg) scale(1.03); 
+    }
+  }
+  
+  /* Apply mobile-optimized pulse animations */
+  .five-preview-container.spread.end-animation.pulse .section-left-1 {
+    animation: mobilePulseLeft1 2s infinite ease-in-out !important;
+  }
+  
+  .five-preview-container.spread.end-animation.pulse .section-left-2 {
+    animation: mobilePulseLeft2 2s infinite ease-in-out !important;
+    animation-delay: 0.2s !important;
+  }
+  
+  .five-preview-container.spread.end-animation.pulse .section-center {
+    animation: mobilePulseCenter 2s infinite ease-in-out !important;
+    animation-delay: 0.3s !important;
+  }
+  
+  .five-preview-container.spread.end-animation.pulse .section-right-1 {
+    animation: mobilePulseRight1 2s infinite ease-in-out !important;
+    animation-delay: 0.4s !important;
+  }
+  
+  .five-preview-container.spread.end-animation.pulse .section-right-2 {
+    animation: mobilePulseRight2 2s infinite ease-in-out !important;
+    animation-delay: 0.5s !important;
+  }
+}

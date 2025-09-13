@@ -1,0 +1,317 @@
+
+.card-profile-container.theme3 {
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.card-profile-container.theme3 .digital-card {
+  background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
+  border-radius: 32px;
+  box-shadow: 
+    0 20px 60px rgba(0,0,0,0.4),
+    0 0 0 1px rgba(255,255,255,0.05),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+  overflow: hidden;
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+  min-height: 650px;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.1);
+  position: relative;
+}
+
+.card-profile-container.theme3 .profile-hero {
+  position: relative;
+  height: 200px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: visible;
+}
+
+.card-profile-container.theme3 .profile-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%);
+  z-index: 1;
+}
+
+.card-profile-container.theme3 .profile-hero::after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0; 
+  right: 0; 
+  bottom: -1px;
+  height: 80px;
+  background: url('data:image/svg+xml;utf8,<svg width="400" height="80" viewBox="0 0 400 80" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 0C80 80 320 0 400 80V80H0V0Z" fill="%231a1a2e"/></svg>') no-repeat bottom center/cover;
+  z-index: 2;
+}
+
+.card-profile-container.theme3 .profile-photo-container {
+  position: absolute;
+  left: 50%;
+  bottom: -56px;
+  transform: translateX(-50%);
+  z-index: 3;
+}
+
+.card-profile-container.theme3 .profile-photo-wrapper {
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  border: 5px solid rgba(255,255,255,0.2);
+  box-shadow: 
+    0 8px 32px rgba(0,0,0,0.3),
+    0 0 0 1px rgba(255,255,255,0.1),
+    inset 0 2px 4px rgba(255,255,255,0.1);
+  overflow: hidden;
+  background: linear-gradient(145deg, #667eea, #764ba2);
+  position: relative;
+}
+
+.card-profile-container.theme3 .profile-photo-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: linear-gradient(145deg, transparent 30%, rgba(255,255,255,0.1) 70%);
+  z-index: 1;
+}
+
+.card-profile-container.theme3 .profile-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  position: relative;
+  z-index: 2;
+}
+
+.card-profile-container.theme3 .profile-info {
+  margin-top: 68px;
+  padding: 28px 28px 20px 28px;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  text-align: center;
+}
+
+.card-profile-container.theme3 .card-name {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 4px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  letter-spacing: -0.02em;
+}
+
+.card-profile-container.theme3 .card-title {
+  font-size: 1.2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 600;
+  margin-bottom: 2px;
+  letter-spacing: -0.01em;
+}
+
+.card-profile-container.theme3 .card-company {
+  font-size: 1.05rem;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 500;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.card-profile-container.theme3 .card-bio {
+  color: rgba(255,255,255,0.8);
+  font-size: 1rem;
+  margin: 16px 0 0 0;
+  line-height: 1.5;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.card-profile-container.theme3 .profile-action-buttons {
+  display: flex;
+  gap: 16px;
+  margin: 24px 0 0 0;
+  justify-content: center;
+}
+
+.card-profile-container.theme3 .action-button {
+  border-radius: 12px;
+  font-size: 0.95rem;
+  padding: 12px 24px;
+  border: none;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 
+    0 6px 20px rgba(102, 126, 234, 0.3),
+    0 0 0 1px rgba(255,255,255,0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-profile-container.theme3 .action-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card-profile-container.theme3 .action-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 25px rgba(102, 126, 234, 0.4),
+    0 0 0 1px rgba(255,255,255,0.2);
+}
+
+.card-profile-container.theme3 .action-button:hover::before {
+  opacity: 1;
+}
+
+.card-profile-container.theme3 .action-button.secondary-button {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  border: 1.5px solid rgba(255,255,255,0.2);
+  backdrop-filter: blur(10px);
+}
+
+.card-profile-container.theme3 .action-button.secondary-button:hover {
+  background: rgba(255,255,255,0.15);
+  border-color: rgba(255,255,255,0.3);
+}
+
+.card-profile-container.theme3 .action-button.outline-button {
+  background: rgba(255,255,255,0.95);
+  color: #1a1a2e;
+  border: 1.5px solid rgba(255,255,255,0.3);
+  backdrop-filter: blur(10px);
+}
+
+.card-profile-container.theme3 .action-button.outline-button:hover {
+  background: #ffffff;
+  transform: translateY(-2px);
+}
+
+.card-profile-container.theme3 .profile-tabs {
+  margin-top: 18px;
+  display: flex;
+  gap: 8px;
+}
+.card-profile-container.theme3 .profile-tab {
+  background: #414345;
+  color: #fff;
+  border-radius: 6px 6px 0 0;
+  padding: 6px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.card-profile-container.theme3 .profile-tab.active {
+  background: #6a82fb;
+  color: #fff;
+}
+
+.card-profile-container.theme3 .tab-content {
+  background: #232526;
+  border-radius: 0 0 16px 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  padding: 18px 0 0 0;
+}
+
+.card-profile-container.theme3 .contact-grid .contact-item {
+  background: #414345;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+.card-profile-container.theme3 .contact-icon {
+  font-size: 1.2rem;
+  color: #6a82fb;
+}
+
+.card-profile-container.theme3 .contact-label {
+  font-size: 0.85rem;
+  color: #d1d5db;
+}
+
+.card-profile-container.theme3 .contact-value {
+  font-size: 1rem;
+  color: #fff;
+  font-weight: 500;
+}
+
+.card-profile-container.theme3 .social-section .social-link {
+  background: #232526;
+  color: #6a82fb;
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-right: 8px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+.card-profile-container.theme3 .social-section .social-link:hover {
+  background: #6a82fb;
+  color: #fff;
+}
+
+.card-profile-container.theme3 .bio-section {
+  margin-top: 10px;
+}
+
+.card-profile-container.theme3 .section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #6a82fb;
+  margin-bottom: 4px;
+}
+
+.card-profile-container.theme3 .status-indicator {
+  background: #f7971e;
+}
+
+.card-profile-container.theme3 .status-indicator.offline {
+  background: #414345;
+}
+
+.card-profile-container.theme3 .verified-badge {
+  color: #6a82fb;
+}
+
+.card-profile-container.theme3 .share-modal {
+  background: rgba(106, 130, 251, 0.08);
+} 

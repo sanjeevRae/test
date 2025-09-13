@@ -1,0 +1,91 @@
+/* Additional visual enhancements for five-section preview */
+
+/* Add subtle glow effect to all sections */
+.five-preview-container .preview-section {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 
+              0 0 0 1px rgba(255, 255, 255, 0.1);
+  position: relative;
+}
+
+/* Add subtle animated gradient overlay */
+.five-preview-container .preview-section::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 16px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+/* Add shine effect on hover */
+.five-preview-container .preview-section:hover::after {
+  opacity: 0.8;
+  background-position: 100% 100%;
+}
+
+/* Add subtle pulse effect to center section */
+.five-preview-container.spread .section-center {
+  animation: subtle-pulse 6s infinite ease-in-out;
+}
+
+@keyframes subtle-pulse {
+  0%, 100% {
+    box-shadow: 0 15px 35px rgba(79, 172, 254, 0.2);
+  }
+  50% {
+    box-shadow: 0 20px 45px rgba(79, 172, 254, 0.4);
+  }
+}
+
+/* Add slight tilt on hover for dynamic effect */
+.five-preview-container .section-left-1:hover {
+  transform: translateY(-8px) scale(1.03) rotate(-4deg) !important;
+}
+
+.five-preview-container .section-left-2:hover {
+  transform: translateY(-8px) scale(1.03) rotate(2deg) !important;
+}
+
+.five-preview-container .section-right-1:hover {
+  transform: translateY(-8px) scale(1.03) rotate(4deg) !important;
+}
+
+.five-preview-container .section-right-2:hover {
+  transform: translateY(-8px) scale(1.03) rotate(-2deg) !important;
+}
+
+.five-preview-container .section-center:hover {
+  transform: translateY(-12px) scale(1.05) !important;
+}
+
+/* Enhanced staggered animation timing */
+.five-preview-container.spread .section-left-1 {
+  transition-delay: 0.1s;
+}
+
+.five-preview-container.spread .section-left-2 {
+  transition-delay: 0.25s;
+}
+
+.five-preview-container.spread .section-center {
+  transition-delay: 0.4s;
+}
+
+.five-preview-container.spread .section-right-1 {
+  transition-delay: 0.55s;
+}
+
+.five-preview-container.spread .section-right-2 {
+  transition-delay: 0.7s;
+}
