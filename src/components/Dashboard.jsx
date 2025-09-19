@@ -537,7 +537,7 @@ const Dashboard = () => {
         )}
 
         <div className="theme-options" style={{ margin: '24px 0 0 0', textAlign: 'center' }}>
-          {['theme1', 'theme2', 'theme3'].map((theme) => (
+          {['theme1'   ].map((theme) => ( //here theme2 ra 3
             <button
               type="button"
               key={theme}

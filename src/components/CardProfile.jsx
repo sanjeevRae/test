@@ -218,7 +218,6 @@ const CardProfile = () => {
                 borderRadius: '20px 0 0 20px',
                 padding: '32px 12px',
                 minHeight: 400,
-                // Remove flex: '0 0 180px' for mobile
                 ...(window.innerWidth > 600 ? { flex: '0 0 180px' } : {})
               }}
             >
@@ -253,7 +252,31 @@ const CardProfile = () => {
                 {activeTab === 'info' && (
                   <div className="contact-grid">
                     {profile.email && <div className="contact-item"><div className="contact-icon email">✉️</div><div className="contact-info"><span className="contact-label">Email</span><a href={`mailto:${profile.email}`} className="contact-value">{profile.email}</a></div></div>}
-                    {profile.phone && <div className="contact-item"><div className="contact-icon phone">📱</div><div className="contact-info"><span className="contact-label">Phone 1</span><a href={`tel:${profile.phone}`} className="contact-value">{profile.phone}</a></div></div>}
+                    {(() => {
+                      if (Array.isArray(profile.phones) && profile.phones.length > 0) {
+                        return profile.phones.map((phone, idx) => (
+                          <div className="contact-item" key={`phone-${idx}`}> 
+                            <div className="contact-icon phone">📱</div>
+                            <div className="contact-info">
+                              <span className="contact-label">Phone {idx + 1}</span>
+                              <a href={`tel:${phone}`} className="contact-value">{phone}</a>
+                            </div>
+                          </div>
+                        ));
+                      } else {
+                        // Fallback for phone, phone2, phone3, phone4 fields
+                        const phoneFields = [profile.phone, profile.phone2, profile.phone3, profile.phone4].filter(Boolean);
+                        return phoneFields.map((phone, idx) => (
+                          <div className="contact-item" key={`phone-fallback-${idx}`}> 
+                            <div className="contact-icon phone">📱</div>
+                            <div className="contact-info">
+                              <span className="contact-label">Phone {idx + 1}</span>
+                              <a href={`tel:${phone}`} className="contact-value">{phone}</a>
+                            </div>
+                          </div>
+                        ));
+                      }
+                    })()}
                     {profile.website && <div className="contact-item"><div className="contact-icon website">🌐</div><div className="contact-info"><span className="contact-label">Website</span><a href={profile.website} target="_blank" rel="noopener noreferrer" className="contact-value">{profile.website.replace(/^https?:\/\//, '')}</a></div></div>}
                     {profile.location && <div className="contact-item"><div className="contact-icon location">📍</div><div className="contact-info"><span className="contact-label">Location</span><a href={`https://maps.google.com/?q=${encodeURIComponent(profile.location)}`} target="_blank" rel="noopener noreferrer" className="contact-value">{profile.location}</a></div></div>}
                   </div>
@@ -273,8 +296,6 @@ const CardProfile = () => {
     );
   }
 
-
-  // THEME 3: Dark, centered, bold, neon accent, unique layout
   if (themeClass === 'theme3') {
     return (
       <>
@@ -308,7 +329,31 @@ const CardProfile = () => {
               {activeTab === 'info' && (
                 <div className="contact-grid">
                   {profile.email && <div className="contact-item"><div className="contact-icon email">✉️</div><div className="contact-info"><span className="contact-label">Email</span><a href={`mailto:${profile.email}`} className="contact-value">{profile.email}</a></div></div>}
-                  {profile.phone && <div className="contact-item"><div className="contact-icon phone">📱</div><div className="contact-info"><span className="contact-label">Phone 1</span><a href={`tel:${profile.phone}`} className="contact-value">{profile.phone}</a></div></div>}
+                  {(() => {
+                    if (Array.isArray(profile.phones) && profile.phones.length > 0) {
+                      return profile.phones.map((phone, idx) => (
+                        <div className="contact-item" key={`phone-${idx}`}> 
+                          <div className="contact-icon phone">📱</div>
+                          <div className="contact-info">
+                            <span className="contact-label">Phone {idx + 1}</span>
+                            <a href={`tel:${phone}`} className="contact-value">{phone}</a>
+                          </div>
+                        </div>
+                      ));
+                    } else {
+                      // Fallback for phone, phone2, phone3, phone4 fields
+                      const phoneFields = [profile.phone, profile.phone2, profile.phone3, profile.phone4].filter(Boolean);
+                      return phoneFields.map((phone, idx) => (
+                        <div className="contact-item" key={`phone-fallback-${idx}`}> 
+                          <div className="contact-icon phone">📱</div>
+                          <div className="contact-info">
+                            <span className="contact-label">Phone {idx + 1}</span>
+                            <a href={`tel:${phone}`} className="contact-value">{phone}</a>
+                          </div>
+                        </div>
+                      ));
+                    }
+                  })()}
                   {profile.website && <div className="contact-item"><div className="contact-icon website">🌐</div><div className="contact-info"><span className="contact-label">Website</span><a href={profile.website} target="_blank" rel="noopener noreferrer" className="contact-value">{profile.website.replace(/^https?:\/\//, '')}</a></div></div>}
                   {profile.location && <div className="contact-item"><div className="contact-icon location">📍</div><div className="contact-info"><span className="contact-label">Location</span><a href={`https://maps.google.com/?q=${encodeURIComponent(profile.location)}`} target="_blank" rel="noopener noreferrer" className="contact-value">{profile.location}</a></div></div>}
                 </div>
@@ -363,22 +408,26 @@ const CardProfile = () => {
           </div>
           <div className="profile-info">
             <div className="profile-header">
-              <div className="profile-name-section">
-                <h1 className="card-name">
+              <div className="profile-name-section" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '6px', width: '100%' }}>
+                <h1 className="card-name" style={{ fontSize: '1.25rem', fontWeight: 700, textAlign: 'left', margin: 0, lineHeight: 1.2 }}>
                   {profile.name}
                   {profile.category === 'Executive' && (
-                    <span className="verified-badge" title="Verified">✓</span>
+                    <span className="verified-badge" title="Verified" style={{ marginLeft: 8, fontSize: '1rem', verticalAlign: 'middle' }}>✓</span>
                   )}
                 </h1>
-                <div className="card-title-row">
-                  <h3 className="card-title">{profile.role}</h3>
-                </div>
-                <div className="card-title-row">
-                  {profile.company && <p className="card-company">{profile.company}</p>}
-                </div>
-                <div style={{ marginTop: '8px', display: 'flex', alignItems: 'center' }}>
+                {profile.role && (
+                  <div className="card-title-row" style={{ textAlign: 'left', fontSize: '1rem', color: '#4f8cff', fontWeight: 500 }}>
+                    <h3 className="card-title" style={{ margin: 0 }}>{profile.role}</h3>
+                  </div>
+                )}
+                {profile.company && (
+                  <div className="card-title-row" style={{ textAlign: 'left', fontSize: '0.98rem', color: '#6c5ce7', fontWeight: 500 }}>
+                    <p className="card-company" style={{ margin: 0 }}>{profile.company}</p>
+                  </div>
+                )}
+                <div style={{ marginTop: '8px', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: 8 }}>
                   <span className={`status-indicator ${profile.status !== 'active' ? 'offline' : ''}`}></span>
-                  <span className="status-text">{profile.status === 'active' ? 'Available' : 'Unavailable'}</span>
+                  <span className="status-text" style={{ fontSize: '0.98rem', fontWeight: 500 }}>{profile.status === 'active' ? 'Available' : 'Unavailable'}</span>
                 </div>
               </div>
             </div>
@@ -449,22 +498,45 @@ const CardProfile = () => {
                       </div>
                     </div>
                   )}
-                  {profile.phone && (
-                    <div className="contact-item" onClick={() => {
-                      trackContactSave(userId, 'phone1_contact_click');
-                      window.location.href = `tel:${profile.phone}`;
-                    }}>
-                      <div className="contact-icon phone">📱</div>
-                      <div className="contact-info">
-                        <span className="contact-label">Phone 1</span>
-                        <a href={`tel:${profile.phone}`} className="contact-value" onClick={(e) => {
-                          e.preventDefault();
-                          trackContactSave(userId, 'phone1_link_click');
-                          window.location.href = `tel:${profile.phone}`;
-                        }}>{profile.phone}</a>
-                      </div>
-                    </div>
-                  )}
+                  {(() => {
+                    if (Array.isArray(profile.phones) && profile.phones.length > 0) {
+                      return profile.phones.map((phone, idx) => (
+                        <div className="contact-item" key={`phone-${idx}`} onClick={() => {
+                          trackContactSave(userId, `phone${idx + 1}_contact_click`);
+                          window.location.href = `tel:${phone}`;
+                        }}>
+                          <div className="contact-icon phone">📱</div>
+                          <div className="contact-info">
+                            <span className="contact-label">Phone {idx + 1}</span>
+                            <a href={`tel:${phone}`} className="contact-value" onClick={(e) => {
+                              e.preventDefault();
+                              trackContactSave(userId, `phone${idx + 1}_link_click`);
+                              window.location.href = `tel:${phone}`;
+                            }}>{phone}</a>
+                          </div>
+                        </div>
+                      ));
+                    } else {
+                      // Fallback for phone, phone2, phone3, phone4 fields
+                      const phoneFields = [profile.phone, profile.phone2, profile.phone3, profile.phone4].filter(Boolean);
+                      return phoneFields.map((phone, idx) => (
+                        <div className="contact-item" key={`phone-fallback-${idx}`} onClick={() => {
+                          trackContactSave(userId, `phone${idx + 1}_contact_click`);
+                          window.location.href = `tel:${phone}`;
+                        }}>
+                          <div className="contact-icon phone">📱</div>
+                          <div className="contact-info">
+                            <span className="contact-label">Phone {idx + 1}</span>
+                            <a href={`tel:${phone}`} className="contact-value" onClick={(e) => {
+                              e.preventDefault();
+                              trackContactSave(userId, `phone${idx + 1}_link_click`);
+                              window.location.href = `tel:${phone}`;
+                            }}>{phone}</a>
+                          </div>
+                        </div>
+                      ));
+                    }
+                  })()}
                   {profile.website && (
                     <div className="contact-item" onClick={() => window.open(profile.website, '_blank')}>
                       <div className="contact-icon website">🌐</div>
