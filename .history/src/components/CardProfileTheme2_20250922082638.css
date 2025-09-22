@@ -1970,5 +1970,7 @@ html body .card-profile-theme2 .social-link.twitter {
   background-repeat: no-repeat !important;
 }
 
-
+/* Hide original SVG since we're using CSS icons */
+.card-profile-theme2 .social-link svg {
+}
 

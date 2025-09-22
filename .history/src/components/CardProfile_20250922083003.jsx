@@ -97,54 +97,39 @@ const CardProfile = () => {
       return;
     }
 
-    const createAndDownloadVCard = (photoBase64 = null) => {
-      const photoLine = photoBase64
-        ? `PHOTO;ENCODING=b;TYPE=JPEG:${photoBase64}`
-        : (profile.photoURL ? `PHOTO;VALUE=URI:${profile.photoURL}` : '');
-      const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:${profile.name || 'Unknown'}\nN:${profile.name ? profile.name.split(' ').reverse().join(';') : 'Unknown;;;;'}\nORG:${profile.company || ''}\nTITLE:${profile.role || ''}\nEMAIL:${profile.email || ''}\nTEL:${profile.phone || ''}\nURL:${profile.website || ''}\nADR:;;;;;;${profile.location || ''}\nNOTE:${profile.bio || ''}\n${photoLine}\nEND:VCARD`;
-      try {
-        const blob = new Blob([vcard], { type: 'text/vcard' });
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `${(profile.name || 'contact').replace(/\s+/g, '_')}_contact.vcf`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
-        // Track the contact save
-        try {
-          trackContactSave(userId, 'vcard_download');
-        } catch (error) {
-          console.error('Failed to track vCard download:', error);
-        }
-      } catch (error) {
-        console.error('Failed to generate vCard:', error);
-        alert('Failed to generate contact file');
-      }
-    };
+    const vcard = `BEGIN:VCARD
+VERSION:3.0
+FN:${profile.name || 'Unknown'}
+N:${profile.name ? profile.name.split(' ').reverse().join(';') : 'Unknown;;;;'}
+ORG:${profile.company || ''}
+TITLE:${profile.role || ''}
+EMAIL:${profile.email || ''}
+TEL:${profile.phone || ''}
+URL:${profile.website || ''}
+ADR:;;;;;;${profile.location || ''}
+NOTE:${profile.bio || ''}
+END:VCARD`;
 
-    if (profile.photoURL) {
-      fetch(profile.photoURL)
-        .then(response => response.blob())
-        .then(blob => {
-          const reader = new FileReader();
-          reader.onloadend = function () {
-            // Remove the data:image/jpeg;base64, prefix if present
-            let base64 = reader.result;
-            if (base64.startsWith('data:image')) {
-              base64 = base64.substring(base64.indexOf(',') + 1);
-            }
-            createAndDownloadVCard(base64);
-          };
-          reader.readAsDataURL(blob);
-        })
-        .catch(() => {
-          // If image fetch fails, fallback to URL
-          createAndDownloadVCard(null);
-        });
-    } else {
-      createAndDownloadVCard(null);
+    try {
+      const blob = new Blob([vcard], { type: 'text/vcard' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${(profile.name || 'contact').replace(/\s+/g, '_')}_contact.vcf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      
+      // Track the contact save
+      try {
+        trackContactSave(userId, 'vcard_download');
+      } catch (error) {
+        console.error('Failed to track vCard download:', error);
+      }
+    } catch (error) {
+      console.error('Failed to generate vCard:', error);
+      alert('Failed to generate contact file');
     }
   };
 
@@ -313,7 +298,7 @@ const CardProfile = () => {
                 </div>
               </div>
             </div>
-            <div className="profile-action-buttons">
+            <div className="profile-action-buttons" style={{ display: 'flex', gap: '10px', justifyContent: 'center', border: '2px solid red', padding: '10px', backgroundColor: '#f0f0f0' }}>
               <button 
                 onClick={async () => {
                   try {
@@ -332,7 +317,7 @@ const CardProfile = () => {
               <button 
                 onClick={generateVCard} 
                 className="action-button outline-button"
-                style={{ minWidth: '100px', minHeight: '40px' }}
+                style={{ minWidth: '100px', minHeight: '40px', backgroundColor: '#e3f2fd', border: '2px solid #2196f3', color: '#1976d2' }}
               >
                 Save Contact
               </button>

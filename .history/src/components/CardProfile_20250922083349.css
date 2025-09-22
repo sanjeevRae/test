@@ -273,11 +273,10 @@ div.bio-section {
   gap: 16px;
   margin: 28px 0 20px 0;
   justify-content: center;
-  background: none;
+  background: #f8f9fa;
   padding: 18px 0;
   border-radius: 12px;
   box-shadow: 0 2px 12px rgba(80, 80, 120, 0.07);
-  border: none;
 }
 
 .action-button {

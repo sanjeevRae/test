@@ -270,14 +270,8 @@ div.bio-section {
 
 .profile-action-buttons {
   display: flex;
-  gap: 16px;
-  margin: 28px 0 20px 0;
-  justify-content: center;
-  background: none;
-  padding: 18px 0;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(80, 80, 120, 0.07);
-  border: none;
+  gap: 10px;
+  margin: 20px 0;
 }
 
 .action-button {
@@ -309,15 +303,13 @@ div.bio-section {
 }
 
 .outline-button {
-  background: transparent;
-  border: 2px solid #2196f3;
-  color: #1976d2;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  background-color: transparent;
+  color: #6c5ce7;
+  border: 1px solid #6c5ce7;
 }
-.outline-button:hover, .outline-button:focus {
-  background: #e3f2fd;
-  color: #1565c0;
-  border-color: #1565c0;
+
+.outline-button:hover {
+  background-color: rgba(108, 92, 231, 0.05);
 }
 
 .profile-tabs {

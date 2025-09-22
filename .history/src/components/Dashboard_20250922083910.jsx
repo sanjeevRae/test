@@ -891,7 +891,7 @@ const Dashboard = () => {
                         placeholder="TikTok profile URL"
                       />
                     </div>
-                    {/* <div className="form-group">
+                    <div className="form-group">
                       <label htmlFor="socials.snapchat">
                         <i className="social-icon snapchat"></i> Snapchat
                       </label>
@@ -903,7 +903,7 @@ const Dashboard = () => {
                         onChange={handleInputChange}
                         placeholder="Snapchat profile URL"
                       />
-                    </div> */}
+                    </div>
                   </div>
                   
                   <div className="form-row">
