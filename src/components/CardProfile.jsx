@@ -136,6 +136,12 @@ const CardProfile = () => {
     ? profile.name.replace(/^(Mr\.?|Mrs\.?|Ms\.?|Dr\.?)\s+/i, '')
     : 'Unknown';
 
+  // Split name into parts
+  const nameParts = cleanName.trim().split(/\s+/);
+  const firstName = nameParts[0] || '';
+  const lastName = nameParts.length > 1 ? nameParts[nameParts.length - 1] : '';
+  const middleName = nameParts.length > 2 ? nameParts.slice(1, -1).join(' ') : '';
+
   const photoLine = photoBase64
     ? `PHOTO;ENCODING=b;TYPE=JPEG:${photoBase64}`
     : (profile.photoURL ? `PHOTO;VALUE=URI:${profile.photoURL}` : '');
@@ -143,7 +149,7 @@ const CardProfile = () => {
   const vcard = `BEGIN:VCARD
 VERSION:3.0
 FN:${cleanName}
-N:${cleanName.split(' ').reverse().join(';')}
+N:${lastName};${firstName};${middleName};; 
 ORG:${profile.company || ''}
 TITLE:${profile.role || ''}
 EMAIL:${profile.email || ''}
@@ -176,6 +182,9 @@ END:VCARD`;
     alert('Failed to generate contact file');
   }
 };
+
+
+
 
 
     if (profile.photoURL) {
