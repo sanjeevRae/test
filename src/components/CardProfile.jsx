@@ -97,32 +97,86 @@ const CardProfile = () => {
       return;
     }
 
+    // gender update
+
+    // const createAndDownloadVCard = (photoBase64 = null) => {
+    //   const photoLine = photoBase64
+    //     ? `PHOTO;ENCODING=b;TYPE=JPEG:${photoBase64}`
+    //     : (profile.photoURL ? `PHOTO;VALUE=URI:${profile.photoURL}` : '');
+    //   const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:${profile.name || 'Unknown'}\nN:${profile.name ? profile.name.split(' ').reverse().join(';') : 'Unknown;;;;'}\nORG:${profile.company || ''}\nTITLE:${profile.role || ''}\nEMAIL:${profile.email || ''}\nTEL:${profile.phone || ''}\nURL:${profile.website || ''}\nADR:;;;;;;${profile.location || ''}\nNOTE:${profile.bio || ''}\n${photoLine}\nEND:VCARD`;
+    //   try {
+    //     const blob = new Blob([vcard], { type: 'text/vcard' });
+    //     const url = window.URL.createObjectURL(blob);
+    //     const link = document.createElement('a');
+    //     link.href = url;
+    //     link.download = `${(profile.name || 'contact').replace(/\s+/g, '_')}_contact.vcf`;
+    //     document.body.appendChild(link);
+    //     link.click();
+    //     document.body.removeChild(link);
+    //     window.URL.revokeObjectURL(url);
+    //     // Track the contact save
+    //     try {
+    //       trackContactSave(userId, 'vcard_download');
+    //     } catch (error) {
+    //       console.error('Failed to track vCard download:', error);
+    //     }
+    //   } catch (error) {
+    //     console.error('Failed to generate vCard:', error);
+    //     alert('Failed to generate contact file');
+    //   }
+    // };
+
+
+
+
+
     const createAndDownloadVCard = (photoBase64 = null) => {
-      const photoLine = photoBase64
-        ? `PHOTO;ENCODING=b;TYPE=JPEG:${photoBase64}`
-        : (profile.photoURL ? `PHOTO;VALUE=URI:${profile.photoURL}` : '');
-      const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:${profile.name || 'Unknown'}\nN:${profile.name ? profile.name.split(' ').reverse().join(';') : 'Unknown;;;;'}\nORG:${profile.company || ''}\nTITLE:${profile.role || ''}\nEMAIL:${profile.email || ''}\nTEL:${profile.phone || ''}\nURL:${profile.website || ''}\nADR:;;;;;;${profile.location || ''}\nNOTE:${profile.bio || ''}\n${photoLine}\nEND:VCARD`;
-      try {
-        const blob = new Blob([vcard], { type: 'text/vcard' });
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `${(profile.name || 'contact').replace(/\s+/g, '_')}_contact.vcf`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
-        // Track the contact save
-        try {
-          trackContactSave(userId, 'vcard_download');
-        } catch (error) {
-          console.error('Failed to track vCard download:', error);
-        }
-      } catch (error) {
-        console.error('Failed to generate vCard:', error);
-        alert('Failed to generate contact file');
-      }
-    };
+  // Remove common prefixes
+  const cleanName = profile.name
+    ? profile.name.replace(/^(Mr\.?|Mrs\.?|Ms\.?|Dr\.?)\s+/i, '')
+    : 'Unknown';
+
+  const photoLine = photoBase64
+    ? `PHOTO;ENCODING=b;TYPE=JPEG:${photoBase64}`
+    : (profile.photoURL ? `PHOTO;VALUE=URI:${profile.photoURL}` : '');
+
+  const vcard = `BEGIN:VCARD
+VERSION:3.0
+FN:${cleanName}
+N:${cleanName.split(' ').reverse().join(';')}
+ORG:${profile.company || ''}
+TITLE:${profile.role || ''}
+EMAIL:${profile.email || ''}
+TEL:${profile.phone || ''}
+URL:${profile.website || ''}
+ADR:;;;;;;${profile.location || ''}
+NOTE:${profile.bio || ''}
+${photoLine}
+END:VCARD`;
+
+  try {
+    const blob = new Blob([vcard], { type: 'text/vcard' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${cleanName.replace(/\s+/g, '_')}_contact.vcf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+
+    // Track the contact save
+    try {
+      trackContactSave(userId, 'vcard_download');
+    } catch (error) {
+      console.error('Failed to track vCard download:', error);
+    }
+  } catch (error) {
+    console.error('Failed to generate vCard:', error);
+    alert('Failed to generate contact file');
+  }
+};
+
 
     if (profile.photoURL) {
       fetch(profile.photoURL)
