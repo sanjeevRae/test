@@ -362,7 +362,7 @@ const HomePage = () => {  const location = useLocation();
               </div>
               <p className="plan-description">
               Our classic NFC business card with essential features.
-              </p>              <div className="plan-price">                <h3> Rs500
+              </p>              <div className="plan-price">                <h3> Rs550
                   {/* {billingCycle === 'monthly' && 'Rs15'}
                   {billingCycle === 'quarterly' && 'Rs162'}
                   {billingCycle === 'direct' && 'Rs500'} */}
