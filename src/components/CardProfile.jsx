@@ -146,6 +146,14 @@ const CardProfile = () => {
     ? `PHOTO;ENCODING=b;TYPE=JPEG:${photoBase64}`
     : (profile.photoURL ? `PHOTO;VALUE=URI:${profile.photoURL}` : '');
 
+    // Handle multiple phone numbers for vCard
+    let telLines = '';
+    if (Array.isArray(profile.phone)) {
+      telLines = profile.phone.map(p => `TEL:${p}`).join('\n');
+    } else if (profile.phone) {
+      telLines = `TEL:${profile.phone}`;
+    }
+
   const vcard = `BEGIN:VCARD
 VERSION:3.0
 FN:${cleanName}
@@ -153,7 +161,7 @@ N:${lastName};${firstName};${middleName};;
 ORG:${profile.company || ''}
 TITLE:${profile.role || ''}
 EMAIL:${profile.email || ''}
-TEL:${profile.phone || ''}
+${telLines}
 URL:${profile.website || ''}
 ADR:;;;;;;${profile.location || ''}
 NOTE:${profile.bio || ''}
@@ -452,22 +460,34 @@ END:VCARD`;
                       </div>
                     </div>
                   )}
-                  {profile.phone && (
-                    <div className="contact-item" onClick={() => {
-                      trackContactSave(userId, 'phone1_contact_click');
-                      window.location.href = `tel:${profile.phone}`;
-                    }}>
-                      <div className="contact-icon phone">📱</div>
-                      <div className="contact-info">
-                        <span className="contact-label">Phone 1</span>
-                        <a href={`tel:${profile.phone}`} className="contact-value" onClick={(e) => {
-                          e.preventDefault();
-                          trackContactSave(userId, 'phone1_link_click');
-                          window.location.href = `tel:${profile.phone}`;
-                        }}>{profile.phone}</a>
-                      </div>
-                    </div>
-                  )}
+                  {/* Show all phone numbers: array, string, and phone2-4 support */}
+                  {(() => {
+                    let phoneNumbers = [];
+                    if (Array.isArray(profile.phone)) {
+                      phoneNumbers = profile.phone;
+                    } else {
+                      // If phone is string, merge with phone2-4
+                      phoneNumbers = [profile.phone, profile.phone2, profile.phone3, profile.phone4].filter(Boolean);
+                    }
+                    return phoneNumbers.map((phone, idx) => (
+                      phone ? (
+                        <div className="contact-item" key={idx} onClick={() => {
+                          trackContactSave(userId, `phone${idx + 1}_contact_click`);
+                          window.location.href = `tel:${phone}`;
+                        }}>
+                          <div className="contact-icon phone">📱</div>
+                          <div className="contact-info">
+                            <span className="contact-label">Phone {idx + 1}</span>
+                            <a href={`tel:${phone}`} className="contact-value" onClick={(e) => {
+                              e.preventDefault();
+                              trackContactSave(userId, `phone${idx + 1}_link_click`);
+                              window.location.href = `tel:${phone}`;
+                            }}>{phone}</a>
+                          </div>
+                        </div>
+                      ) : null
+                    ));
+                  })()}
                   {profile.website && (
                     <div className="contact-item" onClick={() => window.open(profile.website, '_blank')}>
                       <div className="contact-icon website">🌐</div>

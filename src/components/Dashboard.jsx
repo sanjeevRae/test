@@ -94,21 +94,26 @@ const Dashboard = () => {
             
             if (userData.cards && userData.cards.length > 0) {
               const fetchedCards = [];
-              
               for (const cardId of userData.cards) {
                 const cardDocRef = doc(db, 'profiles', cardId);
                 const cardDoc = await getDoc(cardDocRef);
-                
                 if (cardDoc.exists()) {
+                  const cardData = cardDoc.data();
+                  // Support old entries: if phone is string, merge with phone2-4
+                  let phoneNumbers = [];
+                  if (Array.isArray(cardData.phone)) {
+                    phoneNumbers = cardData.phone;
+                  } else {
+                    phoneNumbers = [cardData.phone, cardData.phone2, cardData.phone3, cardData.phone4].filter(Boolean);
+                  }
                   fetchedCards.push({
                     id: cardId,
-                    ...cardDoc.data()
+                    ...cardData,
+                    phone: phoneNumbers.length > 0 ? phoneNumbers : cardData.phone || '',
                   });
                 }
               }
-              
               setCards(fetchedCards);
-              
               if (fetchedCards.length > 0) {
                 const cardData = fetchedCards[0];
                 setActiveCard(cardData);
@@ -296,38 +301,47 @@ const Dashboard = () => {
     
     try {
       const currentUser = auth.currentUser;
-      
       if (!currentUser) {
         throw new Error("User not authenticated");
       }
-      
+
+      const flattenPhone = (val) => Array.isArray(val) ? val.join(', ') : val;
+      const phoneNumbers = [
+        flattenPhone(formData.phone),
+        flattenPhone(formData.phone2),
+        flattenPhone(formData.phone3),
+        flattenPhone(formData.phone4)
+      ].filter(Boolean);
+      const cardDataToSave = {
+        ...formData,
+        phone: phoneNumbers,
+      };
+
+      delete cardDataToSave.phone2;
+      delete cardDataToSave.phone3;
+      delete cardDataToSave.phone4;
+
       if (formMode === 'create') {
         if (cards.length > 0 && userRole !== 'admin') {
           throw new Error("You can only have one business card. Please update your existing card.");
         }
-        
         const cardId = `${currentUser.uid}_${Date.now()}`;
-        
         const cardDocRef = doc(db, 'profiles', cardId);
         await setDoc(cardDocRef, {
-          ...formData,
+          ...cardDataToSave,
           userId: currentUser.uid,
           createdAt: new Date().toISOString()
         });
-        
         const userDocRef = doc(db, 'users', currentUser.uid);
         const userDoc = await getDoc(userDocRef);
-        
         if (userDoc.exists()) {
           const userData = userDoc.data();
           let updatedCards;
-          
           if (userRole === 'admin') {
             updatedCards = userData.cards ? [...userData.cards, cardId] : [cardId];
           } else {
             updatedCards = [cardId];
           }
-          
           await setDoc(userDocRef, {
             ...userData,
             cards: updatedCards,
@@ -335,26 +349,21 @@ const Dashboard = () => {
             logoLink: formData.logoLink || '/',
             companyName: formData.companyName || formData.company || ''
           });
-          
           const newCard = {
             id: cardId,
-            ...formData,
+            ...cardDataToSave,
             userId: currentUser.uid,
             createdAt: new Date().toISOString()
           };
-          
           if (userRole === 'admin') {
             setCards([...cards, newCard]);
           } else {
             setCards([newCard]);
           }
-          
           setActiveCard(newCard);
           setFormMode('edit');
           setShareUrl(`${window.location.origin}/card/${cardId}`);
-          
           showToastMessage("Card created successfully!");
-          
         } else {
           await setDoc(userDocRef, {
             email: currentUser.email,
@@ -365,46 +374,36 @@ const Dashboard = () => {
             logoLink: formData.logoLink || '/',
             companyName: formData.companyName || formData.company || ''
           });
-          
           const newCard = {
             id: cardId,
-            ...formData,
+            ...cardDataToSave,
             userId: currentUser.uid,
             createdAt: new Date().toISOString()
           };
-          
           setCards([newCard]);
           setActiveCard(newCard);
           setFormMode('edit');
           setShareUrl(`${window.location.origin}/card/${cardId}`);
-          
           showToastMessage("Card created successfully!");
         }
-        
       } else if (formMode === 'edit' && activeCard) {
-
         const cardDocRef = doc(db, 'profiles', activeCard.id);
         await setDoc(cardDocRef, {
-          ...formData,
+          ...cardDataToSave,
           updatedAt: new Date().toISOString()
         }, { merge: true });
-        
         const userDocRef = doc(db, 'users', currentUser.uid);
         await setDoc(userDocRef, {
           logoURL: formData.logoURL || '',
           logoLink: formData.logoLink || '/',
           companyName: formData.companyName || formData.company || ''
         }, { merge: true });
-        
-        const updatedCards = cards.map(card => 
-          card.id === activeCard.id ? { ...card, ...formData, updatedAt: new Date().toISOString() } : card
+        const updatedCards = cards.map(card =>
+          card.id === activeCard.id ? { ...card, ...cardDataToSave, updatedAt: new Date().toISOString() } : card
         );
-        
         setCards(updatedCards);
-        setActiveCard({ ...activeCard, ...formData, updatedAt: new Date().toISOString() });
-        
+        setActiveCard({ ...activeCard, ...cardDataToSave, updatedAt: new Date().toISOString() });
         showToastMessage("Card updated successfully!");
-        
         if (window.refreshNavbarLogo) {
           window.refreshNavbarLogo();
         }
