@@ -22,6 +22,7 @@ const Dashboard = () => {
     phone3: '',
     phone4: '',
     website: '',
+    website2: '',
     location: '',
     bio: '',
     photoURL: '',
@@ -29,6 +30,10 @@ const Dashboard = () => {
     logoLink: '',
     companyName: '',
     theme: 'theme1', 
+    availableDays1: '',
+    officeName1: '',
+    availableDays2: '',
+    officeName2: '',
     socials: {
       linkedin: '',
       instagram: '',
@@ -110,6 +115,10 @@ const Dashboard = () => {
                     id: cardId,
                     ...cardData,
                     phone: phoneNumbers.length > 0 ? phoneNumbers : cardData.phone || '',
+                     availableDays1: cardData.availableDays1 || '',
+                     officeName1: cardData.officeName1 || '',
+                     availableDays2: cardData.availableDays2 || '',
+                     officeName2: cardData.officeName2 || '',
                   });
                 }
               }
@@ -315,6 +324,10 @@ const Dashboard = () => {
       const cardDataToSave = {
         ...formData,
         phone: phoneNumbers,
+         availableDays1: formData.availableDays1 || '',
+         officeName1: formData.officeName1 || '',
+         availableDays2: formData.availableDays2 || '',
+         officeName2: formData.officeName2 || '',
       };
 
       delete cardDataToSave.phone2;
@@ -433,9 +446,14 @@ const Dashboard = () => {
       phone3: '',
       phone4: '',
       website: '',
+      website2: '',
       location: '',
       bio: '',
       photoURL: '',
+      availableDays1: '',
+      officeName1: '',
+      availableDays2: '',
+      officeName2: '',
       socials: {
         linkedin: '',
         X: '',
@@ -842,6 +860,20 @@ const Dashboard = () => {
                       />
                     </div>
                   </div>
+
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label htmlFor="website2">Website 2</label>
+                      <input
+                        type="url"
+                        id="website2"
+                        name="website2"
+                        value={formData.website2}
+                        onChange={handleInputChange}
+                        placeholder="https://your-other-site.com"
+                      />
+                    </div>
+                  </div>
                   
                   <div className="form-row">
                     <div className="form-group">
@@ -853,6 +885,54 @@ const Dashboard = () => {
                         value={formData.location}
                         onChange={handleInputChange}
                         placeholder="City, Country"
+                      />
+                    </div>
+                  </div>
+                  <div className="form-row">
+                    <div className="form-group" style={{flex:1}}>
+                      <label htmlFor="availableDays1">Available Days (Sunday, Monday, Tuesday ..)</label>
+                      <input
+                        type="text"
+                        id="availableDays1"
+                        name="availableDays1"
+                        value={formData.availableDays1}
+                        onChange={handleInputChange}
+                        placeholder="Available Days"
+                      />
+                    </div>
+                    <div className="form-group" style={{flex:1}}>
+                      <label htmlFor="officeName1">Office Name</label>
+                      <input
+                        type="text"
+                        id="officeName1"
+                        name="officeName1"
+                        value={formData.officeName1}
+                        onChange={handleInputChange}
+                        placeholder="Office Name"
+                      />
+                    </div>
+                  </div>
+                  <div className="form-row">
+                    <div className="form-group" style={{flex:1}}>
+                      <label htmlFor="availableDays2">Available Days (Sunday, Monday, Tuesday ..)</label>
+                      <input
+                        type="text"
+                        id="availableDays2"
+                        name="availableDays2"
+                        value={formData.availableDays2}
+                        onChange={handleInputChange}
+                        placeholder="Available Days"
+                      />
+                    </div>
+                    <div className="form-group" style={{flex:1}}>
+                      <label htmlFor="officeName2">Office Name</label>
+                      <input
+                        type="text"
+                        id="officeName2"
+                        name="officeName2"
+                        value={formData.officeName2}
+                        onChange={handleInputChange}
+                        placeholder="Office Name"
                       />
                     </div>
                   </div>
@@ -1135,6 +1215,30 @@ const Dashboard = () => {
                       <li>
                         <span className="contact-icon">🌐</span>
                         <span>{formData.website}</span>
+                      </li>
+                    )}
+                    {formData.website2 && (
+                      <li>
+                        <span className="contact-icon">🌐</span>
+                        <span>Website 2: {formData.website2}</span>
+                      </li>
+                    )}
+                    {(formData.availableDays1 || formData.officeName1) && (
+                      <li>
+                        <span className="contact-icon">🗓️</span>
+                        <span>
+                          {formData.availableDays1 ? `Available: ${formData.availableDays1}` : ''}
+                          {formData.officeName1 ? ` (${formData.officeName1})` : ''}
+                        </span>
+                      </li>
+                    )}
+                    {(formData.availableDays2 || formData.officeName2) && (
+                      <li>
+                        <span className="contact-icon">🗓️</span>
+                        <span>
+                          {formData.availableDays2 ? `Available: ${formData.availableDays2}` : ''}
+                          {formData.officeName2 ? ` (${formData.officeName2})` : ''}
+                        </span>
                       </li>
                     )}
                     {formData.location && (

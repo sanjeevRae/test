@@ -154,6 +154,18 @@ const CardProfile = () => {
       telLines = `TEL:${profile.phone}`;
     }
 
+    // Handle multiple websites for vCard (support website + website2)
+    const websites = [];
+    if (Array.isArray(profile.website)) {
+      websites.push(...profile.website);
+    } else if (profile.website) {
+      websites.push(profile.website);
+    }
+    if (profile.website2) {
+      websites.push(profile.website2);
+    }
+    const urlLines = websites.length > 0 ? websites.map(u => `URL:${u}`).join('\n') : '';
+
   const vcard = `BEGIN:VCARD
 VERSION:3.0
 FN:${cleanName}
@@ -162,7 +174,7 @@ ORG:${profile.company || ''}
 TITLE:${profile.role || ''}
 EMAIL:${profile.email || ''}
 ${telLines}
-URL:${profile.website || ''}
+${urlLines}
 ADR:;;;;;;${profile.location || ''}
 NOTE:${profile.bio || ''}
 ${photoLine}
@@ -378,10 +390,29 @@ END:VCARD`;
                 <div className="card-title-row">
                   {profile.company && <p className="card-company">{profile.company}</p>}
                 </div>
-                <div style={{ marginTop: '8px', display: 'flex', alignItems: 'center' }}>
+                <div style={{ marginTop: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <span className={`status-indicator ${profile.status !== 'active' ? 'offline' : ''}`}></span>
-                  <span className="status-text">{profile.status === 'active' ? 'Available' : 'Unavailable'}</span>
+                  <span className="status-text">
+                    {profile.status === 'active' ? 'Available' : 'Unavailable'}
+                  </span>
+                  {/* Available days */}
                 </div>
+                {(profile.availableDays1 || profile.officeName1 || profile.availableDays2 || profile.officeName2) && <br />}
+                {(profile.availableDays1 || profile.officeName1) && (
+                  <>
+                    {profile.availableDays1 ? `(${profile.availableDays1}` : ''}
+                    {profile.officeName1 ? `, ${profile.officeName1}` : ''}
+                    {profile.availableDays1 ? ')' : ''}
+                    <br />
+                  </>
+                )}
+                {(profile.availableDays2 || profile.officeName2) && (
+                  <>
+                    {profile.availableDays2 ? `(${profile.availableDays2}` : ''}
+                    {profile.officeName2 ? `, ${profile.officeName2}` : ''}
+                    {profile.availableDays2 ? ')' : ''}
+                  </>
+                )}
               </div>
             </div>
             <div className="profile-action-buttons">
@@ -495,6 +526,17 @@ END:VCARD`;
                         <span className="contact-label">Website</span>
                         <a href={profile.website} target="_blank" rel="noopener noreferrer" className="contact-value">
                           {profile.website.replace(/^https?:\/\//, '')}
+                        </a>
+                      </div>
+                    </div>
+                  )}
+                  {profile.website2 && (
+                    <div className="contact-item" onClick={() => window.open(profile.website2, '_blank')}>
+                      <div className="contact-icon website">🌐</div>
+                      <div className="contact-info">
+                        <span className="contact-label">Website 2</span>
+                        <a href={profile.website2} target="_blank" rel="noopener noreferrer" className="contact-value">
+                          {profile.website2.replace(/^https?:\/\//, '')}
                         </a>
                       </div>
                     </div>
