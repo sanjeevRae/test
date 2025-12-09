@@ -629,7 +629,7 @@ const LeaderDashboard = () => {
         justifyContent: 'space-between',
         marginBottom: '20px'
       }}>
-        <button 
+        {/* <button 
           className="add-member-btn"
           onClick={() => setShowAddUserForm(true)}
           style={{
@@ -645,13 +645,13 @@ const LeaderDashboard = () => {
           }}
         >
           <span style={{ fontSize: '16px' }}>+</span> Add Team Member
-        </button>
+        </button> */}
         
         <button 
           className="refresh-btn"
           onClick={() => fetchOrganizationMembers(organizationId)}
           style={{
-            backgroundColor: '#f0f0f0',
+            backgroundColor: '#4CAF50',
             border: 'none',
             padding: '10px 15px',
             borderRadius: '4px',
@@ -687,7 +687,7 @@ const LeaderDashboard = () => {
         <div className="search-container">
           <input 
             type="text" 
-            placeholder="Search team members..." 
+            placeholder="       Search team members..." 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="search-input"
