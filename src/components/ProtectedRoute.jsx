@@ -3,10 +3,10 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { auth, db } from '../utils/firebase';
 import { doc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
-import { isUserAdmin, isUserLeader, getUserRole } from '../utils/auth';
+import { isUserAdmin, isUserLeader, isUserSuperAdmin, getUserRole } from '../utils/auth';
 import './ProtectedRoute.css';
 
-const ProtectedRoute = ({ children, requireAdmin = false, requireLeader = false }) => {
+const ProtectedRoute = ({ children, requireAdmin = false, requireLeader = false, requireSuperAdmin = false }) => {
   const [user, setUser] = useState(null);
   const [userRole, setUserRole] = useState(null);
   const [userOrganization, setUserOrganization] = useState(null);
@@ -77,7 +77,7 @@ const ProtectedRoute = ({ children, requireAdmin = false, requireLeader = false 
     });
     
     return () => unsubscribe();
-  }, [requireAdmin, requireLeader]);
+  }, [requireAdmin, requireLeader, requireSuperAdmin]);
   
   if (loading) {
     return (
@@ -93,19 +93,24 @@ const ProtectedRoute = ({ children, requireAdmin = false, requireLeader = false 
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
   
-  // Handle admin access requirement
-  if (requireAdmin && userRole !== 'admin') {
+  // Handle super admin access requirement
+  if (requireSuperAdmin && userRole !== 'superadmin') {
     return <Navigate to="/dashboard" state={{ from: location }} replace />;
   }
   
-  // Handle leader access requirement
-  if (requireLeader && userRole !== 'admin' && userRole !== 'leader') {
+  // Handle admin access requirement (superadmin has admin access too)
+  if (requireAdmin && userRole !== 'admin' && userRole !== 'superadmin') {
+    return <Navigate to="/dashboard" state={{ from: location }} replace />;
+  }
+  
+  // Handle leader access requirement (admin and superadmin have leader access too)
+  if (requireLeader && userRole !== 'admin' && userRole !== 'leader' && userRole !== 'superadmin') {
     console.log('Redirecting: User role is', userRole, 'but leader or admin role is required');
     return <Navigate to="/dashboard" state={{ from: location }} replace />;
   }
   
   // If there's an error (like leader without organization), show error instead of redirecting
-  if (error && (userRole === 'leader' || userRole === 'admin')) {
+  if (error && (userRole === 'leader' || userRole === 'admin' || userRole === 'superadmin')) {
     return (
       <div className="error-container">
         <h2>Access Error</h2>

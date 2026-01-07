@@ -1,0 +1,776 @@
+/* Controls Dashboard Styles - Clean & Responsive */
+.controls-dashboard {
+  min-height: 100vh;
+  background: #f8f9fa;
+  padding: 20px;
+  color: #333;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.controls-header {
+  text-align: center;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.controls-header h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #333;
+  font-weight: 600;
+}
+
+.controls-header p {
+  font-size: 1rem;
+  color: #666;
+}
+
+.impersonation-banner {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  padding: 15px;
+  border-radius: 4px;
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stop-impersonation-btn {
+  background: #333;
+  color: #fff;
+  border: 1px solid #333;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.stop-impersonation-btn:hover {
+  background: #555;
+  border-color: #555;
+}
+
+.controls-nav {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.controls-nav button {
+  background: #fff;
+  color: #333;
+  border: 1px solid #ddd;
+  padding: 12px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.controls-nav button:hover {
+  background: #f8f9fa;
+  border-color: #999;
+}
+
+.controls-nav button.active {
+  background: #333;
+  color: #fff;
+  border-color: #333;
+}
+
+.controls-content {
+  background: #fff;
+  border-radius: 4px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+}
+
+/* Overview Section */
+.overview-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.stat-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  color: #333;
+  padding: 20px;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.stat-card h3 {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.roles-breakdown {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  color: #333;
+  padding: 20px;
+  border-radius: 4px;
+}
+
+.roles-breakdown h3 {
+  margin: 0 0 16px 0;
+  color: #333;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.roles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.role-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  background: #f8f9fa;
+  border-radius: 4px;
+  border-left: 3px solid #333;
+}
+
+.role-name {
+  font-weight: 500;
+  text-transform: capitalize;
+  font-size: 14px;
+}
+
+.role-count {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.recent-activity {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  color: #333;
+  padding: 20px;
+  border-radius: 4px;
+}
+
+.recent-activity h3 {
+  margin: 0 0 16px 0;
+  color: #333;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.activity-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.activity-item {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 12px;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.activity-time {
+  color: #666;
+  font-size: 12px;
+}
+
+.activity-user {
+  font-weight: 500;
+}
+
+.activity-action {
+  color: #333;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+/* Section Headers */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.section-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.search-input {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #fff;
+  color: #333;
+  font-size: 14px;
+  min-width: 250px;
+}
+
+.search-input::placeholder {
+  color: #999;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #333;
+}
+
+/* Tables */
+.users-table, .logs-table, .sessions-table {
+  background: #fff;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+}
+
+.users-table table, .logs-table table, .sessions-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.users-table th, .logs-table th, .sessions-table th,
+.users-table td, .logs-table td, .sessions-table td {
+  padding: 12px 10px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.users-table th, .logs-table th, .sessions-table th {
+  background: #f8f9fa;
+  font-weight: 600;
+  color: #333;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 12px;
+}
+
+.users-table td, .logs-table td, .sessions-table td {
+  color: #333;
+  vertical-align: top;
+  font-size: 14px;
+}
+
+.users-table tr:hover, .logs-table tr:hover, .sessions-table tr:hover {
+  background: #f8f9fa;
+}
+
+/* User Info */
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.user-info strong {
+  font-size: 14px;
+}
+
+.user-info small {
+  font-size: 12px;
+  color: #666;
+  font-family: monospace;
+}
+
+/* Badges */
+.role-badge, .status-badge, .action-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.role-badge.role-superadmin {
+  background: #333;
+  color: white;
+}
+
+.role-badge.role-admin {
+  background: #555;
+  color: white;
+}
+
+.role-badge.role-leader {
+  background: #777;
+  color: white;
+}
+
+.role-badge.role-user {
+  background: #999;
+  color: white;
+}
+
+.status-badge.status-active {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.status-badge.status-inactive {
+  background: #e6e6e6;
+  color: #666;
+  border: 1px solid #ccc;
+}
+
+.status-badge.status-suspended {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.action-badge {
+  background: #f8f9fa;
+  color: #333;
+  border: 1px solid #e0e0e0;
+}
+
+/* User Actions */
+.user-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.impersonate-btn, .edit-btn {
+  padding: 6px 10px;
+  border: 1px solid;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.impersonate-btn {
+  background: #333;
+  color: white;
+  border-color: #333;
+}
+
+.impersonate-btn:hover {
+  background: #555;
+  border-color: #555;
+}
+
+.edit-btn {
+  background: #fff;
+  color: #333;
+  border-color: #333;
+}
+
+.edit-btn:hover {
+  background: #f8f9fa;
+}
+
+/* Log Details */
+.log-user {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.log-user strong {
+  font-size: 14px;
+}
+
+.log-user small {
+  font-size: 12px;
+  color: #666;
+  font-family: monospace;
+}
+
+.log-details {
+  max-width: 200px;
+  white-space: pre-wrap;
+  font-size: 12px;
+  color: #666;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Session Info */
+.session-user {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.device-info {
+  font-size: 14px;
+}
+
+.session-status {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.session-status.active {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+/* Loading and Error States */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  gap: 16px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #e0e0e0;
+  border-top: 3px solid #333;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-container {
+  text-align: center;
+  padding: 40px;
+}
+
+.error-container h2 {
+  margin-bottom: 12px;
+  color: #dc3545;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .controls-dashboard {
+    padding: 16px;
+  }
+
+  .controls-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .controls-header p {
+    font-size: 14px;
+  }
+
+  .controls-nav {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .controls-nav button {
+    width: 100%;
+    max-width: 280px;
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .controls-content {
+    padding: 16px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .section-header h3 {
+    font-size: 16px;
+  }
+
+  .search-input {
+    min-width: unset;
+    width: 100%;
+  }
+
+  .activity-item {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    text-align: left;
+  }
+
+  .user-actions {
+    flex-direction: column;
+  }
+
+  .impersonate-btn, .edit-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Make tables responsive */
+  .users-table, .logs-table, .sessions-table {
+    overflow-x: auto;
+  }
+
+  .users-table table, .logs-table table, .sessions-table table {
+    min-width: 600px;
+  }
+
+  .users-table th, .logs-table th, .sessions-table th,
+  .users-table td, .logs-table td, .sessions-table td {
+    padding: 8px 6px;
+    font-size: 12px;
+  }
+
+  .impersonation-banner {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .controls-dashboard {
+    padding: 12px;
+  }
+
+  .controls-header h1 {
+    font-size: 1.25rem;
+  }
+
+  .controls-header p {
+    font-size: 13px;
+  }
+
+  .controls-content {
+    padding: 12px;
+  }
+
+  .roles-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .role-stat {
+    padding: 8px 10px;
+  }
+
+  .stat-card {
+    padding: 16px;
+  }
+
+  .stat-number {
+    font-size: 1.5rem;
+  }
+
+  .recent-activity, .roles-breakdown {
+    padding: 16px;
+  }
+
+  .users-table table, .logs-table table, .sessions-table table {
+    min-width: 500px;
+  }
+
+  .activity-item {
+    padding: 8px;
+    font-size: 12px;
+  }
+}
+
+/* User Photo Styles - Simplified */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-avatar, .log-user-avatar, .session-user-avatar {
+  flex-shrink: 0;
+}
+
+.user-photo, .user-photo-placeholder {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #ddd;
+}
+
+.user-photo-placeholder {
+  background: #333;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.user-photo-small {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #ddd;
+  background: #333;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.user-details, .log-user-details, .session-user-details {
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.user-details strong, .log-user-details strong, .session-user-details strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-details small, .log-user-details small, .session-user-details small {
+  display: block;
+  font-size: 12px;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Session and Login Status Styles - Simplified */
+.session-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.log-user {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ip-address {
+  font-family: monospace;
+  background: #f8f9fa;
+  padding: 4px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  color: #333;
+  border: 1px solid #e0e0e0;
+}
+
+.device-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.device-type {
+  font-size: 12px;
+  font-weight: 500;
+  color: #333;
+}
+
+.user-agent {
+  font-size: 10px;
+  color: #666;
+  font-family: monospace;
+}
+
+.session-status.inactive {
+  background: #f8f9fa;
+  color: #666;
+  border: 1px solid #e0e0e0;
+}
+
+.session-status.logged-out {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.action-type {
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.action-user_login {
+  background: #e3f2fd;
+  color: #1976d2;
+  border: 1px solid #bbdefb;
+}
+
+.action-user_signup {
+  background: #e8f5e8;
+  color: #2e7d32;
+  border: 1px solid #c8e6c9;
+}
+
+.action-user_logout {
+  background: #fce4ec;
+  color: #c2185b;
+  border: 1px solid #f8bbd9;
+}
+
+.action-login {
+  background: #f3e5f5;
+  color: #7b1fa2;
+  border: 1px solid #e1bee7;
+}

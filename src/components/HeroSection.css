@@ -45,9 +45,11 @@
 /* Top Section */
 .hero-top-section {
   width: 100%;
-  padding: 5rem 2% 0px;
+  padding: 5rem 2% 3rem;
   background: #ffffff;
   margin-bottom: 0;
+  position: relative;
+  z-index: 5;
 }
 
 .hero-content-wrapper {
@@ -83,12 +85,19 @@
 }
 
 .hero-description {
-  font-size: 1rem;
-  color: var(--gray);
-  line-height: 1.5;
-  margin-bottom: 2rem;
-  max-width: 550px;
-  text-align: center;
+  font-size: 1.3rem !important;
+  color: #1a202c !important;
+  line-height: 1.4 !important;
+  margin-bottom: 2.5rem !important;
+  max-width: 550px !important;
+  text-align: center !important;
+  opacity: 1 !important;
+  display: block !important;
+  visibility: visible !important;
+  position: relative !important;
+  z-index: 999 !important;
+  font-weight: 300 !important;
+  padding: 0 !important;
 }
 
 .hero-cta-group {

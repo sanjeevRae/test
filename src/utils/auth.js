@@ -1,5 +1,5 @@
 // Auth utility functions for role-based access control
-import { auth, db, doc, getDoc, setDoc, deleteDoc, collection, getDocs } from './firebase';
+import { auth, db, doc, getDoc, setDoc, deleteDoc, collection, getDocs, addDoc } from './firebase';
 
 /**
  * Check if the current user has admin privileges based on Firestore role
@@ -15,9 +15,9 @@ export const isUserAdmin = async () => {
     
     if (!userDoc.exists()) return false;
     
-    // Check if user role is admin
+    // Check if user role is admin or superadmin (superadmin has admin privileges)
     const userData = userDoc.data();
-    return userData.role === 'admin';
+    return userData.role === 'admin' || userData.role === 'superadmin';
   } catch (error) {
     console.error('Error checking admin status:', error);
     return false; // Default to no admin access on error
@@ -38,9 +38,9 @@ export const isUserLeader = async () => {
     
     if (!userDoc.exists()) return false;
     
-    // Check if user role is leader or admin (admins have leader privileges)
+    // Check if user role is leader, admin, or superadmin (admins and superadmins have leader privileges)
     const userData = userDoc.data();
-    return userData.role === 'leader' || userData.role === 'admin';
+    return userData.role === 'leader' || userData.role === 'admin' || userData.role === 'superadmin';
   } catch (error) {
     console.error('Error checking leader status:', error);
     return false; // Default to no leader access on error
@@ -49,7 +49,7 @@ export const isUserLeader = async () => {
 
 /**
  * Get the current user's role from Firestore
- * @returns {Promise<string>} The user's role ('admin', 'leader', or 'user')
+ * @returns {Promise<string>} The user's role ('superadmin', 'admin', 'leader', or 'user')
  */
 export const getUserRole = async () => {
   try {
@@ -70,6 +70,29 @@ export const getUserRole = async () => {
   } catch (error) {
     console.error('Error getting user role:', error);
     return 'user'; // Default to regular user on error
+  }
+};
+
+/**
+ * Check if the current user has super admin privileges
+ * @returns {Promise<boolean>} True if the user has super admin privileges
+ */
+export const isUserSuperAdmin = async () => {
+  try {
+    if (!auth.currentUser) return false;
+    
+    // Get the user document from Firestore
+    const userRef = doc(db, 'users', auth.currentUser.uid);
+    const userDoc = await getDoc(userRef);
+    
+    if (!userDoc.exists()) return false;
+    
+    // Check if user role is super admin
+    const userData = userDoc.data();
+    return userData.role === 'superadmin';
+  } catch (error) {
+    console.error('Error checking super admin status:', error);
+    return false; // Default to no super admin access on error
   }
 };
 
@@ -113,7 +136,7 @@ export const setUserRole = async (userId, role, organizationId = null) => {
       return { success: false, error: 'Invalid user ID' };
     }
     
-    if (!role || !['admin', 'leader', 'user'].includes(role)) {
+    if (!role || !['superadmin', 'admin', 'leader', 'user'].includes(role)) {
       return { success: false, error: 'Invalid role specified' };
     }
     
@@ -190,7 +213,7 @@ export const setUserRole = async (userId, role, organizationId = null) => {
       }
     }
     
-    // Create an audit log entry
+    // Create an audit log entry and activity log
     try {
       const auditRef = doc(db, 'audit_logs', `role_change_${Date.now()}`);
       await setDoc(auditRef, {
@@ -203,6 +226,15 @@ export const setUserRole = async (userId, role, organizationId = null) => {
         timestamp: new Date().toISOString()
       });
       console.log('Audit log entry created for role change');
+      
+      // Log the activity for the Controls dashboard
+      await logUserActivity('role_change', {
+        targetUserId: userId,
+        targetUserEmail: userData.email,
+        oldRole: oldRole,
+        newRole: role,
+        organizationId: organizationId
+      }, userId);
     } catch (auditError) {
       // Just log the error but don't fail the operation
       console.error('Error creating audit log:', auditError);
@@ -764,8 +796,8 @@ export const checkUserAccess = async (actionType, organizationId, userId = null)
     const currentUserRole = await getUserRole();
     const currentUserId = auth.currentUser.uid;
     
-    // Admins have access to everything
-    if (currentUserRole === 'admin') return true;
+    // Super admins and admins have access to everything
+    if (currentUserRole === 'superadmin' || currentUserRole === 'admin') return true;
     
     // Leaders have access to manage users in their organization
     if (currentUserRole === 'leader' && organizationId) {
@@ -800,6 +832,159 @@ export const checkUserAccess = async (actionType, organizationId, userId = null)
     return false;
   } catch (error) {
     console.error('Error checking user access:', error);
+    return false;
+  }
+};
+
+/**
+ * Log user activity for audit trail
+ * @param {string} action - The action performed
+ * @param {Object} details - Additional details about the action
+ * @param {string} targetUserId - The user ID affected by the action (optional)
+ * @returns {Promise<void>}
+ */
+export const logUserActivity = async (action, details = {}, targetUserId = null) => {
+  try {
+    if (!auth.currentUser) return;
+    
+    const activityData = {
+      userId: auth.currentUser.uid,
+      userEmail: auth.currentUser.email,
+      action: action,
+      details: details,
+      targetUserId: targetUserId,
+      timestamp: new Date().toISOString(),
+      ipAddress: null, // Would need backend to get real IP
+      userAgent: navigator.userAgent
+    };
+    
+    // Store in activity logs collection
+    const { addDoc } = await import('firebase/firestore');
+    const logsRef = collection(db, 'activityLogs');
+    await addDoc(logsRef, activityData);
+    
+    console.log('Activity logged:', action);
+  } catch (error) {
+    console.error('Error logging activity:', error);
+  }
+};
+
+/**
+ * Get user activity logs from audit_logs collection (for super admin only)
+ * @param {number} limit - Number of logs to retrieve
+ * @param {string} userId - Filter by specific user ID (optional)
+ * @returns {Promise<Array>} Array of activity logs
+ */
+export const getUserActivityLogs = async (limit = 100, userId = null) => {
+  try {
+    if (!auth.currentUser) return [];
+    
+    // Check if user is super admin
+    if (!(await isUserSuperAdmin())) {
+      console.error('Unauthorized access to activity logs');
+      return [];
+    }
+    
+    const { query, where, orderBy, limit: firestoreLimit } = await import('firebase/firestore');
+    const logsRef = collection(db, 'audit_logs');
+    let q;
+    
+    if (userId) {
+      q = query(logsRef, 
+        where('performedBy', '==', userId),
+        orderBy('timestamp', 'desc'), 
+        firestoreLimit(limit)
+      );
+    } else {
+      q = query(logsRef, 
+        orderBy('timestamp', 'desc'), 
+        firestoreLimit(limit)
+      );
+    }
+    
+    const querySnapshot = await getDocs(q);
+    const logs = [];
+    
+    querySnapshot.forEach((doc) => {
+      logs.push({ id: doc.id, ...doc.data() });
+    });
+    
+    return logs;
+  } catch (error) {
+    console.error('Error retrieving activity logs:', error);
+    return [];
+  }
+};
+
+/**
+ * Impersonate a user (for super admin only)
+ * @param {string} targetUserId - The user ID to impersonate
+ * @returns {Promise<Object>} User data if successful
+ */
+export const impersonateUser = async (targetUserId) => {
+  try {
+    if (!auth.currentUser) {
+      throw new Error('Not authenticated');
+    }
+    
+    // Check if user is super admin
+    if (!(await isUserSuperAdmin())) {
+      throw new Error('Unauthorized: Super admin access required');
+    }
+    
+    // Get target user data
+    const userRef = doc(db, 'users', targetUserId);
+    const userDoc = await getDoc(userRef);
+    
+    if (!userDoc.exists()) {
+      throw new Error('Target user not found');
+    }
+    
+    const userData = userDoc.data();
+    
+    // Log the impersonation activity
+    await logUserActivity('user_impersonation', {
+      targetUserEmail: userData.email,
+      targetUserName: userData.name || userData.userName
+    }, targetUserId);
+    
+    return {
+      success: true,
+      userData: { id: targetUserId, ...userData }
+    };
+  } catch (error) {
+    console.error('Error impersonating user:', error);
+    return {
+      success: false,
+      error: error.message
+    };
+  }
+};
+
+// Helper function for compatibility with existing role checks
+export const hasAdminAccess = isUserAdmin;
+export const hasLeaderAccess = isUserLeader;
+export const hasSuperAdminAccess = isUserSuperAdmin;
+
+/**
+ * Exit impersonation mode (for super admin)
+ * @returns {Promise<boolean>} Success status
+ */
+export const exitImpersonation = async () => {
+  try {
+    // Clear impersonation data from sessionStorage
+    sessionStorage.removeItem('impersonationMode');
+    sessionStorage.removeItem('impersonatedUserId');
+    sessionStorage.removeItem('impersonatedUserData');
+    sessionStorage.removeItem('superAdminId');
+    sessionStorage.removeItem('superAdminEmail');
+    
+    // Log the exit impersonation activity
+    await logUserActivity('exit_impersonation', {});
+    
+    return true;
+  } catch (error) {
+    console.error('Error exiting impersonation:', error);
     return false;
   }
 };

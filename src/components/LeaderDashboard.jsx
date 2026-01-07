@@ -28,6 +28,7 @@ import {
   updateMemberRole,
   updateMemberStatus
 } from '../utils/leaderUtils';
+import Navbar from './Navbar';
 import './LeaderDashboard.css';
 
 const LeaderDashboard = () => {
@@ -591,7 +592,9 @@ const LeaderDashboard = () => {
   }
 
   return (
-    <div className="leader-dashboard">
+    <>
+      <Navbar />
+      <div className="leader-dashboard">
       <div className="leader-header">
         <h2>{organizationName} - Team Dashboard</h2>
         <p className="leader-subtitle">Manage your team members</p>
@@ -1172,6 +1175,7 @@ const LeaderDashboard = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

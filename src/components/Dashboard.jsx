@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { auth, db, doc, getDoc, setDoc, deleteDoc, storage } from '../utils/firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { getUserRole } from '../utils/auth';
+import { getUserRole, exitImpersonation } from '../utils/auth';
 import { useNavigate } from 'react-router-dom';
+import ImpersonationBanner from './ImpersonationBanner';
+import Navbar from './Navbar';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -12,6 +14,8 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [cards, setCards] = useState([]);
   const [activeCard, setActiveCard] = useState(null);
+  const [impersonationMode, setImpersonationMode] = useState(false);
+  const [impersonatedUserData, setImpersonatedUserData] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     role: '',
@@ -39,8 +43,7 @@ const Dashboard = () => {
       instagram: '',
       facebook: '',
       youtube: '',
-      tiktok: '',
-      snapchat: ''
+      tiktok: ''
     }
   });
   
@@ -78,69 +81,99 @@ const Dashboard = () => {
     const fetchUserData = async () => {
       setLoading(true);
       try {
-        const currentUser = auth.currentUser;
-        if (currentUser) {
+        // Check for impersonation mode first
+        const isImpersonating = sessionStorage.getItem('impersonationMode') === 'true';
+        const impersonatedUserData = sessionStorage.getItem('impersonatedUserData');
+        
+        let targetUserId;
+        let targetUser;
+        
+        if (isImpersonating && impersonatedUserData) {
+          // We're impersonating - load the impersonated user's data
+          const userData = JSON.parse(impersonatedUserData);
+          targetUserId = userData.id;
+          targetUser = userData;
+          setImpersonationMode(true);
+          setImpersonatedUserData(userData);
+          
+          // Set the user role to the impersonated user's role
+          setUserRole(userData.role || 'user');
+        } else {
+          // Normal mode - load current user's data
+          const currentUser = auth.currentUser;
+          if (!currentUser) {
+            setLoading(false);
+            return;
+          }
+          
+          targetUserId = currentUser.uid;
           setUser(currentUser);
           
           const role = await getUserRole();
           setUserRole(role);
+        }
+        
+        // Load the target user's document (either current user or impersonated user)
+        const userDocRef = doc(db, 'users', targetUserId);
+        const userDoc = await getDoc(userDocRef);
+        
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
           
-          const userDocRef = doc(db, 'users', currentUser.uid);
-          const userDoc = await getDoc(userDocRef);
+          setUserPlan(userData.plan || 'premium');
           
-          if (userDoc.exists()) {
-            const userData = userDoc.data();
-            
-            setUserPlan(userData.plan || 'premium');
-            
-            if (userData.role !== role) {
-              await setDoc(userDocRef, { role }, { merge: true });
-            }
-            
-            if (userData.cards && userData.cards.length > 0) {
-              const fetchedCards = [];
-              for (const cardId of userData.cards) {
-                const cardDocRef = doc(db, 'profiles', cardId);
-                const cardDoc = await getDoc(cardDocRef);
-                if (cardDoc.exists()) {
-                  const cardData = cardDoc.data();
-                  // Support old entries: if phone is string, merge with phone2-4
-                  let phoneNumbers = [];
-                  if (Array.isArray(cardData.phone)) {
-                    phoneNumbers = cardData.phone;
-                  } else {
-                    phoneNumbers = [cardData.phone, cardData.phone2, cardData.phone3, cardData.phone4].filter(Boolean);
-                  }
-                  fetchedCards.push({
-                    id: cardId,
-                    ...cardData,
-                    phone: phoneNumbers.length > 0 ? phoneNumbers : cardData.phone || '',
-                     availableDays1: cardData.availableDays1 || '',
-                     officeName1: cardData.officeName1 || '',
-                     availableDays2: cardData.availableDays2 || '',
-                     officeName2: cardData.officeName2 || '',
-                  });
+          // Only update role in Firestore if we're not impersonating
+          if (!isImpersonating && userData.role !== await getUserRole()) {
+            await setDoc(userDocRef, { role: await getUserRole() }, { merge: true });
+          }
+          
+          if (userData.cards && userData.cards.length > 0) {
+            const fetchedCards = [];
+            for (const cardId of userData.cards) {
+              const cardDocRef = doc(db, 'profiles', cardId);
+              const cardDoc = await getDoc(cardDocRef);
+              if (cardDoc.exists()) {
+                const cardData = cardDoc.data();
+                // Support old entries: if phone is string, merge with phone2-4
+                let phoneNumbers = [];
+                if (Array.isArray(cardData.phone)) {
+                  phoneNumbers = cardData.phone;
+                } else {
+                  phoneNumbers = [cardData.phone, cardData.phone2, cardData.phone3, cardData.phone4].filter(Boolean);
                 }
-              }
-              setCards(fetchedCards);
-              if (fetchedCards.length > 0) {
-                const cardData = fetchedCards[0];
-                setActiveCard(cardData);
-                setFormData({
+                fetchedCards.push({
+                  id: cardId,
                   ...cardData,
-                  logoURL: userData.logoURL || '',
-                  logoLink: userData.logoLink || '/',
-                  companyName: userData.companyName || cardData.company || ''
+                  phone: phoneNumbers.length > 0 ? phoneNumbers : cardData.phone || '',
+                  availableDays1: cardData.availableDays1 || '',
+                  officeName1: cardData.officeName1 || '',
+                  availableDays2: cardData.availableDays2 || '',
+                  officeName2: cardData.officeName2 || '',
                 });
-                setFormMode('edit');
-                setShareUrl(`${window.location.origin}/card/${fetchedCards[0].id}`);
               }
             }
-          } else {
+            setCards(fetchedCards);
+            if (fetchedCards.length > 0) {
+              const cardData = fetchedCards[0];
+              setActiveCard(cardData);
+              setFormData({
+                ...cardData,
+                logoURL: userData.logoURL || '',
+                logoLink: userData.logoLink || '/',
+                companyName: userData.companyName || cardData.company || ''
+              });
+              setFormMode('edit');
+              setShareUrl(`${window.location.origin}/card/${fetchedCards[0].id}`);
+            }
+          }
+        } else if (!isImpersonating) {
+          // Only create new user document if we're not impersonating
+          const currentUser = auth.currentUser;
+          if (currentUser) {
             await setDoc(userDocRef, {
               email: currentUser.email,
               displayName: currentUser.displayName || '',
-              role: role,
+              role: await getUserRole(),
               createdAt: new Date().toISOString(),
               cards: []
             });
@@ -309,9 +342,24 @@ const Dashboard = () => {
     setSaving(true);
     
     try {
-      const currentUser = auth.currentUser;
-      if (!currentUser) {
-        throw new Error("User not authenticated");
+      // Determine the target user ID (current user or impersonated user)
+      let targetUserId;
+      const isImpersonating = sessionStorage.getItem('impersonationMode') === 'true';
+      
+      if (isImpersonating) {
+        const impersonatedUserData = sessionStorage.getItem('impersonatedUserData');
+        if (impersonatedUserData) {
+          const userData = JSON.parse(impersonatedUserData);
+          targetUserId = userData.id;
+        } else {
+          throw new Error("Impersonation data not found");
+        }
+      } else {
+        const currentUser = auth.currentUser;
+        if (!currentUser) {
+          throw new Error("User not authenticated");
+        }
+        targetUserId = currentUser.uid;
       }
 
       const flattenPhone = (val) => Array.isArray(val) ? val.join(', ') : val;
@@ -338,14 +386,14 @@ const Dashboard = () => {
         if (cards.length > 0 && userRole !== 'admin') {
           throw new Error("You can only have one business card. Please update your existing card.");
         }
-        const cardId = `${currentUser.uid}_${Date.now()}`;
+        const cardId = `${targetUserId}_${Date.now()}`;
         const cardDocRef = doc(db, 'profiles', cardId);
         await setDoc(cardDocRef, {
           ...cardDataToSave,
-          userId: currentUser.uid,
+          userId: targetUserId,
           createdAt: new Date().toISOString()
         });
-        const userDocRef = doc(db, 'users', currentUser.uid);
+        const userDocRef = doc(db, 'users', targetUserId);
         const userDoc = await getDoc(userDocRef);
         if (userDoc.exists()) {
           const userData = userDoc.data();
@@ -365,7 +413,7 @@ const Dashboard = () => {
           const newCard = {
             id: cardId,
             ...cardDataToSave,
-            userId: currentUser.uid,
+            userId: targetUserId,
             createdAt: new Date().toISOString()
           };
           if (userRole === 'admin') {
@@ -483,9 +531,25 @@ const Dashboard = () => {
       const cardDocRef = doc(db, 'profiles', cardId);
       await deleteDoc(cardDocRef);
       
-      const currentUser = auth.currentUser;
-      if (currentUser) {
-        const userDocRef = doc(db, 'users', currentUser.uid);
+      // Determine the target user ID (current user or impersonated user)
+      let targetUserId;
+      const isImpersonating = sessionStorage.getItem('impersonationMode') === 'true';
+      
+      if (isImpersonating) {
+        const impersonatedUserData = sessionStorage.getItem('impersonatedUserData');
+        if (impersonatedUserData) {
+          const userData = JSON.parse(impersonatedUserData);
+          targetUserId = userData.id;
+        }
+      } else {
+        const currentUser = auth.currentUser;
+        if (currentUser) {
+          targetUserId = currentUser.uid;
+        }
+      }
+      
+      if (targetUserId) {
+        const userDocRef = doc(db, 'users', targetUserId);
         const userDoc = await getDoc(userDocRef);
         
         if (userDoc.exists()) {
@@ -541,16 +605,26 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="dashboard-container">
+    <>
+      <Navbar />
+      <div className="dashboard-container">
+      <ImpersonationBanner />
       <div className="dashboard-header">
         <h1>Business Card Manager</h1>
         <p className="dashboard-subtitle">
-          {userRole === 'admin' 
-            ? 'Admin Dashboard - Create and manage multiple business cards' 
-            : 'Create and manage your professional digital business card'}
+          {impersonationMode 
+            ? `Managing cards for: ${impersonatedUserData?.email || 'Unknown User'} (${impersonatedUserData?.role || 'user'})` 
+            : userRole === 'admin' 
+              ? 'Admin Dashboard - Create and manage multiple business cards' 
+              : 'Create and manage your professional digital business card'}
         </p>
-        {userRole === 'admin' && (
+        {userRole === 'admin' && !impersonationMode && (
           <div className="admin-badge">Admin Account</div>
+        )}
+        {impersonationMode && (
+          <div className="impersonation-mode-badge">
+            Impersonation Mode - Managing {impersonatedUserData?.name || impersonatedUserData?.email || 'User'}'s Account
+          </div>
         )}
 
         <div className="theme-options" style={{ margin: '24px 0 0 0', textAlign: 'center' }}>
@@ -601,7 +675,7 @@ const Dashboard = () => {
                 <button className="analytics-button" onClick={() => navigate('/analytics')}>
                   <span className="icon">📊</span>
                   <span>View Analytics</span>
-                  <span className="premium-badge-small">Elite/Premium</span>
+                 
                 </button>
               )}
             </div>
@@ -944,7 +1018,8 @@ const Dashboard = () => {
                   <div className="form-row">
                     <div className="form-group">
                       <label htmlFor="socials.linkedin">
-                        <i className="social-icon linkedin"></i> LinkedIn
+                        
+                        LinkedIn
                       </label>
                       <input
                         type="url"
@@ -956,10 +1031,10 @@ const Dashboard = () => {
                       />
                     </div>
                     
-                    {/* X (Twitter) field removed as requested */}
-                    <div className="form-group">
+                    
+                     <div className="form-group">
                       <label htmlFor="socials.tiktok">
-                        <i className="social-icon tiktok"></i> TikTok
+                       TikTok
                       </label>
                       <input
                         type="url"
@@ -970,25 +1045,14 @@ const Dashboard = () => {
                         placeholder="TikTok profile URL"
                       />
                     </div>
-                    {/* <div className="form-group">
-                      <label htmlFor="socials.snapchat">
-                        <i className="social-icon snapchat"></i> Snapchat
-                      </label>
-                      <input
-                        type="url"
-                        id="socials.snapchat"
-                        name="socials.snapchat"
-                        value={formData.socials.snapchat}
-                        onChange={handleInputChange}
-                        placeholder="Snapchat profile URL"
-                      />
-                    </div> */}
+
+
                   </div>
                   
                   <div className="form-row">
                     <div className="form-group">
                       <label htmlFor="socials.instagram">
-                        <i className="social-icon instagram"></i> Instagram
+                         Instagram
                       </label>
                       <input
                         type="url"
@@ -1002,7 +1066,7 @@ const Dashboard = () => {
                     
                     <div className="form-group">
                       <label htmlFor="socials.facebook">
-                        <i className="social-icon facebook"></i> Facebook
+                      Facebook
                       </label>
                       <input
                         type="url"
@@ -1018,7 +1082,7 @@ const Dashboard = () => {
                        <div className="form-row">
                     <div className="form-group">
                       <label htmlFor="socials.youtube">
-                        <i className="social-icon youtube"></i> Youtube
+                         Youtube
                       </label>
                       <input
                         type="url"
@@ -1251,7 +1315,7 @@ const Dashboard = () => {
                 </div>
                 
                 {(formData.socials.linkedin || formData.socials.X || 
-                  formData.socials.instagram || formData.socials.facebook || formData.socials.youtube || formData.socials.tiktok || formData.socials.snapchat) && (
+                  formData.socials.instagram || formData.socials.facebook || formData.socials.youtube || formData.socials.tiktok) && (
                   <div className="preview-section">
                     <h3>Social Media</h3>
                     <div className="preview-social-links">
@@ -1280,32 +1344,24 @@ const Dashboard = () => {
                             <span className="social-icon">📺</span>
                             <span>YouTube</span>
                           </a>
-                          {formData.socials.snapchat && (
-                            <a href={formData.socials.snapchat} target="_blank" rel="noopener noreferrer" className="social-link snapchat">
-                              <span className="social-icon" style={{display:'inline-block',verticalAlign:'middle'}}>
-                                <i className="fa-brands fa-snapchat"></i>
-                              </span>
-                              <span>Snapchat</span>
+                          {formData.socials.tiktok && (
+                            <a href={formData.socials.tiktok} target="_blank" rel="noopener noreferrer" className="social-link tiktok">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-tiktok" viewBox="0 0 16 16" style={{marginRight:'4px'}}>
+                                <path d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3z"/>
+                              </svg>
+                              <span>TikTok</span>
                             </a>
                           )}
                         </span>
                       )}
                       {formData.socials.tiktok && (
-                        <a href={formData.socials.tiktok} target="_blank" rel="noopener noreferrer" className="social-link tiktok">
-                          <span className="social-icon" style={{display:'inline-block',verticalAlign:'middle'}}>
-                            <i className="fa-brands fa-tiktok"></i>
-                          </span>
-                          <span>TikTok</span>
-                        </a>
-                      )}
-                      {formData.socials.snapchat && (
                         !formData.socials.youtube ? (
                           <span style={{display:'flex',gap:'8px',alignItems:'center'}}>
-                            <a href={formData.socials.snapchat} target="_blank" rel="noopener noreferrer" className="social-link snapchat">
-                              <span className="social-icon" style={{display:'inline-block',verticalAlign:'middle'}}>
-                                <i className="fa-brands fa-facebook"></i>
-                              </span>
-                              <span>Snapchat</span>
+                            <a href={formData.socials.tiktok} target="_blank" rel="noopener noreferrer" className="social-link tiktok">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-tiktok" viewBox="0 0 16 16" style={{marginRight:'4px'}}>
+                                <path d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3z"/>
+                              </svg>
+                              <span>TikTok</span>
                             </a>
                           </span>
                         ) : null
@@ -1337,6 +1393,7 @@ const Dashboard = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

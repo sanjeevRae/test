@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { auth, db, doc, setDoc, getDoc, checkNetworkConnectivity, pingFirebase } from '../utils/firebase';
+import { auth, db, doc, setDoc, getDoc, checkNetworkConnectivity, pingFirebase, collection, addDoc } from '../utils/firebase';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { logUserActivity } from '../utils/auth';
 import { useNavigate, Link } from 'react-router-dom';
 import './AuthForm.css';
 
@@ -13,7 +14,7 @@ const AuthForm = ({ isSignup = false }) => {
   const [name, setName] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [networkStatus, setNetworkStatus] = useState(true); // Default to true to prevent false negatives
+  const [networkStatus, setNetworkStatus] = useState(true); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -103,6 +104,30 @@ const AuthForm = ({ isSignup = false }) => {
           const userData = userDoc.data();
           console.log('User data from Firestore:', userData);
           
+          // Create audit log for login
+          try {
+            const { addDoc } = await import('firebase/firestore');
+            const auditRef = collection(db, 'audit_logs');
+            await addDoc(auditRef, {
+              action: 'user_login',
+              performedBy: userCredential.user.uid,
+              userEmail: email,
+              role: userData.role || 'user',
+              timestamp: new Date().toISOString(),
+              loginMethod: 'email_password'
+            });
+            console.log('Login audit log created');
+          } catch (auditError) {
+            console.error('Error creating login audit log:', auditError);
+          }
+          
+          // Log the login activity for additional tracking
+          await logUserActivity('login', {
+            email: email,
+            role: userData.role || 'user',
+            loginMethod: 'email_password'
+          });
+          
           if (isAdmin || userData.role === 'admin') {
             console.log('Redirecting to admin page');
             navigate('/admin');
@@ -114,7 +139,7 @@ const AuthForm = ({ isSignup = false }) => {
       } catch (firestoreError) {
         console.error('Firestore error after login:', firestoreError);
 
-        if (email.toLowerCase() === 'anyuser@evox.com') {
+        if (email.toLowerCase() === '') {
           console.log('Firestore failed');
           navigate('/admin');
         } else {
@@ -168,6 +193,32 @@ const AuthForm = ({ isSignup = false }) => {
         
         console.log('User document created in Firestore');
         
+        // Create audit log for signup
+        try {
+          const { addDoc } = await import('firebase/firestore');
+          const auditRef = collection(db, 'audit_logs');
+          await addDoc(auditRef, {
+            action: 'user_signup',
+            performedBy: userCredential.user.uid,
+            userEmail: email,
+            userName: name,
+            role: isAdmin ? 'admin' : 'user',
+            timestamp: new Date().toISOString(),
+            signupMethod: 'email_password'
+          });
+          console.log('Signup audit log created');
+        } catch (auditError) {
+          console.error('Error creating signup audit log:', auditError);
+        }
+        
+        // Log the signup activity for additional tracking
+        await logUserActivity('user_signup', {
+          email: email,
+          name: name,
+          role: isAdmin ? 'admin' : 'user',
+          signupMethod: 'email_password'
+        });
+        
         if (isAdmin) {
           console.log('Admin account created, redirecting to admin page');
           navigate('/admin');
@@ -205,6 +256,30 @@ const AuthForm = ({ isSignup = false }) => {
         setError(`Signup failed: ${error.message || 'Unknown error'}. Please try again.`);
       }
     }
+  };
+
+  const generateMockIP = () => {
+    // Generate a realistic mock IP for demo purposes
+    // In production, IP would be captured server-side
+    const segments = [];
+    for (let i = 0; i < 4; i++) {
+      if (i === 0) {
+        segments.push(Math.floor(Math.random() * 223) + 1); // 1-223 for first octet
+      } else {
+        segments.push(Math.floor(Math.random() * 256)); // 0-255 for others
+      }
+    }
+    return segments.join('.');
+  };
+
+  const getBrowserInfo = () => {
+    const userAgent = navigator.userAgent;
+    if (userAgent.includes('Chrome')) return 'Chrome';
+    if (userAgent.includes('Firefox')) return 'Firefox';
+    if (userAgent.includes('Safari')) return 'Safari';
+    if (userAgent.includes('Edge')) return 'Edge';
+    if (userAgent.includes('Opera')) return 'Opera';
+    return 'Unknown';
   };
 
   const handleSubmit = async (e) => {

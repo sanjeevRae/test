@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { auth, db } from '../utils/firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, collection } from 'firebase/firestore';
+import { logUserActivity } from '../utils/auth';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -128,6 +129,9 @@ const Navbar = () => {
     document.addEventListener('mousedown', handleClickOutside);
     
     const handleScroll = () => {
+      // Don't interfere with EvoxPage navigation
+      if (location.pathname === '/evox') return;
+      
       const currentScrollPos = window.scrollY;
       
       if (currentScrollPos > 50) {
@@ -144,7 +148,8 @@ const Navbar = () => {
       }
       
       setPrevScrollPos(currentScrollPos);
-      if (location.pathname === '/') {
+      // Handle section detection for both HomePage and NFCCardsPage (since NFCCardsPage renders HomePage)
+      if (location.pathname === '/' || location.pathname === '/nfc-cards') {
         const sections = ['about', 'features', 'pricing', 'contact'];
         const currentOffset = currentScrollPos + 100; 
         
@@ -175,8 +180,53 @@ const Navbar = () => {
     };
   }, [location.pathname, userMenuOpen, menuOpen]);
 
+  const generateMockIP = () => {
+    // Generate a realistic mock IP for demo purposes
+    const segments = [];
+    for (let i = 0; i < 4; i++) {
+      if (i === 0) {
+        segments.push(Math.floor(Math.random() * 223) + 1);
+      } else {
+        segments.push(Math.floor(Math.random() * 256));
+      }
+    }
+    return segments.join('.');
+  };
+
+  const getBrowserInfo = () => {
+    const userAgent = navigator.userAgent;
+    if (userAgent.includes('Chrome')) return 'Chrome';
+    if (userAgent.includes('Firefox')) return 'Firefox';
+    if (userAgent.includes('Safari')) return 'Safari';
+    if (userAgent.includes('Edge')) return 'Edge';
+    if (userAgent.includes('Opera')) return 'Opera';
+    return 'Unknown';
+  };
+
   const handleLogout = async () => {
     try {
+      // Create audit log for logout before signing out
+      try {
+        const { addDoc } = await import('firebase/firestore');
+        const auditRef = collection(db, 'audit_logs');
+        await addDoc(auditRef, {
+          action: 'user_logout',
+          performedBy: user?.uid || 'unknown',
+          userEmail: user?.email || 'unknown',
+          role: userRole,
+          timestamp: new Date().toISOString()
+        });
+        console.log('Logout audit log created');
+      } catch (auditError) {
+        console.error('Error creating logout audit log:', auditError);
+      }
+      
+      // Log the logout activity for additional tracking
+      await logUserActivity('logout', {
+        email: user?.email,
+        role: userRole
+      });
+      
       await signOut(auth);
       navigate('/');
     } catch (error) {
@@ -192,11 +242,62 @@ const Navbar = () => {
     closeUserMenu();
     setActiveSection(sectionId);
     
-    if (location.pathname !== '/') {
-      navigate('/', { state: { scrollTo: sectionId } });
+    // Special handling for different navigation targets
+    if (sectionId === 'nfc-cards') {
+      // Navigate to NFC Cards page for Home (only if not already there)
+      if (location.pathname !== '/nfc-cards') {
+        navigate('/nfc-cards');
+      }
       return;
     }
     
+    if (sectionId === 'home-about') {
+      // Navigate to HomePage for About (only if not on /nfc-cards)
+      if (location.pathname === '/nfc-cards') {
+        // If on NFCCardsPage, scroll to about section within the page
+        const element = document.getElementById('about');
+        if (element) {
+          setTimeout(() => {
+            const rect = element.getBoundingClientRect();
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollToY = rect.top + scrollTop - 80; 
+            window.scrollTo({
+              top: scrollToY,
+              behavior: 'smooth'
+            });
+          }, 50);
+        }
+      } else {
+        navigate('/');
+      }
+      return;
+    }
+    
+    // For pricing and contact, check if we're on NFCCardsPage first
+    if (sectionId === 'pricing' || sectionId === 'contact') {
+      if (location.pathname === '/nfc-cards') {
+        // If on NFCCardsPage, scroll to section within the page
+        const element = document.getElementById(sectionId);
+        if (element) {
+          setTimeout(() => {
+            const rect = element.getBoundingClientRect();
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollToY = rect.top + scrollTop - 80; 
+            window.scrollTo({
+              top: scrollToY,
+              behavior: 'smooth'
+            });
+          }, 50);
+        }
+        return;
+      } else if (location.pathname !== '/') {
+        // If not on HomePage, navigate to HomePage with scroll state
+        navigate('/', { state: { scrollTo: sectionId } });
+        return;
+      }
+    }
+    
+    // Default behavior: scroll to section on current page
     const element = document.getElementById(sectionId);
     if (element) {
       setTimeout(() => {
@@ -211,7 +312,9 @@ const Navbar = () => {
         });
       }, 50);
     }
-  };return (
+  };
+
+  return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''} ${hidden ? 'navbar-hidden' : ''}`}>
       <div className="navbar-container">
         {logoData.url ? (
@@ -281,12 +384,17 @@ const Navbar = () => {
                 <div className="dropdown-divider"></div>
                 
                 {/* Role-specific navigation */}
-                {userRole === 'admin' && (
+                {userRole === 'superadmin' && (
+                  <Link to="/controls" className="dropdown-item" onClick={() => {closeUserMenu(); closeMenu();}}>
+                    <span className="dropdown-icon">🎛️</span> System Controls
+                  </Link>
+                )}
+                {(userRole === 'admin' || userRole === 'superadmin') && (
                   <Link to="/admin" className="dropdown-item" onClick={() => {closeUserMenu(); closeMenu();}}>
                     <span className="dropdown-icon">👑</span> Admin Dashboard
                   </Link>
                 )}
-                {userRole === 'leader' && (
+                {(userRole === 'leader' || userRole === 'admin' || userRole === 'superadmin') && (
                   <Link to="/leader" className="dropdown-item" onClick={() => {closeUserMenu(); closeMenu();}}>
                     <span className="dropdown-icon">👥</span> Team Dashboard
                   </Link>
@@ -311,21 +419,20 @@ const Navbar = () => {
           )}
           
           <li className="nav-item" style={{"--item-index": 0}}>
-            <Link to="/" className={`nav-link ${location.pathname === '/' && activeSection === '' ? 'active' : ''}`} onClick={closeMenu}>
+            <button
+              className={`nav-link nav-button ${location.pathname === '/nfc-cards' ? 'active' : ''}`}
+              onClick={() => scrollToSection('nfc-cards')}
+            >
               Home
-            </Link>
-          </li>          <li className="nav-item" style={{"--item-index": 1}}>
-            <a
-              href="#about"
-              className={`nav-link ${activeSection === 'about' ? 'active' : ''}`}
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToSection('about');
-                closeMenu();
-              }}
+            </button>
+          </li>
+          <li className="nav-item" style={{"--item-index": 1}}>
+            <button
+              className={`nav-link nav-button ${location.pathname === '/' && activeSection === '' ? 'active' : ''}`}
+              onClick={() => scrollToSection('home-about')}
             >
               About
-            </a>
+            </button>
           </li>
           {/* <li className="nav-item" style={{"--item-index": 2}}>
             <a 
@@ -341,30 +448,20 @@ const Navbar = () => {
             </a>
           </li> */}
           <li className="nav-item" style={{"--item-index": 3}}>
-            <a 
-              href="#pricing" 
-              className={`nav-link ${activeSection === 'pricing' ? 'active' : ''}`}
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToSection('pricing');
-                closeMenu();
-              }}
+            <button
+              className={`nav-link nav-button ${activeSection === 'pricing' ? 'active' : ''}`}
+              onClick={() => scrollToSection('pricing')}
             >
               Pricing
-            </a>
+            </button>
           </li>
           <li className="nav-item" style={{"--item-index": 4}}>
-            <a 
-              href="#contact" 
-              className={`nav-link ${activeSection === 'contact' ? 'active' : ''}`}
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToSection('contact');
-                closeMenu();
-              }}
+            <button
+              className={`nav-link nav-button ${activeSection === 'contact' ? 'active' : ''}`}
+              onClick={() => scrollToSection('contact')}
             >
               Contact
-            </a>
+            </button>
           </li>
           
           {!loading && (
@@ -404,12 +501,17 @@ const Navbar = () => {
                       <div className="dropdown-divider"></div>
                       
                       {/* Role-specific navigation */}
-                      {userRole === 'admin' && (
+                      {userRole === 'superadmin' && (
+                        <Link to="/controls" className="dropdown-item" onClick={closeUserMenu}>
+                          <span className="dropdown-icon">🎛️</span> System Controls
+                        </Link>
+                      )}
+                      {(userRole === 'admin' || userRole === 'superadmin') && (
                         <Link to="/admin" className="dropdown-item" onClick={closeUserMenu}>
                           <span className="dropdown-icon">👑</span> Admin Dashboard
                         </Link>
                       )}
-                        {userRole === 'leader' && (
+                      {(userRole === 'leader' || userRole === 'admin' || userRole === 'superadmin') && (
                         <Link to="/leader" className="dropdown-item" onClick={closeUserMenu}>
                           <span className="dropdown-icon">👥</span> Team Dashboard
                         </Link>

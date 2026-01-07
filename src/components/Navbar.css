@@ -186,7 +186,27 @@
   white-space: nowrap;
 }
 
-.nav-link::after {
+.nav-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #4a5568;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 0.75rem 0.5rem;
+  position: relative;
+  transition: all 0.3s ease;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.nav-link::after,
+.nav-button::after {
   content: '';
   position: absolute;
   width: 0;
@@ -204,16 +224,24 @@
   overflow: hidden;
 }
 
-.nav-link:hover {
+.nav-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-link:hover,
+.nav-button:hover {
   color: #3182ce;
   background-color: rgba(49, 130, 206, 0.08);
 }
 
-.nav-link:hover::after {
+.nav-link:hover::after,
+.nav-button:hover::after {
   width: 100%;
 }
 
-.nav-link::before {
+.nav-link::before,
+.nav-button::before {
   content: '';
   position: absolute;
   top: 50%;
@@ -235,7 +263,8 @@
   transition: all 0.6s ease-out;
 }
 
-.nav-link.active {
+.nav-link.active,
+.nav-button.active {
   color: #3182ce;
   font-weight: 600;
   background-color: rgba(49, 130, 206, 0.08);
@@ -244,7 +273,8 @@
   box-shadow: 0 2px 8px rgba(49, 130, 206, 0.15);
 }
 
-.nav-link.active::before {
+.nav-link.active::before,
+.nav-button.active::before {
   content: '';
   position: absolute;
   top: -5px;
@@ -256,14 +286,16 @@
   background-color: #3182ce;
 }
 
-.nav-link.active::after {
+.nav-link.active::after,
+.nav-button.active::after {
   width: 100%;
   height: 3px;
 }
 
 /* Add a pulsing effect for active mobile nav links */
 @media (max-width: 1023px) {
-  .nav-link.active {
+  .nav-link.active,
+  .nav-button.active {
     background-color: rgba(49, 130, 206, 0.1);
     box-shadow: inset 4px 0 0 #3182ce;
     padding-left: 1rem;
@@ -747,7 +779,7 @@
   display: block;
   height: 3px;
   width: 100%;
-  background: linear-gradient(135deg, #3182ce, #2b6cb0);
+  background: rgba(255, 255, 255, 0.9) !important;
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   border-radius: 2px;
   transform-origin: center;
@@ -756,34 +788,39 @@
 .hamburger span:nth-child(1) {
   width: 80%;
   align-self: flex-end;
+  background: rgba(255, 255, 255, 0.9) !important;
 }
 
 .hamburger span:nth-child(2) {
   width: 100%;
+  background: rgba(255, 255, 255, 0.9) !important;
 }
 
 .hamburger span:nth-child(3) {
   width: 80%;
   align-self: flex-start;
+  background: rgba(255, 255, 255, 0.9) !important;
 }
 
 .hamburger.open span {
   width: 100%;
+  background: rgba(255, 255, 255, 0.9) !important;
 }
 
 .hamburger.open span:nth-child(1) {
   transform: rotate(45deg) translate(7px, 7px);
-  background: linear-gradient(135deg, #e53e3e, #c53030);
+  background: rgba(255, 255, 255, 0.9) !important;
 }
 
 .hamburger.open span:nth-child(2) {
   opacity: 0;
   transform: scale(0);
+  background: rgba(255, 255, 255, 0.9) !important;
 }
 
 .hamburger.open span:nth-child(3) {
   transform: rotate(-45deg) translate(7px, -7px);
-  background: linear-gradient(135deg, #e53e3e, #c53030);
+  background: rgba(255, 255, 255, 0.9) !important;
 }
 
 @media (max-width: 1023px) {
@@ -1007,19 +1044,22 @@
     transform: translateX(4px);
   }
   
-  .nav-link:hover::before {
+  .nav-link:hover::before,
+  .nav-button:hover::before {
     height: 24px;
     opacity: 1;
   }
   
-  .nav-link.active {
+  .nav-link.active,
+  .nav-button.active {
     background: rgba(79, 70, 229, 0.1);
     color: #4F46E5;
     font-weight: 600;
     transform: translateX(4px);
   }
   
-  .nav-link.active::before {
+  .nav-link.active::before,
+  .nav-button.active::before {
     height: 24px;
     opacity: 1;
   }

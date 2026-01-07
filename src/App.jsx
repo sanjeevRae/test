@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import HeroSection from './components/HeroSection';
 import AuthForm from './components/AuthForm';
 import ProtectedRoute from './components/ProtectedRoute';
 import CardProfile from './components/CardProfile';
@@ -9,12 +7,14 @@ import About from './pages/About';
 import Dashboard from './components/Dashboard';
 import AdminDashboard from './components/AdminDashboard';
 import LeaderDashboard from './components/LeaderDashboard';
+import ControlsDashboard from './components/ControlsDashboard';
 import AdminTools from './components/AdminTools';
 import OrganizationManagement from './components/OrganizationManagement';
-import HomePage from './components/HomePage';
+import EvoxPage from './components/EvoxPage';
 import RoleDebugger from './components/RoleDebugger';
 import EditUserPage from './components/EditUserPage';
 import AnalyticsDashboard from './components/AnalyticsDashboard';
+import NFCCardsPage from './components/NFCCardsPage';
 
 function App() {
   const [userRole, setUserRole] = useState(null);
@@ -43,9 +43,9 @@ function App() {
   
   return (
     <Router>
-      <Navbar />
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<EvoxPage />} />
+        <Route path="/nfc-cards" element={<NFCCardsPage />} />
         <Route path="/login" element={<AuthForm />} />
         <Route path="/addmein" element={<AuthForm isSignup={true} />} />        <Route path="/dashboard" element={
           <ProtectedRoute>
@@ -67,6 +67,8 @@ function App() {
                 <div className="loading-spinner"></div>
                 <p>Loading...</p>
               </div>
+            ) : userRole === 'superadmin' ? (
+              <Navigate to="/controls" replace />
             ) : userRole === 'admin' ? (
               <Navigate to="/admin" replace />
             ) : userRole === 'leader' ? (
@@ -74,6 +76,11 @@ function App() {
             ) : (
               <Navigate to="/dashboard" replace />
             )}
+          </ProtectedRoute>
+        } />
+        <Route path="/controls" element={
+          <ProtectedRoute requireSuperAdmin={true}>
+            <ControlsDashboard />
           </ProtectedRoute>
         } />
         <Route path="/admin" element={

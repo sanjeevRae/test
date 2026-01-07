@@ -1,0 +1,383 @@
+/* Cyber Protection Process Section */
+.cyber-process-section {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+  padding: 120px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.cyber-process-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 80%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, rgba(255, 0, 255, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.process-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.process-header {
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.process-header h2 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 24px;
+}
+
+.process-title-light {
+  color: #ffffff;
+}
+
+.process-title-highlight {
+  background: linear-gradient(135deg, #00ffff 0%, #ff00ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.process-subtitle {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Carousel Container */
+.process-carousel-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 60px;
+  touch-action: pan-y; /* Prevent horizontal scrolling/swiping */
+  -webkit-overflow-scrolling: auto;
+  overscroll-behavior-x: none;
+}
+
+.process-carousel-container:hover .process-steps-carousel {
+  animation-play-state: paused;
+}
+
+.process-steps-carousel {
+  display: flex;
+  width: 200%; /* 6 steps showing 3 at a time = 200% width */
+  transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  gap: 40px;
+  will-change: transform;
+}
+
+.process-step {
+  flex: 0 0 calc(100% / 6); /* Each step takes 1/6 of carousel width */
+  max-width: calc(100% / 6);
+  position: relative;
+  padding: 40px 20px;
+}
+
+/* Device Screens with 3D Perspective */
+.step-device {
+  position: relative;
+  margin-bottom: 30px;
+  perspective: 1000px;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.device-screen {
+  width: 280px;
+  height: 200px;
+  position: relative;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform-style: preserve-3d;
+}
+
+/* Step-specific transforms */
+.step-01 .device-screen,
+.step-04 .device-screen {
+  transform: rotateY(-15deg) rotateX(5deg);
+}
+
+.step-02 .device-screen,
+.step-05 .device-screen {
+  transform: rotateY(0deg) rotateX(0deg);
+  z-index: 2;
+}
+
+.step-03 .device-screen,
+.step-06 .device-screen {
+  transform: rotateY(15deg) rotateX(5deg);
+}
+
+.device-screen:hover {
+  transform: scale(1.05) rotateY(0deg) rotateX(0deg);
+  box-shadow: 0 30px 60px rgba(0, 255, 255, 0.3);
+}
+
+.step-background-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+  transition: all 0.5s ease;
+}
+
+.screen-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, 
+    rgba(0, 255, 255, 0.1) 0%, 
+    transparent 50%, 
+    rgba(255, 0, 255, 0.1) 100%);
+  border-radius: 20px;
+  transition: all 0.5s ease;
+}
+
+.device-screen:hover .screen-overlay {
+  background: linear-gradient(135deg, 
+    rgba(0, 255, 255, 0.2) 0%, 
+    transparent 50%, 
+    rgba(255, 0, 255, 0.2) 100%);
+}
+
+/* Step Info */
+.step-info {
+  text-align: center;
+  color: #ffffff;
+  padding: 0 20px;
+}
+
+.step-number {
+  font-size: 0.9rem;
+  color: rgba(0, 255, 255, 1);
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.step-info h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  line-height: 1.3;
+  color: #ffffff;
+}
+
+.step-info p {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.5;
+}
+
+/* Carousel Navigation */
+.carousel-navigation {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.carousel-prev,
+.carousel-next {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(20px);
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  pointer-events: all;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.carousel-prev:hover,
+.carousel-next:hover {
+  background: rgba(0, 255, 255, 0.2);
+  border-color: rgba(0, 255, 255, 0.5);
+  transform: scale(1.1);
+  box-shadow: 0 10px 25px rgba(0, 255, 255, 0.3);
+}
+
+.carousel-prev.disabled,
+.carousel-next.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.carousel-prev.disabled:hover,
+.carousel-next.disabled:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: none;
+  box-shadow: none;
+}
+
+.carousel-prev:active,
+.carousel-next:active {
+  transform: scale(0.95);
+}
+
+/* Carousel Indicators */
+.carousel-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 40px;
+}
+
+.indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.indicator:hover {
+  background: rgba(255, 255, 255, 0.6);
+  transform: scale(1.2);
+}
+
+.indicator.active {
+  background: linear-gradient(135deg, #00ffff 0%, #ff00ff 100%);
+  transform: scale(1.3);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .process-steps-carousel {
+    gap: 30px;
+  }
+  
+  .device-screen {
+    width: 240px;
+    height: 170px;
+  }
+  
+  .step-info h3 {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .cyber-process-section {
+    padding: 80px 0;
+  }
+  
+  .process-container {
+    padding: 0 1rem;
+  }
+  
+  .process-header {
+    margin-bottom: 60px;
+  }
+  
+  .process-steps-carousel {
+    width: 300%; /* Show 2 steps on mobile, so 300% for 6 steps */
+    gap: 20px;
+  }
+  
+  .process-step {
+    flex: 0 0 calc(100% / 6);
+    padding: 20px 10px;
+  }
+  
+  .device-screen {
+    width: 200px;
+    height: 140px;
+  }
+  
+  .step-01 .device-screen,
+  .step-04 .device-screen {
+    transform: rotateY(-10deg) rotateX(3deg);
+  }
+  
+  .step-03 .device-screen,
+  .step-06 .device-screen {
+    transform: rotateY(10deg) rotateX(3deg);
+  }
+  
+  .carousel-prev,
+  .carousel-next {
+    width: 50px;
+    height: 50px;
+    font-size: 1rem;
+  }
+  
+  .carousel-navigation {
+    padding: 0 10px;
+  }
+  
+  .step-info h3 {
+    font-size: 1.1rem;
+  }
+  
+  .step-info p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .process-header h2 {
+    font-size: 2rem;
+  }
+  
+  .process-subtitle {
+    font-size: 1rem;
+  }
+  
+  .device-screen {
+    width: 180px;
+    height: 120px;
+  }
+  
+  .step-info {
+    padding: 0 10px;
+  }
+  
+  .indicator {
+    width: 10px;
+    height: 10px;
+  }
+}

@@ -6,6 +6,7 @@ import { getSuccessFromResult, getErrorFromResult } from '../utils/compatHelpers
 import { useNavigate, Link } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
 import OrganizationManagement from './OrganizationManagement';
+import Navbar from './Navbar';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -408,7 +409,9 @@ const AdminDashboard = () => {
     );
   }
   return (
-    <div className="admin-dashboard">      <div className="admin-header">
+    <>
+      <Navbar />
+      <div className="admin-dashboard">      <div className="admin-header">
         <h2>Admin Dashboard</h2>
         <p className="admin-subtitle">Manage user plans (Basic/Elite/Premium), roles, organizations, and access control</p>
         
@@ -714,6 +717,7 @@ const AdminDashboard = () => {
         </>
       )}
     </div>
+    </>
   );
 };
 

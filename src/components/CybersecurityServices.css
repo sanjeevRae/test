@@ -1,0 +1,467 @@
+/* Cybersecurity Services Section */
+.cybersecurity-services-section {
+  background: linear-gradient(135deg, #0f1419 0%, #1a252f 50%, #2c3e50 100%);
+  background-attachment: fixed;
+  position: relative;
+  padding: 100px 0;
+  overflow: hidden;
+  min-height: 100vh;
+}
+
+/* Background overlay */
+.cybersecurity-services-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(100, 255, 218, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(77, 208, 225, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(15, 20, 25, 0.9) 0%, transparent 100%);
+  z-index: 1;
+}
+
+.cybersecurity-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
+  position: relative;
+  z-index: 2;
+}
+
+.cybersecurity-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+/* Header Section */
+.cybersecurity-header {
+  padding-right: 40px;
+}
+
+.cybersecurity-header h2 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 300;
+  line-height: 1.1;
+  margin-bottom: 30px;
+  letter-spacing: -1px;
+}
+
+.title-light {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.title-highlight {
+  color: #64ffda;
+  font-style: italic;
+}
+
+.cybersecurity-subtitle {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 40px;
+  max-width: 480px;
+}
+
+.all-services-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.9);
+  padding: 14px 28px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.all-services-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.all-services-btn i {
+  font-size: 12px;
+  transition: transform 0.3s ease;
+}
+
+.all-services-btn:hover i {
+  transform: translateX(4px);
+}
+
+/* Services Grid */
+.security-services-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.security-service-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 32px;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 24px;
+  align-items: center;
+}
+
+.security-service-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.service-number {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Service Icons */
+.service-icon {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-container {
+  width: 60px;
+  height: 60px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Service Icon Images */
+.service-icon-image {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  z-index: 2;
+  filter: brightness(1.1) contrast(1.1);
+}
+
+/* Network Security Icon */
+.network-security-icon {
+  background: linear-gradient(135deg, rgba(100, 255, 218, 0.1), rgba(77, 208, 225, 0.1));
+  border-radius: 12px;
+}
+
+.security-shield {
+  position: relative;
+  width: 32px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 4px 4px 16px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shield-wave {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border: 2px solid rgba(100, 255, 218, 0.4);
+  border-radius: 50%;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: shieldPulse 2s ease-in-out infinite;
+}
+
+.shield-wave:nth-child(2) {
+  animation-delay: 0.3s;
+  width: 50px;
+  height: 50px;
+  top: -9px;
+}
+
+.shield-wave:nth-child(3) {
+  animation-delay: 0.6s;
+  width: 60px;
+  height: 60px;
+  top: -14px;
+}
+
+@keyframes shieldPulse {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.8);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) scale(1.2);
+  }
+}
+
+/* Threat Intelligence Icon */
+.threat-intelligence-icon {
+  background: linear-gradient(135deg, rgba(100, 255, 218, 0.1), rgba(77, 208, 225, 0.1));
+  border-radius: 12px;
+}
+
+.laptop-security {
+  position: relative;
+  width: 36px;
+  height: 24px;
+}
+
+.laptop-screen {
+  width: 36px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 2px 2px 0 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.laptop-screen::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: -2px;
+  width: 40px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 0 0 4px 4px;
+}
+
+.security-waves {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: -10px;
+  left: 0;
+}
+
+.wave {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #64ffda;
+  border-radius: 50%;
+  animation: waveFloat 1.5s ease-in-out infinite;
+}
+
+.wave:nth-child(1) {
+  left: 8px;
+  animation-delay: 0s;
+}
+
+.wave:nth-child(2) {
+  left: 16px;
+  animation-delay: 0.2s;
+}
+
+.wave:nth-child(3) {
+  left: 24px;
+  animation-delay: 0.4s;
+}
+
+@keyframes waveFloat {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateY(-8px);
+    opacity: 1;
+  }
+}
+
+/* Endpoint Security Icon */
+.endpoint-security-icon {
+  background: linear-gradient(135deg, rgba(100, 255, 218, 0.1), rgba(77, 208, 225, 0.1));
+  border-radius: 12px;
+}
+
+.security-lock {
+  position: relative;
+  width: 28px;
+  height: 36px;
+}
+
+.lock-shackle {
+  width: 20px;
+  height: 16px;
+  border: 3px solid rgba(255, 255, 255, 0.9);
+  border-bottom: none;
+  border-radius: 10px 10px 0 0;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.lock-body {
+  width: 28px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 4px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.keyhole {
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+}
+
+.keyhole::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 6px;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Service Content */
+.service-content h3 {
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.service-content p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 15px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  max-width: 320px;
+}
+
+.view-details-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.8);
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.view-details-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+.view-details-btn i {
+  font-size: 11px;
+  transition: transform 0.3s ease;
+}
+
+.view-details-btn:hover i {
+  transform: translateX(3px);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .cybersecurity-content {
+    grid-template-columns: 1fr;
+    gap: 60px;
+    text-align: center;
+  }
+  
+  .cybersecurity-header {
+    padding-right: 0;
+    margin-bottom: 20px;
+  }
+  
+  .cybersecurity-subtitle {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .cybersecurity-services-section {
+    padding: 60px 0;
+  }
+  
+  .cybersecurity-container {
+    padding: 0 20px;
+  }
+  
+  .cybersecurity-content {
+    gap: 40px;
+  }
+  
+  .security-service-card {
+    padding: 24px;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    text-align: center;
+  }
+  
+  .service-icon {
+    justify-self: center;
+  }
+  
+  .service-number {
+    position: static;
+    margin-bottom: 16px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cybersecurity-header h2 {
+    font-size: 2rem;
+  }
+  
+  .security-services-grid {
+    gap: 16px;
+  }
+  
+  .security-service-card {
+    padding: 20px;
+  }
+}

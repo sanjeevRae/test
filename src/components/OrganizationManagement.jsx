@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   createOrganization, 
   getOrganizations, 
@@ -17,6 +18,7 @@ import {
   canEditUserProfile
 } from '../utils/auth';
 import { testFirestoreConnection, addDebuggingButton } from '../utils/dbDebug';
+import Navbar from './Navbar';
 import './OrganizationManagement.css';
 import './OrganizationManagementEnhanced.css';
 import './RoleUpdateStyles.css';
@@ -33,6 +35,7 @@ const OrganizationManagement = () => {
   const [availableUsers, setAvailableUsers] = useState([]);
   const [userRole, setUserRole] = useState('user');
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const [error, setError] = useState(null);
   const [canManageOrg, setCanManageOrg] = useState(false);
   const [canAddUsers, setCanAddUsers] = useState(false);
@@ -69,12 +72,15 @@ const OrganizationManagement = () => {
       try {
         const admin = await isUserAdmin();
         const role = await getUserRole();
-        setIsAdmin(admin);
+        const superAdmin = role === 'superadmin';
+        setIsAdmin(admin || superAdmin);
+        setIsSuperAdmin(superAdmin);
         setUserRole(role);
-        setCanManageOrg(admin || role === 'leader');
-        setCanAddUsers(admin || role === 'leader');
+        setCanManageOrg(admin || superAdmin || role === 'leader');
+        setCanAddUsers(admin || superAdmin || role === 'leader');
       } catch (error) {
         setIsAdmin(false);
+        setIsSuperAdmin(false);
         setUserRole('user');
         setCanManageOrg(false);
         setCanAddUsers(false);
@@ -98,9 +104,12 @@ const OrganizationManagement = () => {
     try {
       const result = await refreshUserPermissions();
       if (result.success) {
+        const superAdmin = result.role === 'superadmin';
         setUserRole(result.role || 'user');
-        setCanManageOrg(result.role === 'admin' || result.role === 'leader');
-        setCanAddUsers(result.role === 'admin' || result.role === 'leader');
+        setIsSuperAdmin(superAdmin);
+        setIsAdmin(result.role === 'admin' || superAdmin);
+        setCanManageOrg(result.role === 'admin' || superAdmin || result.role === 'leader');
+        setCanAddUsers(result.role === 'admin' || superAdmin || result.role === 'leader');
       }
     } catch {}
   };
@@ -291,12 +300,13 @@ const OrganizationManagement = () => {
         setError('No active organization selected');
         return;
       }
-      // Only admin can change roles, and only between 'user' and 'leader'
-      if (!isAdmin) {
+      // Only admin/superadmin can change roles
+      if (!isAdmin && !isSuperAdmin) {
         setError('Only admins can update user roles');
         return;
       }
-      if (newRole !== 'user' && newRole !== 'leader') {
+      // Super admins can assign any role, regular admins can only assign user/leader
+      if (!isSuperAdmin && newRole !== 'user' && newRole !== 'leader') {
         setError('Admins can only assign user or leader roles');
         return;
       }
@@ -448,446 +458,677 @@ const OrganizationManagement = () => {
     });
   };
 
+  const navigate = useNavigate();
+  
+  // Count roles
+  const leaderCount = orgMembers.filter(m => m.role === 'leader').length;
+  const userCount = orgMembers.filter(m => m.role === 'user' || !m.role).length;
+
   return (
-    <div className="organization-management">
-      <h2>Organization Management</h2>
-      {error && (
-        <div className="error-message">
-          {error}
-          {error.includes('Failed to update user role') && (
-            <button 
-              onClick={() => {
-                setError(null);
-                testFirestoreConnection()
-                  .then(connected => {
-                    if (connected) {
-                      alert('Database connection is working. You can try again.');
-                    } else {
-                      alert('Database connection issue detected. Please check your internet connection.');
-                    }
-                  });
-              }}
-              className="retry-btn"
-              style={{marginLeft: '10px'}}
-            >
-              Check Connection
+    <div className="org-management-page">
+      <Navbar />
+      
+      <div className="org-management-wrapper">
+        {/* Header Section */}
+        <div className="org-header-section">
+          <div className="org-header-content">
+            <button className="back-button" onClick={() => navigate(-1)}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+              </svg>
+              Back
             </button>
-          )}
-        </div>
-      )}
-      {loading && <div className="loading">Loading...</div>}
-      <div className="org-management-container">
-        <div className="org-list">
-          <h3>Organizations</h3>
-          {organizations.length > 0 ? (
-            <ul>
-              {organizations.map(org => (
-                <li 
-                  key={org.id} 
-                  className={activeOrg?.id === org.id ? 'active' : ''}
-                  onClick={() => handleSelectOrg(org.id)}
-                >
-                  {org.name || 'Unnamed Organization'}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No organizations found.</p>
-          )}
-          {(isAdmin || userRole === 'leader') && (
-            <button 
-              onClick={() => setShowNewOrgForm(!showNewOrgForm)}
-              className="create-org-btn"
-            >
-              {showNewOrgForm ? 'Cancel' : 'Create New Organization'}
-            </button>
-          )}
-          {showNewOrgForm && (
-            <form onSubmit={handleCreateOrg} className="org-form">
-              <div className="form-group">
-                <label htmlFor="orgName">Organization Name:</label>
-                <input
-                  type="text"
-                  id="orgName"
-                  value={newOrgData.name}
-                  onChange={e => setNewOrgData({...newOrgData, name: e.target.value})}
-                  required
-                />
+            <div className="org-header-text">
+              <h1>Organization Management</h1>
+              <p>Manage your organizations, members, and roles</p>
+            </div>
+          </div>
+          <div className="org-header-stats">
+            <div className="header-stat-card">
+              <div className="stat-icon orgs">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 012-2h10a2 2 0 012 2v16"/>
+                </svg>
               </div>
-              <div className="form-group">
-                <label htmlFor="orgDescription">Description:</label>
-                <textarea
-                  id="orgDescription"
-                  value={newOrgData.description}
-                  onChange={e => setNewOrgData({...newOrgData, description: e.target.value})}
-                  rows={3}
-                />
+              <div className="stat-info">
+                <span className="stat-number">{organizations.length}</span>
+                <span className="stat-label">Organizations</span>
               </div>
-              <button type="submit" disabled={loading}>
-                Create Organization
-              </button>
-            </form>
-          )}
-        </div>
-        {activeOrg && (
-          <div className="org-details">
-            <h3>{activeOrg.name}</h3>
-            <div className="org-info">
-              <div className="org-metadata">
-                <p>{activeOrg.description || 'No description provided'}</p>
-                <p><strong>Created:</strong> {new Date(activeOrg.createdAt).toLocaleDateString()}</p>
-                <p><strong>Members:</strong> {orgMembers.length}</p>
-                <div className="org-actions">
-                  {canAddUsers && (
-                    <button 
-                      onClick={() => setShowAddUserForm(!showAddUserForm)}
-                      className="add-user-btn"
-                    >
-                      {showAddUserForm ? 'Cancel' : 'Add New User'}
-                    </button>
-                  )}
-                  {isAdmin && (
-                    <button
-                      onClick={handleDeleteOrganization}
-                      className="delete-org-btn"
-                      style={{ marginLeft: '10px', background: '#c00', color: '#fff' }}
-                      disabled={loading}
-                    >
-                      Delete Organization
-                    </button>
-                  )}
-                </div>
-                {showAddUserForm && (
-                  <form onSubmit={handleCreateUser} className="user-form">
-                    <h4>Create New User</h4>
-                    <div className="form-group">
-                      <label htmlFor="userName">Name:</label>
-                      <input
-                        type="text"
-                        id="userName"
-                        value={newUserData.name}
-                        onChange={e => setNewUserData({...newUserData, name: e.target.value})}
-                        required
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="userEmail">Email:</label>
-                      <input
-                        type="email"
-                        id="userEmail"
-                        value={newUserData.email}
-                        onChange={e => setNewUserData({...newUserData, email: e.target.value})}
-                        required
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="userPassword">Password:</label>
-                      <input
-                        type="password"
-                        id="userPassword"
-                        value={newUserData.password}
-                        onChange={e => setNewUserData({...newUserData, password: e.target.value})}
-                        required
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="userRole">Role:</label>
-                      <select
-                        id="userRole"
-                        value={newUserData.role}
-                        onChange={e => setNewUserData({...newUserData, role: e.target.value})}
-                      >
-                        <option value="user">User</option>
-                        {isAdmin && <option value="leader">Leader</option>}
-                        {isAdmin && <option value="admin">Admin</option>}
-                      </select>
-                    </div>
-                    <button type="submit" disabled={loading}>
-                      Create User
-                    </button>
-                  </form>
-                )}
-                {availableUsers.length > 0 && (
-                  <form onSubmit={handleAddExistingUser} className="existing-user-form">
-                    <h4>Add Existing User</h4>
-                    <div className="form-group">
-                      <label htmlFor="existingUser">Select User:</label>
-                      <select
-                        id="existingUser"
-                        value={selectedUserId}
-                        onChange={e => setSelectedUserId(e.target.value)}
-                        required
-                      >
-                        <option value="">-- Select User --</option>
-                        {availableUsers.map(user => (
-                          <option key={user.id} value={user.id}>
-                            {user.name} ({user.email})
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <button type="submit" disabled={loading || !selectedUserId}>
-                      Add to Organization
-                    </button>
-                  </form>
-                )}
+            </div>
+            <div className="header-stat-card">
+              <div className="stat-icon members">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+                </svg>
               </div>
-              <div className="member-list">
-                <h4>Members</h4>
-                {orgMembers.length > 0 ? (
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {orgMembers.map(member => (
-                        <tr key={member.id}>
-                          <td>{member.name || 'N/A'}</td>
-                          <td>{member.email || 'No email'}</td>
-                          <td>
-                            {isAdmin ? (
-                              <div className="role-selector">
-                                <select
-                                  value={member.role || 'user'}
-                                  onChange={e => handleUpdateUserRole(member.id, e.target.value)}
-                                  disabled={loading}
-                                >
-                                  <option value="user">User</option>
-                                  <option value="leader">Leader</option>
-                                </select>
-                              </div>
-                            ) : (
-                              <span className={`role-badge ${member.role || 'user'}`}>
-                                {member.role || 'User'}
-                              </span>
-                            )}
-                          </td>
-                          <td>
-                            {(isAdmin || (userRole === 'leader' && member.role !== 'leader')) && (
-                              <div className="member-actions">
-                                {(isAdmin || userRole === 'leader') && (
-                                  <button
-                                    onClick={() => handleEditProfile(member.id)}
-                                    className="edit-profile-btn"
-                                    disabled={loading}
-                                    title="Edit Profile"
-                                  >
-                                    Edit Profile
-                                  </button>
-                                )}
-                                <button
-                                  onClick={() => handleRemoveUser(member.id, member.name, member.role)}
-                                  className="remove-user-btn"
-                                  disabled={loading}
-                                >
-                                  Remove
-                                </button>
-                              </div>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                ) : (
-                  <p>No members in this organization.</p>
-                )}
+              <div className="stat-info">
+                <span className="stat-number">{orgMembers.length}</span>
+                <span className="stat-label">Total Members</span>
+              </div>
+            </div>
+            <div className="header-stat-card">
+              <div className="stat-icon role">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/>
+                  <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+                </svg>
+              </div>
+              <div className="stat-info">
+                <span className="stat-number">{isSuperAdmin ? 'Super Admin' : isAdmin ? 'Admin' : userRole === 'leader' ? 'Leader' : 'User'}</span>
+                <span className="stat-label">Your Role</span>
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Error Message */}
+        {error && (
+          <div className="org-error-banner">
+            <div className="error-content">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 8v4M12 16h.01"/>
+              </svg>
+              <span>{error}</span>
+            </div>
+            <button onClick={() => setError(null)} className="error-dismiss">×</button>
+          </div>
         )}
+
+        {/* Loading Overlay */}
+        {loading && (
+          <div className="org-loading-overlay">
+            <div className="loading-spinner"></div>
+            <span>Loading...</span>
+          </div>
+        )}
+
+        {/* Main Content */}
+        <div className="org-main-content">
+          {/* Organizations Sidebar */}
+          <div className="org-sidebar">
+            <div className="sidebar-header">
+              <h3>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 012-2h10a2 2 0 012 2v16"/>
+                </svg>
+                Organizations
+              </h3>
+              {(isAdmin || userRole === 'leader') && (
+                <button 
+                  className="new-org-btn"
+                  onClick={() => setShowNewOrgForm(!showNewOrgForm)}
+                  title={showNewOrgForm ? 'Cancel' : 'Create New Organization'}
+                >
+                  {showNewOrgForm ? (
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                  ) : (
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M12 5v14M5 12h14"/>
+                    </svg>
+                  )}
+                </button>
+              )}
+            </div>
+
+            {/* New Organization Form */}
+            {showNewOrgForm && (
+              <form onSubmit={handleCreateOrg} className="new-org-form">
+                <div className="form-group">
+                  <label>Organization Name</label>
+                  <input
+                    type="text"
+                    value={newOrgData.name}
+                    onChange={e => setNewOrgData({...newOrgData, name: e.target.value})}
+                    placeholder="Enter organization name"
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Description</label>
+                  <textarea
+                    value={newOrgData.description}
+                    onChange={e => setNewOrgData({...newOrgData, description: e.target.value})}
+                    placeholder="Brief description..."
+                    rows={2}
+                  />
+                </div>
+                <button type="submit" className="create-btn" disabled={loading}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M12 5v14M5 12h14"/>
+                  </svg>
+                  Create Organization
+                </button>
+              </form>
+            )}
+
+            {/* Organizations List */}
+            <div className="org-list-container">
+              {organizations.length > 0 ? (
+                organizations.map(org => (
+                  <div 
+                    key={org.id} 
+                    className={`org-list-item ${activeOrg?.id === org.id ? 'active' : ''}`}
+                    onClick={() => handleSelectOrg(org.id)}
+                  >
+                    <div className="org-item-icon">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 012-2h10a2 2 0 012 2v16"/>
+                      </svg>
+                    </div>
+                    <div className="org-item-info">
+                      <span className="org-name">{org.name || 'Unnamed Organization'}</span>
+                      <span className="org-date">Created {new Date(org.createdAt).toLocaleDateString()}</span>
+                    </div>
+                    {activeOrg?.id === org.id && (
+                      <div className="active-indicator"></div>
+                    )}
+                  </div>
+                ))
+              ) : (
+                <div className="empty-state">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
+                    <path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 012-2h10a2 2 0 012 2v16"/>
+                  </svg>
+                  <p>No organizations found</p>
+                  <span>Create your first organization to get started</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Organization Details */}
+          <div className="org-details-panel">
+            {activeOrg ? (
+              <>
+                {/* Organization Info Card */}
+                <div className="org-info-card">
+                  <div className="org-info-header">
+                    <div className="org-avatar">
+                      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 012-2h10a2 2 0 012 2v16"/>
+                      </svg>
+                    </div>
+                    <div className="org-info-text">
+                      <h2>{activeOrg.name}</h2>
+                      <p>{activeOrg.description || 'No description provided'}</p>
+                    </div>
+                    {(isAdmin || isSuperAdmin) && (
+                      <button
+                        onClick={handleDeleteOrganization}
+                        className="delete-org-btn"
+                        disabled={loading}
+                        title="Delete Organization"
+                      >
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2M10 11v6M14 11v6"/>
+                        </svg>
+                      </button>
+                    )}
+                  </div>
+                  
+                  <div className="org-stats-row">
+                    <div className="org-stat">
+                      <span className="stat-value">{orgMembers.length}</span>
+                      <span className="stat-label">Members</span>
+                    </div>
+                    <div className="org-stat">
+                      <span className="stat-value">{leaderCount}</span>
+                      <span className="stat-label">Leaders</span>
+                    </div>
+                    <div className="org-stat">
+                      <span className="stat-value">{userCount}</span>
+                      <span className="stat-label">Users</span>
+                    </div>
+                    <div className="org-stat">
+                      <span className="stat-value">{new Date(activeOrg.createdAt).toLocaleDateString()}</span>
+                      <span className="stat-label">Created</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Add User Section - Always visible when org is selected */}
+                <div className="add-user-section">
+                  <div className="section-header">
+                    <h3>
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M8.5 11a4 4 0 100-8 4 4 0 000 8M20 8v6M23 11h-6"/>
+                      </svg>
+                      Add Members
+                    </h3>
+                    {canAddUsers && (
+                      <button 
+                        className={`toggle-form-btn ${showAddUserForm ? 'active' : ''}`}
+                        onClick={() => setShowAddUserForm(!showAddUserForm)}
+                      >
+                        {showAddUserForm ? 'Hide Form' : 'Create New User'}
+                      </button>
+                    )}
+                  </div>
+
+                  {!canAddUsers && (
+                    <p style={{ color: '#94a3b8', fontSize: '14px', margin: '0' }}>
+                      You need admin or leader permissions to add members.
+                    </p>
+                  )}
+
+                  {canAddUsers && showAddUserForm && (
+                      <form onSubmit={handleCreateUser} className="create-user-form">
+                        <div className="form-row">
+                          <div className="form-group">
+                            <label>Full Name</label>
+                            <input
+                              type="text"
+                              value={newUserData.name}
+                              onChange={e => setNewUserData({...newUserData, name: e.target.value})}
+                              placeholder="John Doe"
+                              required
+                            />
+                          </div>
+                          <div className="form-group">
+                            <label>Email Address</label>
+                            <input
+                              type="email"
+                              value={newUserData.email}
+                              onChange={e => setNewUserData({...newUserData, email: e.target.value})}
+                              placeholder="john@example.com"
+                              required
+                            />
+                          </div>
+                        </div>
+                        <div className="form-row">
+                          <div className="form-group">
+                            <label>Password</label>
+                            <input
+                              type="password"
+                              value={newUserData.password}
+                              onChange={e => setNewUserData({...newUserData, password: e.target.value})}
+                              placeholder="••••••••"
+                              required
+                            />
+                          </div>
+                          <div className="form-group">
+                            <label>Role</label>
+                            <select
+                              value={newUserData.role}
+                              onChange={e => setNewUserData({...newUserData, role: e.target.value})}
+                            >
+                              <option value="user">User</option>
+                              {(isAdmin || isSuperAdmin) && <option value="leader">Leader</option>}
+                              {isSuperAdmin && <option value="admin">Admin</option>}
+                              {isSuperAdmin && <option value="superadmin">Super Admin</option>}
+                            </select>
+                          </div>
+                        </div>
+                        <button type="submit" className="submit-btn" disabled={loading}>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M8.5 11a4 4 0 100-8 4 4 0 000 8M20 8v6M23 11h-6"/>
+                          </svg>
+                          Create User
+                        </button>
+                      </form>
+                    )}
+
+                    {canAddUsers && availableUsers.length > 0 && (
+                      <form onSubmit={handleAddExistingUser} className="add-existing-form">
+                        <div className="form-group">
+                          <label>Add Existing User</label>
+                          <div className="select-with-btn">
+                            <select
+                              value={selectedUserId}
+                              onChange={e => setSelectedUserId(e.target.value)}
+                            >
+                              <option value="">Select a user to add...</option>
+                              {availableUsers.map(user => (
+                                <option key={user.id} value={user.id}>
+                                  {user.name} ({user.email})
+                                </option>
+                              ))}
+                            </select>
+                            <button type="submit" disabled={loading || !selectedUserId}>
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path d="M12 5v14M5 12h14"/>
+                              </svg>
+                              Add
+                            </button>
+                          </div>
+                        </div>
+                      </form>
+                    )}
+                  </div>
+
+                {/* Members Table */}
+                <div className="members-section">
+                  <div className="section-header">
+                    <h3>
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+                      </svg>
+                      Team Members ({orgMembers.length})
+                    </h3>
+                  </div>
+
+                  {orgMembers.length > 0 ? (
+                    <div className="members-grid">
+                      {orgMembers.map(member => (
+                        <div key={member.id} className="member-card">
+                          <div className="member-avatar">
+                            {member.photoURL ? (
+                              <img src={member.photoURL} alt={member.name} />
+                            ) : (
+                              <span>{(member.name || 'U').charAt(0).toUpperCase()}</span>
+                            )}
+                          </div>
+                          <div className="member-info">
+                            <h4>{member.name || 'Unknown User'}</h4>
+                            <span className="member-email">{member.email || 'No email'}</span>
+                            <div className="member-role-badge">
+                              {(isAdmin || isSuperAdmin) ? (
+                                <select
+                                  className={`role-select ${member.role || 'user'}`}
+                                  value={member.role || 'user'}
+                                  onChange={e => handleUpdateUserRole(member.id, e.target.value)}
+                                  disabled={loading || (member.role === 'superadmin' && !isSuperAdmin)}
+                                >
+                                  <option value="user">User</option>
+                                  <option value="leader">Leader</option>
+                                  {isSuperAdmin && <option value="admin">Admin</option>}
+                                  {isSuperAdmin && <option value="superadmin">Super Admin</option>}
+                                </select>
+                              ) : (
+                                <span className={`role-badge ${member.role || 'user'}`}>
+                                  {member.role === 'superadmin' ? '🛡️ Super Admin' : member.role === 'admin' ? '⚙️ Admin' : member.role === 'leader' ? '👑 Leader' : '👤 User'}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                          {(isSuperAdmin || isAdmin || (userRole === 'leader' && member.role !== 'leader' && member.role !== 'admin' && member.role !== 'superadmin')) && (
+                            <div className="member-actions">
+                              <button
+                                onClick={() => handleEditProfile(member.id)}
+                                className="action-btn edit"
+                                disabled={loading}
+                                title="Edit Profile"
+                              >
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                  <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+                                  <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                </svg>
+                              </button>
+                              <button
+                                onClick={() => handleRemoveUser(member.id, member.name, member.role)}
+                                className="action-btn remove"
+                                disabled={loading}
+                                title="Remove from Organization"
+                              >
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                  <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M8.5 11a4 4 0 100-8 4 4 0 000 8M18 8l5 5M23 8l-5 5"/>
+                                </svg>
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="empty-members">
+                      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
+                        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+                      </svg>
+                      <p>No members in this organization</p>
+                      <span>Add members using the form above</span>
+                    </div>
+                  )}
+                </div>
+              </>
+            ) : (
+              <div className="no-org-selected">
+                <div className="no-org-content">
+                  <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
+                    <path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 012-2h10a2 2 0 012 2v16"/>
+                  </svg>
+                  <h3>Select an Organization</h3>
+                  <p>Choose an organization from the sidebar to view details and manage members</p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
-      
+
       {/* Edit Profile Modal */}
       {showEditProfileModal && editingUser && (
-        <div className="modal-overlay">
-          <div className="edit-profile-modal">
+        <div className="modal-overlay" onClick={closeEditProfileModal}>
+          <div className="edit-profile-modal" onClick={e => e.stopPropagation()}>
             <div className="modal-header">
-              <h3>Edit Profile: {editingUser.name || editingUser.email}</h3>
+              <div className="modal-title">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+                  <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
+                <div>
+                  <h3>Edit Profile</h3>
+                  <span>{editingUser.name || editingUser.email}</span>
+                </div>
+              </div>
               <button 
                 onClick={closeEditProfileModal}
                 className="close-modal-btn"
                 type="button"
               >
-                ×
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
               </button>
             </div>
-            
-            {error && (
-              <div className="error-message">
-                {error}
-              </div>
-            )}
 
             <form onSubmit={handleSaveProfile} className="edit-profile-form">
-              <div className="form-grid">
-                <div className="form-group">
-                  <label>Name:</label>
-                  <input 
-                    name="name" 
-                    value={editProfileForm.name} 
-                    onChange={handleEditProfileFormChange} 
-                    required 
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Email:</label>
-                  <input 
-                    name="email" 
-                    value={editProfileForm.email} 
-                    onChange={handleEditProfileFormChange} 
-                    type="email"
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Phone:</label>
-                  <input 
-                    name="phone" 
-                    value={editProfileForm.phone} 
-                    onChange={handleEditProfileFormChange} 
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Company:</label>
-                  <input 
-                    name="company" 
-                    value={editProfileForm.company} 
-                    onChange={handleEditProfileFormChange} 
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Position:</label>
-                  <input 
-                    name="position" 
-                    value={editProfileForm.position} 
-                    onChange={handleEditProfileFormChange} 
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Website:</label>
-                  <input 
-                    name="website" 
-                    value={editProfileForm.website} 
-                    onChange={handleEditProfileFormChange} 
-                    type="url"
-                  />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label>Bio:</label>
-                <textarea 
-                  name="bio" 
-                  value={editProfileForm.bio} 
-                  onChange={handleEditProfileFormChange} 
-                  rows="3"
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Address:</label>
-                <textarea 
-                  name="address" 
-                  value={editProfileForm.address} 
-                  onChange={handleEditProfileFormChange} 
-                  rows="2"
-                />
-              </div>
-
-              <div className="form-grid">
-                <div className="form-group">
-                  <label>Category:</label>
-                  <select 
-                    name="category" 
-                    value={editProfileForm.category} 
-                    onChange={handleEditProfileFormChange}
-                  >
-                    <option value="Basic">Basic</option>
-                    <option value="Premium">Premium</option>
-                    <option value="Executive">Executive</option>
-                  </select>
-                </div>
-                {isAdmin && (
+              <div className="form-section">
+                <h4>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8"/>
+                  </svg>
+                  Personal Information
+                </h4>
+                <div className="form-grid">
                   <div className="form-group">
-                    <label>Status:</label>
+                    <label>Full Name</label>
+                    <input 
+                      name="name" 
+                      value={editProfileForm.name} 
+                      onChange={handleEditProfileFormChange} 
+                      placeholder="John Doe"
+                      required 
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Email</label>
+                    <input 
+                      name="email" 
+                      value={editProfileForm.email} 
+                      onChange={handleEditProfileFormChange} 
+                      type="email"
+                      placeholder="john@example.com"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Phone</label>
+                    <input 
+                      name="phone" 
+                      value={editProfileForm.phone} 
+                      onChange={handleEditProfileFormChange}
+                      placeholder="+1 234 567 890"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Website</label>
+                    <input 
+                      name="website" 
+                      value={editProfileForm.website} 
+                      onChange={handleEditProfileFormChange} 
+                      type="url"
+                      placeholder="https://example.com"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="form-section">
+                <h4>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 012-2h10a2 2 0 012 2v16"/>
+                  </svg>
+                  Work Information
+                </h4>
+                <div className="form-grid">
+                  <div className="form-group">
+                    <label>Company</label>
+                    <input 
+                      name="company" 
+                      value={editProfileForm.company} 
+                      onChange={handleEditProfileFormChange}
+                      placeholder="Company Name"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Position</label>
+                    <input 
+                      name="position" 
+                      value={editProfileForm.position} 
+                      onChange={handleEditProfileFormChange}
+                      placeholder="Job Title"
+                    />
+                  </div>
+                </div>
+                <div className="form-group full-width">
+                  <label>Bio</label>
+                  <textarea 
+                    name="bio" 
+                    value={editProfileForm.bio} 
+                    onChange={handleEditProfileFormChange} 
+                    rows="3"
+                    placeholder="Brief description about the user..."
+                  />
+                </div>
+                <div className="form-group full-width">
+                  <label>Address</label>
+                  <textarea 
+                    name="address" 
+                    value={editProfileForm.address} 
+                    onChange={handleEditProfileFormChange} 
+                    rows="2"
+                    placeholder="Full address..."
+                  />
+                </div>
+              </div>
+
+              <div className="form-section">
+                <h4>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/>
+                    <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4"/>
+                  </svg>
+                  Account Settings
+                </h4>
+                <div className="form-grid">
+                  <div className="form-group">
+                    <label>Category</label>
                     <select 
-                      name="status" 
-                      value={editProfileForm.status} 
+                      name="category" 
+                      value={editProfileForm.category} 
                       onChange={handleEditProfileFormChange}
                     >
-                      <option value="active">Active</option>
-                      <option value="suspended">Suspended</option>
-                      <option value="blocked">Blocked</option>
+                      <option value="Basic">Basic</option>
+                      <option value="Premium">Premium</option>
+                      <option value="Executive">Executive</option>
                     </select>
                   </div>
-                )}
+                  {isAdmin && (
+                    <div className="form-group">
+                      <label>Status</label>
+                      <select 
+                        name="status" 
+                        value={editProfileForm.status} 
+                        onChange={handleEditProfileFormChange}
+                      >
+                        <option value="active">✅ Active</option>
+                        <option value="suspended">⏸️ Suspended</option>
+                        <option value="blocked">🚫 Blocked</option>
+                      </select>
+                    </div>
+                  )}
+                </div>
               </div>
 
-              <h4>Social Media Links</h4>
-              <div className="form-grid">
-                <div className="form-group">
-                  <label>LinkedIn:</label>
-                  <input 
-                    name="linkedin" 
-                    value={editProfileForm.linkedin} 
-                    onChange={handleEditProfileFormChange} 
-                    type="url"
-                    placeholder="https://linkedin.com/in/username"
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Twitter:</label>
-                  <input 
-                    name="twitter" 
-                    value={editProfileForm.twitter} 
-                    onChange={handleEditProfileFormChange} 
-                    type="url"
-                    placeholder="https://twitter.com/username"
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Instagram:</label>
-                  <input 
-                    name="instagram" 
-                    value={editProfileForm.instagram} 
-                    onChange={handleEditProfileFormChange} 
-                    type="url"
-                    placeholder="https://instagram.com/username"
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Facebook:</label>
-                  <input 
-                    name="facebook" 
-                    value={editProfileForm.facebook} 
-                    onChange={handleEditProfileFormChange} 
-                    type="url"
-                    placeholder="https://facebook.com/username"
-                  />
-                </div>
-                <div className="form-group">
-                  <label>GitHub:</label>
-                  <input 
-                    name="github" 
-                    value={editProfileForm.github} 
-                    onChange={handleEditProfileFormChange} 
-                    type="url"
-                    placeholder="https://github.com/username"
-                  />
-                </div>
-                <div className="form-group">
-                  <label>WhatsApp:</label>
-                  <input 
-                    name="whatsapp" 
-                    value={editProfileForm.whatsapp} 
-                    onChange={handleEditProfileFormChange} 
-                    placeholder="Phone number or WhatsApp link"
-                  />
+              <div className="form-section">
+                <h4>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+                  </svg>
+                  Social Media Links
+                </h4>
+                <div className="form-grid">
+                  <div className="form-group">
+                    <label>LinkedIn</label>
+                    <input 
+                      name="linkedin" 
+                      value={editProfileForm.linkedin} 
+                      onChange={handleEditProfileFormChange} 
+                      type="url"
+                      placeholder="https://linkedin.com/in/username"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Twitter</label>
+                    <input 
+                      name="twitter" 
+                      value={editProfileForm.twitter} 
+                      onChange={handleEditProfileFormChange} 
+                      type="url"
+                      placeholder="https://twitter.com/username"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Instagram</label>
+                    <input 
+                      name="instagram" 
+                      value={editProfileForm.instagram} 
+                      onChange={handleEditProfileFormChange} 
+                      type="url"
+                      placeholder="https://instagram.com/username"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Facebook</label>
+                    <input 
+                      name="facebook" 
+                      value={editProfileForm.facebook} 
+                      onChange={handleEditProfileFormChange} 
+                      type="url"
+                      placeholder="https://facebook.com/username"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>GitHub</label>
+                    <input 
+                      name="github" 
+                      value={editProfileForm.github} 
+                      onChange={handleEditProfileFormChange} 
+                      type="url"
+                      placeholder="https://github.com/username"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>WhatsApp</label>
+                    <input 
+                      name="whatsapp" 
+                      value={editProfileForm.whatsapp} 
+                      onChange={handleEditProfileFormChange}
+                      placeholder="Phone number"
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -905,7 +1146,20 @@ const OrganizationManagement = () => {
                   disabled={loading} 
                   className="btn-save"
                 >
-                  {loading ? 'Saving...' : 'Save Changes'}
+                  {loading ? (
+                    <>
+                      <span className="btn-spinner"></span>
+                      Saving...
+                    </>
+                  ) : (
+                    <>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+                        <path d="M17 21v-8H7v8M7 3v5h8"/>
+                      </svg>
+                      Save Changes
+                    </>
+                  )}
                 </button>
               </div>
             </form>

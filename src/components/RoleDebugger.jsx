@@ -5,9 +5,11 @@ import {
   getUserRole, 
   isUserLeader, 
   isUserAdmin,
+  isUserSuperAdmin,
   getUserOrganization,
   setUserRole 
 } from '../utils/auth';
+import { setSuperAdmin } from '../utils/superAdminUtils';
 import { useNavigate } from 'react-router-dom';
 import { createSampleOrganizationForLeader } from '../utils/leaderUtils';
 
@@ -15,6 +17,7 @@ const RoleDebugger = () => {
   const [currentRole, setCurrentRole] = useState('loading...');
   const [isLeader, setIsLeader] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const [organization, setOrganization] = useState(null);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
@@ -73,6 +76,7 @@ const RoleDebugger = () => {
       setOrganization(orgId);
       setIsLeader(firestoreRole === 'leader');
       setIsAdmin(firestoreRole === 'admin');
+      setIsSuperAdmin(firestoreRole === 'superadmin');
     } catch (error) {
       console.error('Error checking Firestore role:', error);
       setMessage(`Error checking Firestore: ${error.message}`);
@@ -249,6 +253,22 @@ const RoleDebugger = () => {
         )}
         
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+          <button 
+            onClick={() => handleSetRole('superadmin')} 
+            disabled={loading || currentRole === 'superadmin'}
+            style={{
+              padding: '8px 16px',
+              backgroundColor: currentRole === 'superadmin' ? '#cbd5e0' : '#d69e2e',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: loading || currentRole === 'superadmin' ? 'not-allowed' : 'pointer',
+              opacity: loading || currentRole === 'superadmin' ? 0.7 : 1
+            }}
+          >
+            Set as Super Admin
+          </button>
+
           <button 
             onClick={() => handleSetRole('admin')} 
             disabled={loading || currentRole === 'admin'}

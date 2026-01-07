@@ -479,3 +479,10 @@
     border-top: 1px solid #e2e8f0;
   }
 }
+
+/* Hide contact image on mobile */
+@media (max-width: 768px) {
+  .contact-image-mobile-hidden {
+    display: none !important;
+  }
+}
