@@ -1954,7 +1954,9 @@ html {
   }
   
   .lets-talk-btn {
-    display: none;
+    display: inline-flex;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.85rem;
   }
   
   .mobile-menu-toggle {

@@ -426,9 +426,11 @@ const Dashboard = () => {
           setShareUrl(`${window.location.origin}/card/${cardId}`);
           showToastMessage("Card created successfully!");
         } else {
+          // Get current user for email/displayName in non-impersonation mode
+          const currentUser = auth.currentUser;
           await setDoc(userDocRef, {
-            email: currentUser.email,
-            displayName: currentUser.displayName || '',
+            email: currentUser?.email || '',
+            displayName: currentUser?.displayName || '',
             role: userRole,
             cards: [cardId],
             logoURL: formData.logoURL || '',
@@ -438,7 +440,7 @@ const Dashboard = () => {
           const newCard = {
             id: cardId,
             ...cardDataToSave,
-            userId: currentUser.uid,
+            userId: targetUserId,
             createdAt: new Date().toISOString()
           };
           setCards([newCard]);
@@ -453,7 +455,7 @@ const Dashboard = () => {
           ...cardDataToSave,
           updatedAt: new Date().toISOString()
         }, { merge: true });
-        const userDocRef = doc(db, 'users', currentUser.uid);
+        const userDocRef = doc(db, 'users', targetUserId);
         await setDoc(userDocRef, {
           logoURL: formData.logoURL || '',
           logoLink: formData.logoLink || '/',

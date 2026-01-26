@@ -291,13 +291,16 @@ const EvoxPage = () => {
           <span className="brand-subtitle">Technology</span>
         </div>
         <div className="nav-links desktop-nav">
-          {['Cyber Security', 'IT Infrastructure', 'E-VOX Card'].map((item) => {
+          {['Cyber Security', 'IT Infrastructure', 'E-VOX Card', 'Contact'].map((item) => {
             let isActive = false;
             if (item === 'Cyber Security' && activeSection === 'services') {
               isActive = true;
             } else if (item === 'IT Infrastructure' && activeSection === 'process') {
               isActive = true;
             } else if (item === 'E-VOX Card' && activeSection === 'innovation') {
+              isActive = true;
+            }
+             else if (item === 'Contact' && activeSection === 'contact') {
               isActive = true;
             }
            
@@ -314,48 +317,8 @@ const EvoxPage = () => {
                   } else if (item === 'E-VOX Card') {
                     evoxScrollToSection('innovation');
                   }
-                }}
-              >
-                {item}
-              </button>
-            );
-          })}
-        </div>
-        <button className="lets-talk-btn" onClick={() => evoxScrollToSection('contact')}>Let's Talk →</button>
-        {/* <button className="mobile-menu-toggle" onClick={toggleMobileMenu} aria-label="Toggle menu">
-          <span className={`evox-hamburger ${isMobileMenuOpen ? 'open' : ''}`}></span>
-        </button> */}
-        <div className={`evox-mobile-nav ${isMobileMenuOpen ? 'open' : ''}`}>
-          <button className="evox-mobile-close" onClick={() => setIsMobileMenuOpen(false)}>
-            <span>×</span>
-          </button>
-          {['Cyber Security', 'E-VOX Card', 'Services', 'Contact'].map((item) => {
-            let isActive = false;
-            if (item === 'Cyber Security' && activeSection === 'services') {
-              isActive = true;
-            } else if (item === 'IT Infrastructure' && activeSection === 'process') {
-              isActive = true;
-            } else if (item === 'E-VOX Card' && activeSection === 'innovation') {
-              isActive = true;
-            } else if (item === 'Contact' && activeSection === 'contact') {
-              isActive = true;
-            }
-            
-            return (
-              <button
-                key={item}
-                className={`evox-nav-link-mobile ${isActive ? 'active' : ''}`}
-                onClick={() => {
-                  if (item === 'Cyber Security') {
-                    evoxScrollToSection('services');
-                  } else if (item === 'E-VOX Card') {
-                    evoxScrollToSection('innovation');
-                  } else if (item === 'IT Infrastructure') {
-                    evoxScrollToSection('process');
-                  } else if (item === 'Contact') {
+                  else if (item === 'Contact') {
                     evoxScrollToSection('contact');
-                  } else {
-                    evoxScrollToSection(item.toLowerCase().replace(' ', ''));
                   }
                 }}
               >
@@ -364,7 +327,9 @@ const EvoxPage = () => {
             );
           })}
         </div>
+        <button className="lets-talk-btn" onClick={() => navigate('/login')}>Login →</button>
       </nav>
+
 
       {/* explore section */}
       <section id="hero" className="hero-section" style={{ backgroundImage: `url(${heroBackground})` }}>
@@ -718,7 +683,7 @@ const EvoxPage = () => {
                 className="cta-primary"
                 onClick={() => navigate('/nfc-cards')}
               >
-                Get Your NFC Card in Nepal
+                Get Your E-VOX Card
               </button>
               <button 
                 className="cta-secondary"
