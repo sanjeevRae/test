@@ -37,9 +37,23 @@ const CardProfile = () => {
         if (docSnap.exists()) {
           const data = docSnap.data();
           
-         
+          // === DEBUG: Log raw Firestore data ===
+          console.log('=== RAW FIRESTORE DATA ===');
+          console.log('phone field:', JSON.stringify(data.phone));
+          console.log('phone type:', typeof data.phone, 'isArray:', Array.isArray(data.phone));
+          console.log('phone2:', JSON.stringify(data.phone2));
+          console.log('phone3:', JSON.stringify(data.phone3));
+          console.log('phone4:', JSON.stringify(data.phone4));
+          console.log('website field:', JSON.stringify(data.website));
+          console.log('website type:', typeof data.website, 'isArray:', Array.isArray(data.website));
+          console.log('website2:', JSON.stringify(data.website2));
+          console.log('All data keys:', Object.keys(data));
+          console.log('=== END RAW DATA ===');
+          
+          // Normalize phone data: handle comma-concatenated strings, arrays, and phone2-4 fields
           let allPhones = [];
           const phoneSources = Array.isArray(data.phone) ? data.phone : [data.phone];
+          // Also include phone2-4 fields in case they exist alongside the array
           [data.phone2, data.phone3, data.phone4].filter(Boolean).forEach(p => phoneSources.push(p));
           phoneSources.forEach(p => {
             if (typeof p === 'string' && p.includes(',')) {
@@ -48,9 +62,16 @@ const CardProfile = () => {
               allPhones.push(String(p).trim());
             }
           });
-         
+          // Deduplicate while preserving order
           data.phone = [...new Set(allPhones.filter(Boolean))];
           
+          console.log('=== AFTER NORMALIZATION ===');
+          console.log('Normalized phone:', JSON.stringify(data.phone));
+          console.log('Normalized website:', JSON.stringify(data.website));
+          console.log('Normalized website2:', JSON.stringify(data.website2));
+          console.log('=== END NORMALIZATION ===');
+          
+          // Normalize website: if it's an array, take the first entry
           if (Array.isArray(data.website)) {
             const websites = data.website.filter(Boolean);
             data.website = websites[0] || '';
@@ -202,7 +223,7 @@ const CardProfile = () => {
       telLines = `TEL:${profile.phone}`;
     }
 
-   
+    // Handle multiple websites for vCard (support website + website2)
     const websites = [];
     if (Array.isArray(profile.website)) {
       websites.push(...profile.website);
