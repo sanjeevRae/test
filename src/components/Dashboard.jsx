@@ -156,8 +156,14 @@ const Dashboard = () => {
             if (fetchedCards.length > 0) {
               const cardData = fetchedCards[0];
               setActiveCard(cardData);
+              // Split phone array back into individual form fields
+              const phoneArr = Array.isArray(cardData.phone) ? cardData.phone : [cardData.phone].filter(Boolean);
               setFormData({
                 ...cardData,
+                phone: phoneArr[0] || '',
+                phone2: phoneArr[1] || '',
+                phone3: phoneArr[2] || '',
+                phone4: phoneArr[3] || '',
                 logoURL: userData.logoURL || '',
                 logoLink: userData.logoLink || '/',
                 companyName: userData.companyName || cardData.company || ''
@@ -362,13 +368,14 @@ const Dashboard = () => {
         targetUserId = currentUser.uid;
       }
 
-      const flattenPhone = (val) => Array.isArray(val) ? val.join(', ') : val;
+      // Ensure each phone value is a plain string (not an array)
+      const toStr = (val) => Array.isArray(val) ? val[0] || '' : (val || '');
       const phoneNumbers = [
-        flattenPhone(formData.phone),
-        flattenPhone(formData.phone2),
-        flattenPhone(formData.phone3),
-        flattenPhone(formData.phone4)
-      ].filter(Boolean);
+        toStr(formData.phone),
+        toStr(formData.phone2),
+        toStr(formData.phone3),
+        toStr(formData.phone4)
+      ].map(p => p.trim()).filter(Boolean);
       const cardDataToSave = {
         ...formData,
         phone: phoneNumbers,
@@ -519,7 +526,15 @@ const Dashboard = () => {
 
   const handleSelectCard = (card) => {
     setActiveCard(card);
-    setFormData(card);
+    // Split phone array back into individual form fields
+    const phoneArr = Array.isArray(card.phone) ? card.phone : [card.phone].filter(Boolean);
+    setFormData({
+      ...card,
+      phone: phoneArr[0] || '',
+      phone2: phoneArr[1] || '',
+      phone3: phoneArr[2] || '',
+      phone4: phoneArr[3] || '',
+    });
     setFormMode('edit');
     setShareUrl(`${window.location.origin}/card/${card.id}`);
   };

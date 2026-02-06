@@ -15,6 +15,8 @@ const CardProfile = () => {
   const [accountStatus, setAccountStatus] = useState('active');
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('info');
+  const [logoURL, setLogoURL] = useState('');
+  const [logoLink, setLogoLink] = useState('');
   const cardRef = useRef(null);
   
 
@@ -34,7 +36,53 @@ const CardProfile = () => {
         
         if (docSnap.exists()) {
           const data = docSnap.data();
+          
+         
+          let allPhones = [];
+          const phoneSources = Array.isArray(data.phone) ? data.phone : [data.phone];
+          [data.phone2, data.phone3, data.phone4].filter(Boolean).forEach(p => phoneSources.push(p));
+          phoneSources.forEach(p => {
+            if (typeof p === 'string' && p.includes(',')) {
+              p.split(',').map(s => s.trim()).filter(Boolean).forEach(s => allPhones.push(s));
+            } else if (p) {
+              allPhones.push(String(p).trim());
+            }
+          });
+         
+          data.phone = [...new Set(allPhones.filter(Boolean))];
+          
+          if (Array.isArray(data.website)) {
+            const websites = data.website.filter(Boolean);
+            data.website = websites[0] || '';
+            if (websites[1] && !data.website2) {
+              data.website2 = websites[1];
+            }
+          }
+          
           setProfile(data);
+          
+          // Set logo from profile data first
+          if (data.logoURL) {
+            setLogoURL(data.logoURL);
+            setLogoLink(data.logoLink || '');
+          }
+          
+          // Also try to fetch logo from users collection (primary logo storage)
+          if (data.userId) {
+            try {
+              const userDocRef = doc(db, 'users', data.userId);
+              const userDocSnap = await getDoc(userDocRef);
+              if (userDocSnap.exists()) {
+                const userData = userDocSnap.data();
+                if (userData.logoURL) {
+                  setLogoURL(userData.logoURL);
+                  setLogoLink(userData.logoLink || '');
+                }
+              }
+            } catch (logoErr) {
+              console.error('Failed to fetch logo from users collection:', logoErr);
+            }
+          }
           
           // Track profile view (always track, even for own profile for testing)
           try {
@@ -154,7 +202,7 @@ const CardProfile = () => {
       telLines = `TEL:${profile.phone}`;
     }
 
-    // Handle multiple websites for vCard (support website + website2)
+   
     const websites = [];
     if (Array.isArray(profile.website)) {
       websites.push(...profile.website);
@@ -273,11 +321,7 @@ END:VCARD`;
   // Only use default theme
   const themeClass = 'theme1';
 
-  // Debug logging
-  console.log('Profile data:', profile);
-  console.log('Theme class:', themeClass);
-  console.log('Loading state:', loading);
-  console.log('generateVCard function:', typeof generateVCard);
+
 
   if (loading) {
     return (
@@ -348,6 +392,17 @@ END:VCARD`;
         <div className="digital-card" ref={cardRef}>
           <div className="profile-hero">
             <div className="profile-cover"></div>
+            {logoURL && (
+              <div className="card-logo-section">
+                {logoLink ? (
+                  <a href={logoLink} target="_blank" rel="noopener noreferrer">
+                    <img src={logoURL} alt="Company Logo" className="card-company-logo" />
+                  </a>
+                ) : (
+                  <img src={logoURL} alt="Company Logo" className="card-company-logo" />
+                )}
+              </div>
+            )}
             <div className="profile-photo-container">
               {profile.photoURL ? (
                 <div className="profile-photo-wrapper" style={{ overflow: "hidden", borderRadius: 0 }}>
