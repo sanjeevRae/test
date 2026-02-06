@@ -7,7 +7,7 @@ import './ContactStyles.css';
 import './FooterStyles.css';
 import './CybersecurityServices.css';
 import './CyberProcessSection.css';
-import heroBackground from '../assets/Evoxpage.gif';
+import backgroundVideo from '../assets/background.webm';
 
 
 
@@ -332,13 +332,16 @@ const EvoxPage = () => {
 
 
       {/* explore section */}
-      <section id="hero" className="hero-section" style={{ backgroundImage: `url(${heroBackground})` }}>
+      <section id="hero" className="hero-section">
+        <video className="hero-video-bg" autoPlay loop muted playsInline>
+          <source src={backgroundVideo} type="video/webm" />
+        </video>
         <h1 style={{position:'absolute',left:'-9999px',height:0,width:0,overflow:'hidden'}}>E-VOX | Evox | Top IT Company Nepal | Nepali IT Company | NFC Business Cards | Exoa | IT Nepal | Nepal IT Company | Digital Solutions Kathmandu</h1>
         <div className="hero-content">
           <div className="hero-text">
             <h1 className="hero-title">
-              <span className="title-white">E-VOX: Nepal's Top IT Company</span>{' '}
-              <span className="title-green">NFC Business Cards & Digital Solutions</span>
+              <span className="title-white">E-VOX Nepal’s Leading IT and </span>{' '}
+              <span className="title-green">Cybersecurity Company</span>
             </h1>
             <div className="hero-cta" style={{ marginTop: '3rem', paddingTop: '2rem' }}>
               <button 
