@@ -730,7 +730,7 @@
   }
   
   .pricing-header::after {
-    content: "← Swipe to see all plans →";
+    content: " Note: Prices are valid within the Kathmandu Valley and are subject to change outside.";
     display: block;
     font-size: 0.8rem;
     color: #999;
@@ -759,7 +759,7 @@
     font-size: 0.9rem;
     font-weight: 600;
   }
-}
+
 
 /* Responsive image handling */
 img {

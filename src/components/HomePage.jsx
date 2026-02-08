@@ -1253,21 +1253,7 @@ const HomePage = () => {  const location = useLocation();
             <p className="pricing-subtitle">
               Select from best plans, ensuring a perfect match. 
             </p>
-            <div className="pricing-toggle">
-              {/* <button 
-                className={`toggle-option ${billingCycle === 'monthly' ? 'active' : ''}`}
-                onClick={() => handleBillingToggle('monthly')}
-                aria-pressed={billingCycle === 'monthly'}
-              >
-                Monthly
-              </button>
-              <button 
-                className={`toggle-option ${billingCycle === 'quarterly' ? 'active' : ''}`}
-                onClick={() => handleBillingToggle('quarterly')}
-                aria-pressed={billingCycle === 'quarterly'}
-              >
-                Annually (save 10%)
-              </button> */}
+            {/* <div className="pricing-toggle">
               <button 
                 className={`toggle-option ${billingCycle === 'direct' ? 'active' : ''}`}
                 onClick={() => handleBillingToggle('direct')}
@@ -1275,9 +1261,9 @@ const HomePage = () => {  const location = useLocation();
               >
                 Direct Purchase
               </button>
-            </div>
+            </div> */}
           </div>
-          
+    
           <div className="pricing-cards">
             <div className="pricing-card">
               <div className="plan-badge">
