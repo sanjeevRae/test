@@ -58,15 +58,12 @@ const Navbar = () => {
     };
   }, []);
 
-  // Function to determine whose logo should be shown based on current route
   const determineLogoContext = async () => {
     const path = location.pathname;
     
-    // Check if we're viewing a specific user's card/profile
     if (path.startsWith('/card/')) {
       const cardId = path.split('/card/')[1];
       try {
-        // Fetch the card to get the userId
         const cardDoc = await getDoc(doc(db, 'profiles', cardId));
         if (cardDoc.exists()) {
           const cardData = cardDoc.data();
@@ -80,13 +77,11 @@ const Navbar = () => {
       }
     }
     
-    // For dashboard and other authenticated routes, show current user's logo
     if (user && (path === '/dashboard' || path === '/admin' || path === '/leader' || path === '/organization')) {
       fetchLogoData(user.uid);
       return;
     }
     
-    // For homepage and public routes, show default logo
     setLogoData({ url: '', link: '/', text: 'E-VOX' });
   };
 
@@ -148,7 +143,6 @@ const Navbar = () => {
       }
       
       setPrevScrollPos(currentScrollPos);
-      // Handle section detection for both HomePage and NFCCardsPage (since NFCCardsPage renders HomePage)
       if (location.pathname === '/' || location.pathname === '/nfc-cards') {
         const sections = ['about', 'features', 'pricing', 'contact'];
         const currentOffset = currentScrollPos + 100; 
@@ -181,7 +175,6 @@ const Navbar = () => {
   }, [location.pathname, userMenuOpen, menuOpen]);
 
   const generateMockIP = () => {
-    // Generate a realistic mock IP for demo purposes
     const segments = [];
     for (let i = 0; i < 4; i++) {
       if (i === 0) {
@@ -205,7 +198,6 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      // Create audit log for logout before signing out
       try {
         const { addDoc } = await import('firebase/firestore');
         const auditRef = collection(db, 'audit_logs');
@@ -221,7 +213,6 @@ const Navbar = () => {
         console.error('Error creating logout audit log:', auditError);
       }
       
-      // Log the logout activity for additional tracking
       await logUserActivity('logout', {
         email: user?.email,
         role: userRole
@@ -242,9 +233,7 @@ const Navbar = () => {
     closeUserMenu();
     setActiveSection(sectionId);
     
-    // Special handling for different navigation targets
     if (sectionId === 'nfc-cards') {
-      // Navigate to NFC Cards page for Home (only if not already there)
       if (location.pathname !== '/nfc-cards') {
         navigate('/nfc-cards');
       }
@@ -252,9 +241,7 @@ const Navbar = () => {
     }
     
     if (sectionId === 'home-about') {
-      // Navigate to HomePage for About (only if not on /nfc-cards)
       if (location.pathname === '/nfc-cards') {
-        // If on NFCCardsPage, scroll to about section within the page
         const element = document.getElementById('about');
         if (element) {
           setTimeout(() => {
@@ -268,15 +255,13 @@ const Navbar = () => {
           }, 50);
         }
       } else {
-        navigate('/');
+        navigate('/nfc-cards#about');
       }
       return;
     }
     
-    // For pricing and contact, check if we're on NFCCardsPage first
     if (sectionId === 'pricing' || sectionId === 'contact') {
       if (location.pathname === '/nfc-cards') {
-        // If on NFCCardsPage, scroll to section within the page
         const element = document.getElementById(sectionId);
         if (element) {
           setTimeout(() => {
@@ -290,14 +275,12 @@ const Navbar = () => {
           }, 50);
         }
         return;
-      } else if (location.pathname !== '/') {
-        // If not on HomePage, navigate to HomePage with scroll state
-        navigate('/', { state: { scrollTo: sectionId } });
+      } else {
+        navigate(`/nfc-cards#${sectionId}`);
         return;
       }
     }
     
-    // Default behavior: scroll to section on current page
     const element = document.getElementById(sectionId);
     if (element) {
       setTimeout(() => {

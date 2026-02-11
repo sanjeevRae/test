@@ -16,7 +16,7 @@ import './SmoothScrollStyles.css';
 import './FivePreviewComplete.css';
 import './FivePreviewMobileFix.css';
 
-const HomePage = () => {  const location = useLocation();
+const HomePage = ({ skipHeroSection = false }) => {  const location = useLocation();
   const aboutRef = useRef(null);
   const featuresRef = useRef(null);
   const pricingRef = useRef(null);
@@ -243,27 +243,27 @@ const HomePage = () => {  const location = useLocation();
           if (entry.isIntersecting && !countersStarted) {
             setCountersStarted(true);
             
-            animateCounter(0, 500, 20000, (value) => 
+            animateCounter(0, 500, 10000, (value) => 
               setCounters(prev => ({ ...prev, countries: value }))
             );
             
-            animateCounter(0, 1.5, 20000, (value) => 
+            animateCounter(0, 1, 1000, (value) => 
               setCounters(prev => ({ ...prev, cards: value }))
             );
             
-            animateCounter(0, 99, 20000, (value) => 
+            animateCounter(0, 99, 10000, (value) => 
               setCounters(prev => ({ ...prev, rating: value })), true
             );
             
-            animateCounter(0, 50, 20000, (value) => 
+            animateCounter(0, 50, 10000, (value) => 
               setCounters(prev => ({ ...prev, paper: value }))
             );
             
-            animateCounter(0, 10, 20000, (value) => 
+            animateCounter(0, 10, 10000, (value) => 
               setCounters(prev => ({ ...prev, connections: value }))
             );
             
-            animateCounter(0, 100, 20000, (value) => 
+            animateCounter(0, 100, 10000, (value) => 
               setCounters(prev => ({ ...prev, companies: value }))
             );
           }
@@ -448,7 +448,7 @@ const HomePage = () => {  const location = useLocation();
   return (
     <div className="home-page">
       {/* Hero Section */}
-      <HeroSection />
+      {!skipHeroSection && <HeroSection />}
       
       {/* About Section */}
       <section id="about" className="about-section workforce-hero" ref={aboutRef}>
