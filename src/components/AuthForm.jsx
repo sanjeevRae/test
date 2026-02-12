@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { auth, db, doc, setDoc, getDoc, checkNetworkConnectivity, pingFirebase, collection, addDoc } from '../utils/firebase';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { logUserActivity } from '../utils/auth';
 import { useNavigate, Link } from 'react-router-dom';
 import './AuthForm.css';
@@ -15,6 +15,11 @@ const AuthForm = ({ isSignup = false }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [networkStatus, setNetworkStatus] = useState(true); 
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetMessage, setResetMessage] = useState('');
+  const [resetError, setResetError] = useState('');
+  const [sendingReset, setSendingReset] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -71,13 +76,14 @@ const AuthForm = ({ isSignup = false }) => {
       console.log('Login successful:', userCredential.user.uid);
       console.log('User email:', email);
       
+      // Check if user is admin
+      const isAdmin = email.toLowerCase() === 'admin@evox.com';
+      
       // Check if user has a document in Firestore
       try {
         const userRef = doc(db, 'users', userCredential.user.uid);
         const userDoc = await getDoc(userRef);
         
-        
-       
         console.log('Is admin?', isAdmin);
         
         if (!userDoc.exists()) {
@@ -306,6 +312,47 @@ const AuthForm = ({ isSignup = false }) => {
     }
   };
 
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
+    setResetError('');
+    setResetMessage('');
+
+    if (!resetEmail || !EMAIL_REGEX.test(resetEmail)) {
+      setResetError('Please enter a valid email address');
+      return;
+    }
+
+    setSendingReset(true);
+
+    try {
+      await sendPasswordResetEmail(auth, resetEmail);
+      setResetMessage('Password reset email sent! Please check your inbox.');
+      setResetEmail('');
+      
+      // Close modal after 3 seconds
+      setTimeout(() => {
+        setShowForgotPassword(false);
+        setResetMessage('');
+      }, 3000);
+    } catch (error) {
+      console.error('Password reset error:', error);
+      
+      if (error.code === 'auth/user-not-found') {
+        setResetError('No account found with this email address');
+      } else if (error.code === 'auth/invalid-email') {
+        setResetError('Invalid email address');
+      } else if (error.code === 'auth/too-many-requests') {
+        setResetError('Too many requests. Please try again later');
+      } else if (error.code === 'auth/network-request-failed') {
+        setResetError('Network error. Please check your connection');
+      } else {
+        setResetError('Failed to send reset email. Please try again.');
+      }
+    } finally {
+      setSendingReset(false);
+    }
+  };
+
   return (
     <div className="auth-container">
       <div className="auth-card">
@@ -319,7 +366,7 @@ const AuthForm = ({ isSignup = false }) => {
           <h2>{isSignup ? 'Create Account' : 'Welcome Back'}</h2>
           <p>{isSignup 
             ? 'Join E-VOX and start your digital networking journey' 
-            : 'Sign in to manage your digital business cards'}
+            : 'Sign in to manage your digital profile'}
           </p>
         </div>
         
@@ -378,12 +425,65 @@ const AuthForm = ({ isSignup = false }) => {
           >
             {loading ? <span className="loading-spinner"></span> : (isSignup ? 'Create Account' : 'Login')}
           </button>
+
+          {!isSignup && (
+            <button
+              type="button"
+              className="forgot-password-link"
+              onClick={() => setShowForgotPassword(true)}
+            >
+              Forgot Password?
+            </button>
+          )}
         </form>
         
         <div className="auth-disclaimer">
           <p>By {isSignup ? 'signing up' : 'logging in'}, you agree to our Terms of Service and Privacy Policy</p>
         </div>
       </div>
+
+      {/* Forgot Password Modal */}
+      {showForgotPassword && (
+        <div className="forgot-password-modal" onClick={() => setShowForgotPassword(false)}>
+          <div className="forgot-password-content" onClick={(e) => e.stopPropagation()}>
+            <button 
+              className="close-modal-btn"
+              onClick={() => setShowForgotPassword(false)}
+            >
+              <i className="fas fa-times"></i>
+            </button>
+            
+            <h3>Reset Password</h3>
+            <p className="reset-description">Enter your email address and we'll send you a link to reset your password.</p>
+            
+            <form onSubmit={handleForgotPassword}>
+              <div className="form-group">
+                <label htmlFor="reset-email">Email Address</label>
+                <input
+                  id="reset-email"
+                  type="email"
+                  placeholder="you@example.com"
+                  value={resetEmail}
+                  onChange={(e) => setResetEmail(e.target.value)}
+                  required
+                  autoComplete="email"
+                />
+              </div>
+
+              {resetError && <div className="auth-error">{resetError}</div>}
+              {resetMessage && <div className="auth-success">{resetMessage}</div>}
+
+              <button
+                type="submit"
+                className="auth-button"
+                disabled={sendingReset}
+              >
+                {sendingReset ? <span className="loading-spinner"></span> : 'Send Reset Link'}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

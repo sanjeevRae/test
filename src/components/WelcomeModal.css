@@ -1,0 +1,320 @@
+/* Welcome Modal Overlay */
+.welcome-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 20px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Modal Content */
+.welcome-modal-content {
+  background: #ffffff;
+  border-radius: 24px;
+  max-width: 540px;
+  width: 100%;
+  padding: 3rem 2.5rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  position: relative;
+  animation: slideUp 0.4s ease-out;
+  text-align: center;
+  overflow: hidden;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Welcome Banner */
+.welcome-banner {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.welcome-banner::before {
+  content: '';
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 40px;
+  background: linear-gradient(to bottom, transparent, #546e7a);
+}
+
+.welcome-banner span {
+  display: inline-block;
+  background: linear-gradient(135deg, #546e7a, #607d8b);
+  color: #ffffff;
+  padding: 10px 14px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  animation: swingBanner 2s ease-in-out infinite;
+  transform-origin: top center;
+}
+
+.welcome-banner span:nth-child(1) { animation-delay: 0s; }
+.welcome-banner span:nth-child(2) { animation-delay: 0.1s; }
+.welcome-banner span:nth-child(3) { animation-delay: 0.2s; }
+.welcome-banner span:nth-child(4) { animation-delay: 0.3s; }
+.welcome-banner span:nth-child(5) { animation-delay: 0.4s; }
+.welcome-banner span:nth-child(6) { animation-delay: 0.5s; }
+.welcome-banner span:nth-child(7) { animation-delay: 0.6s; }
+
+@keyframes swingBanner {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(2deg);
+  }
+  75% {
+    transform: rotate(-2deg);
+  }
+}
+
+/* Illustration */
+.welcome-illustration {
+  margin: 1.5rem 0 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.welcome-illustration img {
+  max-width: 200px;
+  height: auto;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Title */
+.welcome-title {
+  color: #37474f;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem 0;
+  line-height: 1.2;
+}
+
+/* Body */
+.welcome-body {
+  margin-bottom: 2rem;
+}
+
+.welcome-description {
+  color: #546e7a;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0 0 1rem 0;
+  text-align: center;
+}
+
+.welcome-description strong {
+  color: #00796b;
+  font-weight: 600;
+}
+
+.welcome-subtitle {
+  color: #78909c;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0;
+  text-align: center;
+}
+
+/* Footer */
+.welcome-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  align-items: center;
+}
+
+.welcome-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  user-select: none;
+  color: #78909c;
+  font-size: 0.9rem;
+}
+
+.welcome-checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #00796b;
+}
+
+.welcome-checkbox:hover span {
+  color: #546e7a;
+}
+
+.welcome-button {
+  background: linear-gradient(135deg, #ec407a, #f06292);
+  color: #ffffff;
+  border: none;
+  padding: 0.9rem 2.5rem;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(236, 64, 122, 0.3);
+  min-width: 200px;
+}
+
+.welcome-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(236, 64, 122, 0.4);
+  background: linear-gradient(135deg, #d81b60, #ec407a);
+}
+
+.welcome-button:active {
+  transform: translateY(0);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .welcome-modal-content {
+    padding: 2.5rem 2rem;
+    max-width: 95%;
+  }
+
+  .welcome-title {
+    font-size: 1.6rem;
+  }
+
+  .welcome-banner span {
+    padding: 8px 10px;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+  }
+
+  .welcome-illustration img {
+    max-width: 160px;
+  }
+
+  .welcome-description {
+    font-size: 0.95rem;
+  }
+
+  .welcome-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .welcome-button {
+    width: 100%;
+    padding: 0.85rem 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .welcome-modal-overlay {
+    padding: 15px;
+  }
+
+  .welcome-modal-content {
+    padding: 2rem 1.5rem;
+    border-radius: 20px;
+  }
+
+  .welcome-title {
+    font-size: 1.4rem;
+  }
+
+  .welcome-banner {
+    gap: 6px;
+    margin-bottom: 1.5rem;
+  }
+
+  .welcome-banner span {
+    padding: 6px 8px;
+    font-size: 0.85rem;
+  }
+
+  .welcome-banner::before {
+    height: 30px;
+  }
+
+  .welcome-illustration {
+    margin: 1rem 0 1.5rem;
+  }
+
+  .welcome-illustration img {
+    max-width: 140px;
+  }
+
+  .welcome-description {
+    font-size: 0.9rem;
+  }
+
+  .welcome-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .welcome-checkbox {
+    font-size: 0.85rem;
+  }
+
+  .welcome-checkbox input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+  }
+
+  .welcome-button {
+    font-size: 0.95rem;
+    padding: 0.8rem 2rem;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .welcome-modal-overlay,
+  .welcome-modal-content,
+  .welcome-banner span,
+  .welcome-illustration img {
+    animation: none;
+  }
+}

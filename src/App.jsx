@@ -15,6 +15,7 @@ import RoleDebugger from './components/RoleDebugger';
 import EditUserPage from './components/EditUserPage';
 import AnalyticsDashboard from './components/AnalyticsDashboard';
 import NFCCardsPage from './components/NFCCardsPage';
+import WelcomeModal from './components/WelcomeModal';
 
 function App() {
   const [userRole, setUserRole] = useState(null);
@@ -43,6 +44,7 @@ function App() {
   
   return (
     <Router>
+      <WelcomeModal />
       <Routes>
         <Route path="/" element={<EvoxPage />} />
         <Route path="/nfc-cards" element={<NFCCardsPage />} />

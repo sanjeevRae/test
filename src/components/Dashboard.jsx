@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { auth, db, doc, getDoc, setDoc, deleteDoc, storage } from '../utils/firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { EmailAuthProvider, reauthenticateWithCredential, updatePassword } from 'firebase/auth';
 import { getUserRole, exitImpersonation } from '../utils/auth';
 import { useNavigate } from 'react-router-dom';
 import ImpersonationBanner from './ImpersonationBanner';
@@ -76,6 +77,20 @@ const Dashboard = () => {
   const fileInputRef = useRef(null);
   const logoInputRef = useRef(null);
   const navigate = useNavigate();
+  
+  // Password change states
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  });
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [changingPassword, setChangingPassword] = useState(false);
+  const [passwordError, setPasswordError] = useState('');
+  const [passwordSuccess, setPasswordSuccess] = useState('');
+  const [showPasswordSection, setShowPasswordSection] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -611,6 +626,82 @@ const Dashboard = () => {
       setShowToast(false);
     }, 3000);
   };
+  
+  const handlePasswordChange = async (e) => {
+    e.preventDefault();
+    setPasswordError('');
+    setPasswordSuccess('');
+    
+    // Validation
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      setPasswordError('New passwords do not match');
+      return;
+    }
+    
+    if (passwordData.newPassword.length < 6) {
+      setPasswordError('Password must be at least 6 characters long');
+      return;
+    }
+    
+    setChangingPassword(true);
+    
+    try {
+      const currentUser = auth.currentUser;
+      if (!currentUser || !currentUser.email) {
+        throw new Error('No authenticated user found');
+      }
+      
+      // Re-authenticate user
+      const credential = EmailAuthProvider.credential(
+        currentUser.email,
+        passwordData.currentPassword
+      );
+      
+      await reauthenticateWithCredential(currentUser, credential);
+      
+      // Update password
+      await updatePassword(currentUser, passwordData.newPassword);
+      
+      setPasswordSuccess('Password changed successfully!');
+      setPasswordData({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: ''
+      });
+      
+      setTimeout(() => {
+        setPasswordSuccess('');
+      }, 5000);
+      
+    } catch (error) {
+      console.error('Password change error:', error);
+      if (error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+        setPasswordError('Current password is incorrect');
+      } else if (error.code === 'auth/weak-password') {
+        setPasswordError('New password is too weak');
+      } else {
+        setPasswordError(error.message || 'Failed to change password');
+      }
+    } finally {
+      setChangingPassword(false);
+    }
+  };
+  
+  const getPasswordStrength = (password) => {
+    if (!password) return { strength: '', color: '' };
+    if (password.length < 6) return { strength: 'Weak', color: '#ff4444' };
+    
+    let score = 0;
+    if (password.length >= 8) score++;
+    if (/[A-Z]/.test(password)) score++;
+    if (/[a-z]/.test(password)) score++;
+    if (/[0-9]/.test(password)) score++;
+    if (/[^A-Za-z0-9]/.test(password)) score++;
+    
+    if (score <= 2) return { strength: 'Weak', color: '#ff4444' };
+    if (score <= 3) return { strength: 'Medium', color: '#ffa500' };
+    return { strength: 'Strong', color: '#00ff88' };
+  };
 
   if (loading) {
     return (
@@ -739,6 +830,115 @@ const Dashboard = () => {
                 <p>No business card yet</p>
                 <p className="no-cards-hint">Create your first card to get started!</p>
               </div>
+            )}
+          </div>
+          
+          {/* Change Password Section */}
+          <div className="change-password-section">
+            <button 
+              type="button"
+              className={`change-password-header ${showPasswordSection ? 'active' : ''}`}
+              onClick={() => setShowPasswordSection(!showPasswordSection)}
+            >
+              <h3 className="change-password-title">Change Password</h3>
+              <i className={`fas fa-chevron-${showPasswordSection ? 'up' : 'down'}`}></i>
+            </button>
+            
+            {showPasswordSection && (
+              <form onSubmit={handlePasswordChange} className="change-password-form">
+              {passwordError && (
+                <div className="password-message error">
+                  {passwordError}
+                </div>
+              )}
+              
+              {passwordSuccess && (
+                <div className="password-message success">
+                  {passwordSuccess}
+                </div>
+              )}
+              
+              <div className="password-field-group">
+                <label htmlFor="currentPassword">Current Password</label>
+                <div className="password-input-wrapper">
+                  <input
+                    type={showCurrentPassword ? 'text' : 'password'}
+                    id="currentPassword"
+                    value={passwordData.currentPassword}
+                    onChange={(e) => setPasswordData({...passwordData, currentPassword: e.target.value})}
+                    placeholder="Enter current password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="password-toggle"
+                    onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                  >
+                    <i className={`fas ${showCurrentPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+                  </button>
+                </div>
+              </div>
+              
+              <div className="password-field-group">
+                <label htmlFor="newPassword">New Password</label>
+                <div className="password-input-wrapper">
+                  <input
+                    type={showNewPassword ? 'text' : 'password'}
+                    id="newPassword"
+                    value={passwordData.newPassword}
+                    onChange={(e) => setPasswordData({...passwordData, newPassword: e.target.value})}
+                    placeholder="Enter new password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="password-toggle"
+                    onClick={() => setShowNewPassword(!showNewPassword)}
+                  >
+                    <i className={`fas ${showNewPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+                  </button>
+                </div>
+                {passwordData.newPassword && (
+                  <div className="password-strength" style={{ color: getPasswordStrength(passwordData.newPassword).color }}>
+                    Strength: {getPasswordStrength(passwordData.newPassword).strength}
+                  </div>
+                )}
+              </div>
+              
+              <div className="password-field-group">
+                <label htmlFor="confirmPassword">Confirm New Password</label>
+                <div className="password-input-wrapper">
+                  <input
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    id="confirmPassword"
+                    value={passwordData.confirmPassword}
+                    onChange={(e) => setPasswordData({...passwordData, confirmPassword: e.target.value})}
+                    placeholder="Confirm new password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="password-toggle"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  >
+                    <i className={`fas ${showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+                  </button>
+                </div>
+                {passwordData.confirmPassword && passwordData.newPassword !== passwordData.confirmPassword && (
+                  <div className="password-mismatch">
+                    Passwords do not match
+                  </div>
+                )}
+              </div>
+              
+              <button 
+                type="submit" 
+                className="change-password-btn"
+                disabled={changingPassword}
+              >
+                {changingPassword ? 'Changing...' : 'Change Password'}
+              </button>
+            </form>
             )}
           </div>
         </div>
