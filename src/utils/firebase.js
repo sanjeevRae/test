@@ -52,21 +52,10 @@ const loadFirebaseConfig = () => {
     !envConfig[key] && key !== 'measurementId' // measurementId is optional
   );
 
-//   if (missingKeys.length > 0) {
-//     console.warn('Missing Firebase configuration keys from environment variables:', missingKeys);
-//     console.warn('Using fallback configuration - NOT RECOMMENDED FOR PRODUCTION');
-    
-//     // Fallback config for development only
-//     return {
-//       apiKey: "AIzaSyBs2e6VUELX4S_D7CIobxBkCuOB217LovU",
-//       authDomain: "evox-card.firebaseapp.com",
-//       projectId: "evox-card",
-//       storageBucket: "evox-card.appspot.com",
-//       messagingSenderId: "566960653523",
-//       appId: "1:566960653523:web:b6074aceb1ba7dffcc8026",
-//       measurementId: "G-J1GSZSN3MY"
-//     };
-//   }
+  if (missingKeys.length > 0) {
+    console.error('Missing required Firebase configuration keys:', missingKeys);
+    console.error('Please check your .env file and ensure all VITE_FIREBASE_* variables are set');
+  }
   
   return envConfig;
 };
