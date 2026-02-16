@@ -75,7 +75,7 @@
 
 .process-steps-carousel {
   display: flex;
-  width: 200%; /* 6 steps showing 3 at a time = 200% width */
+  width: 200%; 
   transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   gap: 40px;
   will-change: transform;
@@ -180,7 +180,7 @@
 }
 
 .step-info h3 {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: 700;
   margin-bottom: 16px;
   line-height: 1.3;
@@ -296,7 +296,7 @@
   }
   
   .step-info h3 {
-    font-size: 1.2rem;
+    font-size: 1.05rem;
   }
 }
 
@@ -320,7 +320,12 @@
   
   .process-step {
     flex: 0 0 calc(100% / 6);
-    padding: 20px 10px;
+    padding: 15px 8px;
+  }
+  
+  .step-device {
+    height: 200px;
+    margin-bottom: 20px;
   }
   
   .device-screen {
@@ -349,12 +354,24 @@
     padding: 0 10px;
   }
   
+  .step-info {
+    padding: 0 8px;
+  }
+  
+  .step-number {
+    font-size: 0.75rem;
+    margin-bottom: 8px;
+  }
+  
   .step-info h3 {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    line-height: 1.2;
   }
   
   .step-info p {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    line-height: 1.4;
   }
 }
 
@@ -367,13 +384,38 @@
     font-size: 1rem;
   }
   
+  .process-step {
+    padding: 12px 5px;
+  }
+  
+  .step-device {
+    height: 160px;
+    margin-bottom: 15px;
+  }
+  
   .device-screen {
-    width: 180px;
-    height: 120px;
+    width: 160px;
+    height: 110px;
   }
   
   .step-info {
-    padding: 0 10px;
+    padding: 0 5px;
+  }
+  
+  .step-number {
+    font-size: 0.7rem;
+    margin-bottom: 6px;
+  }
+  
+  .step-info h3 {
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+  
+  .step-info p {
+    font-size: 0.8rem;
+    line-height: 1.3;
   }
   
   .indicator {

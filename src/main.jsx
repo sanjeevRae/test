@@ -6,7 +6,7 @@ import App from './App.jsx'
 // Developer Console Greeting
 console.log(
   '%c\n' +
-  ' Contact Me \n' +
+  ' Developer Signature: \n' +
   '  __      __\n' +
   ' ( _\\    /_ )\n' +
   '  \\ _\\  /_ / \n' +
@@ -16,7 +16,8 @@ console.log(
   '   (  /`.,   /\n' +
   '    \\/  ;   /\n' +
   '     | === |\n\n' +
-  'Email: sanzeeprae@gmail.com\n',
+  'Sanjeev Rai\n'+
+  'Full Stack Developer\n',
   'color: #03dd2f; font-weight: bold; font-size: 14px; font-family: monospace;'
 );
 
