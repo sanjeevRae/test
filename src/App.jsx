@@ -111,7 +111,7 @@ function App() {
         <Route path="/pricing" element={<Navigate to="/#pricing" replace />} />
         <Route path="/contact" element={<Navigate to="/#contact" replace />} />
         <Route path="/dashboard/edit/:id" element={
-          <ProtectedRoute requireAdmin={true}>
+          <ProtectedRoute requireLeader={true}>
             <EditUserPage />
           </ProtectedRoute>
         } />

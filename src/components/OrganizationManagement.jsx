@@ -41,7 +41,7 @@ const OrganizationManagement = () => {
   const [canAddUsers, setCanAddUsers] = useState(false);
   const [newOrgData, setNewOrgData] = useState({ name: '', description: '' });
   const [newUserData, setNewUserData] = useState({ name: '', email: '', password: '', role: 'user' });
-  const [selectedUserId, setSelectedUserId] = useState('');
+  const [userSearchTerm, setUserSearchTerm] = useState('');
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
   const [editProfileForm, setEditProfileForm] = useState({
@@ -65,6 +65,8 @@ const OrganizationManagement = () => {
     category: 'Basic',
     status: 'active'
   });
+
+
 
   // Check user permissions on mount
   useEffect(() => {
@@ -230,15 +232,10 @@ const OrganizationManagement = () => {
     }
   };
 
-  const handleAddExistingUser = async (e) => {
-    e.preventDefault();
+  const handleAddExistingUserDirect = async (userId) => {
     try {
       setLoading(true);
       setError(null);
-      if (!selectedUserId) {
-        setError('Please select a user');
-        return;
-      }
       if (!activeOrg) {
         setError('No active organization selected');
         return;
@@ -247,14 +244,9 @@ const OrganizationManagement = () => {
         setError('You do not have permission to add users');
         return;
       }
-      const selectedUser = availableUsers.find(user => user.id === selectedUserId);
-      if (!selectedUser) {
-        setError('Selected user not found');
-        return;
-      }
-      const success = await addUserToOrganization(selectedUserId, activeOrg.id, 'user');
+      const success = await addUserToOrganization(userId, activeOrg.id, 'user');
       if (success) {
-        setSelectedUserId('');
+        setUserSearchTerm('');
         await handleSelectOrg(activeOrg.id);
       } else {
         setError('Failed to add user to organization');
@@ -772,30 +764,92 @@ const OrganizationManagement = () => {
                     )}
 
                     {canAddUsers && availableUsers.length > 0 && (
-                      <form onSubmit={handleAddExistingUser} className="add-existing-form">
+                      <div className="add-existing-form">
                         <div className="form-group">
-                          <label>Add Existing User</label>
-                          <div className="select-with-btn">
-                            <select
-                              value={selectedUserId}
-                              onChange={e => setSelectedUserId(e.target.value)}
-                            >
-                              <option value="">Select a user to add...</option>
-                              {availableUsers.map(user => (
-                                <option key={user.id} value={user.id}>
-                                  {user.name} ({user.email})
-                                </option>
-                              ))}
-                            </select>
-                            <button type="submit" disabled={loading || !selectedUserId}>
-                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M12 5v14M5 12h14"/>
-                              </svg>
-                              Add
-                            </button>
+                          <label>Add Existing Users to Team</label>
+                          <input
+                            type="text"
+                            value={userSearchTerm}
+                            onChange={e => setUserSearchTerm(e.target.value)}
+                            placeholder="Filter by name or email..."
+                            style={{ width: '100%', marginBottom: '10px' }}
+                          />
+                          <div style={{
+                            maxHeight: '260px',
+                            overflowY: 'auto',
+                            border: '1px solid #334155',
+                            borderRadius: '8px',
+                            backgroundColor: '#0f172a'
+                          }}>
+                            {availableUsers
+                              .filter(user => {
+                                if (!userSearchTerm.trim()) return true;
+                                const keywords = userSearchTerm.toLowerCase().split(/\s+/).filter(Boolean);
+                                const name = (user.name || '').toLowerCase();
+                                const email = (user.email || '').toLowerCase();
+                                return keywords.every(kw => name.includes(kw) || email.includes(kw));
+                              })
+                              .map(user => (
+                                <div
+                                  key={user.id}
+                                  style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                    padding: '10px 14px',
+                                    borderBottom: '1px solid #1e293b',
+                                    gap: '12px'
+                                  }}
+                                >
+                                  <div style={{ flex: 1, minWidth: 0 }}>
+                                    <div style={{ fontWeight: 500, color: '#e2e8f0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                      {user.name || 'Unknown'}
+                                    </div>
+                                    <div style={{ fontSize: '12px', color: '#94a3b8', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                      {user.email}
+                                    </div>
+                                  </div>
+                                  <button
+                                    type="button"
+                                    disabled={loading}
+                                    onClick={() => handleAddExistingUserDirect(user.id)}
+                                    style={{
+                                      flexShrink: 0,
+                                      padding: '6px 14px',
+                                      backgroundColor: '#3b82f6',
+                                      color: '#fff',
+                                      border: 'none',
+                                      borderRadius: '6px',
+                                      cursor: loading ? 'not-allowed' : 'pointer',
+                                      fontSize: '13px',
+                                      fontWeight: 500,
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      gap: '4px'
+                                    }}
+                                  >
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                      <path d="M12 5v14M5 12h14"/>
+                                    </svg>
+                                    Add
+                                  </button>
+                                </div>
+                              ))
+                            }
+                            {availableUsers.filter(user => {
+                              if (!userSearchTerm.trim()) return true;
+                              const keywords = userSearchTerm.toLowerCase().split(/\s+/).filter(Boolean);
+                              const name = (user.name || '').toLowerCase();
+                              const email = (user.email || '').toLowerCase();
+                              return keywords.every(kw => name.includes(kw) || email.includes(kw));
+                            }).length === 0 && (
+                              <div style={{ padding: '16px', color: '#94a3b8', textAlign: 'center' }}>
+                                No users found matching "{userSearchTerm}"
+                              </div>
+                            )}
                           </div>
                         </div>
-                      </form>
+                      </div>
                     )}
                   </div>
 

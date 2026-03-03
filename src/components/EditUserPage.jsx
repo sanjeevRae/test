@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { db, auth, storage } from '../utils/firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { isUserAdmin } from '../utils/auth';
+import { isUserAdmin, isUserLeader } from '../utils/auth';
 import Navbar from './Navbar';
 import './Dashboard.css';
 import './EditUserPage.css';
@@ -66,9 +66,10 @@ const EditUserPage = () => {
       setError(null);
       
       try {
-        // Check if user is admin
+        // Check if user is admin or leader
         const isAdmin = await isUserAdmin();
-        if (!isAdmin) {
+        const isLeader = await isUserLeader();
+        if (!isAdmin && !isLeader) {
           navigate('/dashboard');
           return;
         }
