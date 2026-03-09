@@ -393,13 +393,14 @@ div.bio-section {
   padding: 20px 0;
 }
 
-.contact-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+.card-profile-container .contact-grid {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 15px !important;
+  grid-template-columns: none !important;
 }
 
-.contact-item {
+.card-profile-container .contact-item {
   display: flex;
   align-items: center;
   padding: 15px;
@@ -408,12 +409,12 @@ div.bio-section {
   transition: all 0.2s;
 }
 
-.contact-item:hover {
+.card-profile-container .contact-item:hover {
   background-color: #f0f0f0;
   transform: translateY(-2px);
 }
 
-.contact-icon {
+.card-profile-container .contact-icon {
   width: 42px;
   height: 42px;
   display: flex;
@@ -424,32 +425,32 @@ div.bio-section {
   flex-shrink: 0;
 }
 
-.contact-icon.email {
+.card-profile-container .contact-icon.email {
   background-color: #ffebee;
   color: #e53935;
 }
 
-.contact-icon.phone {
+.card-profile-container .contact-icon.phone {
   background-color: #e8f5e9;
   color: #43a047;
 }
 
-.contact-icon.website {
+.card-profile-container .contact-icon.website {
   background-color: #e3f2fd;
   color: #1e88e5;
 }
 
-.contact-icon.location {
+.card-profile-container .contact-icon.location {
   background-color: #fff3e0;
   color: #fb8c00;
 }
 
-.contact-info {
+.card-profile-container .contact-info {
   display: flex;
   flex-direction: column;
 }
 
-.contact-label {
+.card-profile-container .contact-label {
   font-size: 0.75rem;
   color: #888;
   margin-bottom: 2px;
@@ -458,7 +459,7 @@ div.bio-section {
   font-weight: 600;
 }
 
-.contact-value {
+.card-profile-container .contact-value {
   font-size: 1rem;
   color: #333;
   text-decoration: none;
