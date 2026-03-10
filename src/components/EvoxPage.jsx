@@ -291,7 +291,7 @@ const EvoxPage = () => {
           <span className="brand-subtitle">Technology</span>
         </div>
         <div className="nav-links desktop-nav">
-          {['Cyber Security', 'IT Infrastructure', 'E-VOX Card', 'Contact'].map((item) => {
+          {['Cyber Security', 'IT Infrastructure', 'E-VOX Card', 'Career', 'Contact'].map((item) => {
             let isActive = false;
             if (item === 'Cyber Security' && activeSection === 'services') {
               isActive = true;
@@ -316,6 +316,9 @@ const EvoxPage = () => {
                     evoxScrollToSection('process');
                   } else if (item === 'E-VOX Card') {
                     evoxScrollToSection('innovation');
+                  }
+                  else if (item === 'Career') {
+                    navigate('/careers');
                   }
                   else if (item === 'Contact') {
                     evoxScrollToSection('contact');

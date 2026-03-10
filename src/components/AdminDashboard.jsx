@@ -442,6 +442,13 @@ const AdminDashboard = () => {
           >
             📥 Download CSV
           </button>
+          <button 
+            className="section-tab postjob-nav-btn"
+            onClick={() => navigate('/post-job')}
+            title="Manage Job Postings"
+          >
+            📝 Post Job
+          </button>
         </div>
       </div>
         {activeSection === 'organizations' ? (

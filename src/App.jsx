@@ -15,6 +15,8 @@ import RoleDebugger from './components/RoleDebugger';
 import EditUserPage from './components/EditUserPage';
 import AnalyticsDashboard from './components/AnalyticsDashboard';
 import NFCCardsPage from './components/NFCCardsPage';
+import CareerPage from './components/CareerPage';
+import PostJob from './components/PostJob';
 import WelcomeModal from './components/WelcomeModal';
 
 function App() {
@@ -106,6 +108,12 @@ function App() {
         <Route path="/role-debug" element={<RoleDebugger />} />
           {/* Routes for dedicated pages */}
         <Route path="/about" element={<About />} />
+        <Route path="/careers" element={<CareerPage />} />
+        <Route path="/post-job" element={
+          <ProtectedRoute requireAdmin={true}>
+            <PostJob />
+          </ProtectedRoute>
+        } />
         
         {/* Redirect other routes */}
         <Route path="/pricing" element={<Navigate to="/#pricing" replace />} />
