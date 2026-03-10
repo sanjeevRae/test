@@ -318,3 +318,63 @@
     animation: none;
   }
 }
+
+/* Vacancy Notice Styles */
+.vacancy-notice .welcome-body {
+  text-align: left;
+}
+
+.vacancy-requirements {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0 0;
+  text-align: left;
+}
+
+.vacancy-requirements li {
+  position: relative;
+  padding: 0.5rem 0 0.5rem 1.5rem;
+  color: #546e7a;
+  font-size: 0.93rem;
+  line-height: 1.5;
+  border-bottom: 1px solid #eceff1;
+}
+
+.vacancy-requirements li:last-child {
+  border-bottom: none;
+}
+
+.vacancy-requirements li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #00796b;
+  font-weight: 700;
+}
+
+.vacancy-buttons {
+  display: flex;
+  gap: 0.8rem;
+  width: 100%;
+  justify-content: center;
+}
+
+.vacancy-view-btn {
+  background: linear-gradient(135deg, #00796b, #00897b) !important;
+  box-shadow: 0 4px 15px rgba(0, 121, 107, 0.3) !important;
+}
+
+.vacancy-view-btn:hover {
+  background: linear-gradient(135deg, #00695c, #00796b) !important;
+  box-shadow: 0 6px 20px rgba(0, 121, 107, 0.4) !important;
+}
+
+@media (max-width: 480px) {
+  .vacancy-buttons {
+    flex-direction: column;
+  }
+
+  .vacancy-buttons .welcome-button {
+    width: 100%;
+  }
+}
