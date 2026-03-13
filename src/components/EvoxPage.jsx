@@ -7,7 +7,7 @@ import './ContactStyles.css';
 import './FooterStyles.css';
 import './CybersecurityServices.css';
 import './CyberProcessSection.css';
-import backgroundVideo from '../assets/background1.webm';
+import backgroundVideo from '../../public/src/assets/background.webm';
 
 
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './HeroSection.css';
-import introVideo from '../assets/intro.mp4';
+import introVideo from '../../public/src/assets/intro.mp4';
 
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
