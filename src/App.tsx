@@ -18,11 +18,7 @@ export default function App() {
             <span className="eyebrow__mark" aria-hidden="true" />
             Bodhisattva International presents
           </div>
-          <div className="mobile-menu entrance entrance--1" aria-hidden="true">
-            <span />
-            <span />
-            <span />
-          </div>
+          
 
           <div className="hero__heading entrance entrance--2">
             <p className="hero__kicker">Upcoming Exhibition</p>
