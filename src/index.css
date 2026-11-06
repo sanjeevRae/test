@@ -1,37 +1,74 @@
-/* Self-hosted fonts (same files Google Fonts serves) so the type always
-   loads from this site's own domain — no third-party dependency. */
+/* Self-hosted fonts (the same files Google Fonts serves) so the type
+   always loads from this site's own domain. Type system: Cormorant
+   Garamond for headlines, Lora for reading text, Montserrat for
+   labels, navigation and buttons. */
 @font-face {
-  font-family: 'Playfair Display';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url('/fonts/playfair-display.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Playfair Display';
+  font-family: 'Cormorant Garamond';
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url('/fonts/playfair-display.woff2') format('woff2');
+  src: url('/fonts/cormorant-garamond.woff2') format('woff2');
 }
 @font-face {
-  font-family: 'Playfair Display';
+  font-family: 'Cormorant Garamond';
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url('/fonts/playfair-display.woff2') format('woff2');
+  src: url('/fonts/cormorant-garamond.woff2') format('woff2');
 }
 @font-face {
-  font-family: 'Playfair Display';
+  font-family: 'Cormorant Garamond';
   font-style: italic;
   font-weight: 500;
   font-display: swap;
-  src: url('/fonts/playfair-display-italic.woff2') format('woff2');
+  src: url('/fonts/cormorant-garamond-italic.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/lora.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/lora.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/lora-italic.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Montserrat';
   font-style: normal;
   font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/montserrat.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/montserrat.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/montserrat.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 700;
   font-display: swap;
   src: url('/fonts/montserrat.woff2') format('woff2');
 }
@@ -299,7 +336,7 @@
 }
 
 .hero-title {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-weight: 500;
   color: #171512;
   letter-spacing: -0.005em;
@@ -319,7 +356,7 @@
 }
 
 .hero-sub {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Lora', Georgia, serif;
   font-weight: 500;
   color: #4c473c;
 }
@@ -353,7 +390,7 @@
 }
 
 .meta-item:last-child .meta-value {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Lora', Georgia, serif;
   font-size: 20px;
   font-weight: 500;
   line-height: 1.25;
@@ -479,7 +516,7 @@
 .opening-date {
   display: block;
   margin-top: 6px;
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 30px;
   font-weight: 500;
   letter-spacing: 0.06em;
@@ -597,7 +634,7 @@
 .exhibition h2 {
   margin: 16px 0 18px;
   color: #171512;
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 40px;
   font-weight: 500;
   line-height: 1.15;
@@ -607,7 +644,7 @@
   max-width: 640px;
   margin: 0 auto 38px;
   color: #5d5748;
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Lora', Georgia, serif;
   font-size: 19px;
   font-weight: 500;
   line-height: 1.6;
@@ -756,14 +793,14 @@
 
   .hero-title {
     margin-top: min(20px, 1.25vw);
-    font-size: clamp(50px, 4.72vw, 76px);
+    font-size: clamp(54px, 5.25vw, 84px);
     line-height: 0.97;
   }
 
   .hero-sub {
     max-width: min(580px, 36.25vw);
     margin-top: min(10px, 0.625vw);
-    font-size: min(20px, 1.25vw);
+    font-size: min(19px, 1.19vw);
     line-height: 1.45;
   }
 
@@ -1025,7 +1062,7 @@
   }
 
   .hero-title {
-    font-size: clamp(44px, 4.35vw, 68px);
+    font-size: clamp(46px, 4.6vw, 74px);
   }
 
   .hero-meta {
@@ -1057,7 +1094,7 @@
   }
 
   .hero-title {
-    font-size: clamp(42px, 4.1vw, 64px);
+    font-size: clamp(44px, 4.35vw, 68px);
   }
 }
 
@@ -1112,7 +1149,7 @@
   }
 
   .hero-title {
-    font-size: 43px;
+    font-size: 46px;
   }
 
   .hero-sub {
@@ -1417,9 +1454,7 @@
     order: 2;
     max-width: 275px;
     margin: 14px 22px 0;
-    font-size: clamp(30px, 8.7vw, 36px);
-    transform: scaleX(0.86);
-    transform-origin: left top;
+    font-size: clamp(32px, 9.3vw, 38px);
     line-height: 0.98;
   }
 
@@ -1427,9 +1462,7 @@
     order: 3;
     max-width: 262px;
     margin: 14px 22px 0;
-    font-size: 17.5px;
-    transform: scaleX(0.85);
-    transform-origin: left top;
+    font-size: 16.5px;
     font-style: normal;
     line-height: 27px;
   }
@@ -1552,7 +1585,7 @@
   }
 
   .meta-value {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Lora', Georgia, serif;
     font-size: 16px;
     font-weight: 500;
     white-space: nowrap;
@@ -1765,7 +1798,7 @@ html {
 
 .contact-info h2 {
   margin-top: 14px;
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 44px;
   font-weight: 500;
   color: #26221b;
@@ -1774,7 +1807,7 @@ html {
 .contact-lead {
   margin-top: 16px;
   max-width: 420px;
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Lora', Georgia, serif;
   font-size: 20px;
   font-style: italic;
   line-height: 1.55;
@@ -1858,7 +1891,7 @@ html {
 }
 
 .form-head h3 {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 28px;
   font-weight: 500;
   color: #26221b;
@@ -1866,7 +1899,7 @@ html {
 
 .form-head p {
   margin-top: 4px;
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Lora', Georgia, serif;
   font-size: 18px;
   font-style: italic;
   color: #6d6250;
@@ -1972,7 +2005,7 @@ html {
 }
 
 .form-success h3 {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 31px;
   font-weight: 500;
   color: #26221b;
@@ -1980,7 +2013,7 @@ html {
 
 .form-success p {
   max-width: 380px;
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Lora', Georgia, serif;
   font-size: 19px;
   line-height: 1.55;
   color: #4c473c;
@@ -2030,7 +2063,7 @@ html {
 
 .construction h2 {
   margin-top: 12px;
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 40px;
   font-weight: 500;
   color: #26221b;
@@ -2039,7 +2072,7 @@ html {
 .construction-text {
   max-width: 520px;
   margin: 14px auto 0;
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Lora', Georgia, serif;
   font-size: 20px;
   font-style: italic;
   line-height: 1.55;
@@ -2058,7 +2091,7 @@ html {
 /* ---------- Mobile nav (info panel) ---------- */
 
 .mobile-nav-venue {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 21px;
   color: #26221b;
 }
