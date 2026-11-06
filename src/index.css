@@ -118,7 +118,7 @@
   color: #8a6a25;
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.24em;
   line-height: 1.45;
   text-transform: uppercase;
 }
@@ -163,21 +163,32 @@
   gap: 10px;
   margin-left: auto;
   padding: 10px 20px;
-  border: 1px solid rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(23, 21, 18, 0.6);
   border-radius: 999px;
-  background: rgba(23, 21, 18, 0.1);
-  color: #fff;
+  background: transparent;
+  color: #171512;
   font-size: 12.5px;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-decoration: none;
-  backdrop-filter: blur(6px);
   transition:
     background-color 250ms ease,
     border-color 250ms ease;
 }
 
 .tickets-btn:hover {
+  border-color: rgba(23, 21, 18, 0.9);
+  background: rgba(23, 21, 18, 0.06);
+}
+
+.site-header > .tickets-btn:not(.nav-contact) {
+  border-color: rgba(255, 255, 255, 0.7);
+  background: rgba(23, 21, 18, 0.1);
+  color: #fff;
+  backdrop-filter: blur(6px);
+}
+
+.site-header > .tickets-btn:not(.nav-contact):hover {
   border-color: rgba(255, 255, 255, 0.95);
   background: rgba(23, 21, 18, 0.24);
 }
@@ -192,6 +203,10 @@
 }
 
 .mobile-nav {
+  display: none;
+}
+
+.slider-ui {
   display: none;
 }
 
@@ -327,7 +342,7 @@
   border: 0;
   background: transparent;
   color: #171512;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
   text-decoration: none;
 }
@@ -615,7 +630,57 @@
   }
 
   .site-header {
-    padding: 34px 54px 0 72px;
+    padding: 34px 54px 0 83px;
+  }
+
+  .site-header .nav-contact {
+    position: absolute;
+    left: 37.9%;
+    transform: translateX(-50%);
+  }
+
+  .slider-ui {
+    position: absolute;
+    top: 106px;
+    right: 12px;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: #ffffff;
+  }
+
+  .slider-count {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+  }
+
+  .slider-total {
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  .slider-arrows {
+    display: flex;
+    gap: 8px;
+  }
+
+  .slider-arrow {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 50%;
+  }
+
+  .slider-arrow svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .slider-arrow.prev svg {
+    transform: scaleX(-1);
   }
 
   .hero-content {
@@ -625,7 +690,7 @@
     flex-direction: column;
     justify-content: center;
     max-width: 660px;
-    padding: 66px 30px 46px 110px;
+    padding: 52px 30px 52px 110px;
   }
 
   .hero-title {
@@ -636,7 +701,7 @@
 
   .hero-sub {
     max-width: 520px;
-    margin-top: 14px;
+    margin-top: 10px;
     font-size: 21px;
     line-height: 1.45;
   }
@@ -653,7 +718,11 @@
   }
 
   .meta-item:first-child {
-    min-width: 190px;
+    min-width: 222px;
+  }
+
+  .meta-item:last-child .meta-value {
+    font-size: 18px;
   }
 
   .meta-value {
@@ -674,7 +743,7 @@
   }
 
   .map-btn {
-    padding: 17px 30px;
+    padding: 19px 33px;
   }
 
   .map-btn:hover {
@@ -704,8 +773,9 @@
     right: 0;
     bottom: auto;
     left: auto;
-    width: min(58.75vw, 940px);
-    height: auto;
+    width: 1080px;
+    height: 800px;
+    max-width: none;
     object-fit: unset;
   }
 
@@ -762,8 +832,8 @@
 
   .slider-ui {
     position: absolute;
-    top: 126px;
-    right: 44px;
+    top: 106px;
+    right: 12px;
     z-index: 3;
     display: flex;
     align-items: center;
@@ -772,8 +842,8 @@
 
   .scroll-cue {
     position: absolute;
-    right: 26px;
-    bottom: 200px;
+    right: 16px;
+    bottom: 174px;
     z-index: 3;
     display: flex;
     align-items: center;
@@ -835,7 +905,7 @@
     justify-content: space-between;
     gap: 20px;
     width: min(470px, 36vw);
-    padding: 24px 38px;
+    padding: 28px 38px;
     background: linear-gradient(100deg, #96682c, #a57137 55%, #98652f);
     color: #fff7e8;
     text-decoration: none;
@@ -865,10 +935,148 @@
    MOBILE (max-width: 900px)
    ========================================== */
 
+/* Laptop band: keep the 1600x900 composition proportional on
+   shorter/narrower screens (e.g. 1024x576) instead of overflowing. */
+@media (min-width: 901px) and (max-width: 1280px) {
+  .site-header {
+    padding: 26px 36px 0 44px;
+  }
+
+  .site-header .nav-contact {
+    left: 37.9%;
+  }
+
+  .brand-text {
+    font-size: 8.5px;
+    letter-spacing: 0.20em;
+  }
+
+  .scroll-cue {
+    bottom: 84px;
+  }
+
+  .slider-ui {
+    right: 44px;
+  }
+
+  .brand-mark {
+    width: 34px;
+    height: 34px;
+  }
+
+  .tickets-btn {
+    padding: 8px 12px;
+    font-size: 11px;
+  }
+
+  .hero-art img.art-img-desktop {
+    width: min(68.9vw, 1080px);
+    height: auto;
+    max-width: none;
+  }
+
+  .hero-content {
+    max-width: 560px;
+    padding: 76px 24px 24px 68px;
+    justify-content: flex-start;
+  }
+
+  .hero-title {
+    font-size: 46px;
+  }
+
+  .hero-sub {
+    max-width: 360px;
+    margin-top: 12px;
+    font-size: 13.5px;
+    line-height: 1.4;
+  }
+
+  .hero-meta {
+    margin-top: 16px;
+  }
+
+  .meta-item {
+    gap: 8px;
+  }
+
+  .meta-item:first-child {
+    min-width: 148px;
+  }
+
+  .meta-item + .meta-item {
+    margin-left: 16px;
+    padding-left: 16px;
+  }
+
+  .meta-label {
+    font-size: 8px;
+  }
+
+  .meta-value {
+    font-size: 13px;
+  }
+
+  .meta-item:last-child .meta-value {
+    font-size: 13px;
+  }
+
+  .meta-note {
+    font-size: 7.5px;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+
+  .hero-actions {
+    gap: 24px;
+    margin-top: 12px;
+  }
+
+  .map-btn {
+    flex: none;
+    padding: 8px 16px;
+    font-size: 10.5px;
+  }
+
+  .explore-btn {
+    flex: none;
+    font-size: 11px;
+  }
+
+  .explore-btn .play-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .slider-ui {
+    top: 60px;
+  }
+
+  .opening-block {
+    width: min(419px, 42vw);
+    padding: 15px 26px;
+    bottom: 64px;
+  }
+
+  .opening-date {
+    font-size: 22px;
+  }
+
+  .hero-foot {
+    bottom: 64px;
+    left: 44px;
+  }
+}
+
 @media (max-width: 900px) {
   .site-header {
     justify-content: space-between;
-    padding: 20px 22px;
+    padding: 20px 14px;
+  }
+
+  .brand-mark {
+    width: 28px;
+    height: 28px;
   }
 
   .brand-text {
@@ -899,8 +1107,8 @@
     align-items: center;
     justify-content: center;
     gap: 4px;
-    width: 38px;
-    height: 38px;
+    width: 35px;
+    height: 35px;
     border: 0;
     border-radius: 50%;
     background: #141310;
@@ -1001,16 +1209,18 @@
 
   .hero-art img.art-img-mobile {
     display: block;
-    top: 78px;
+    top: 56px;
     right: -17vw;
     bottom: auto;
     left: auto;
-    width: 70vw;
-    max-width: 310px;
+    width: 62vw;
+    max-width: 280px;
     height: auto;
     object-fit: unset;
-    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 110px);
-    mask-image: linear-gradient(90deg, transparent 0, #000 110px);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 80px), linear-gradient(180deg, transparent 0, #000 46px);
+    mask-image: linear-gradient(90deg, transparent 0, #000 80px), linear-gradient(180deg, transparent 0, #000 46px);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
   }
 
   .art-rings .ring-1 {
@@ -1072,10 +1282,10 @@
 
   .hero-title {
     order: 2;
-    max-width: 265px;
+    max-width: 275px;
     margin: 14px 22px 0;
-    font-size: clamp(27px, 7.6vw, 34px);
-    line-height: 1.08;
+    font-size: clamp(30px, 8.7vw, 36px);
+    line-height: 0.98;
   }
 
   .hero-sub {
@@ -1097,8 +1307,9 @@
     order: 3;
     align-self: flex-start;
     margin: 18px 22px 0;
-    padding: 5px 14px 5px 5px;
-    font-size: 14px;
+    padding: 5px 10px 5px 5px;
+    gap: 7px;
+    font-size: 13px;
     border: 1px solid rgba(138, 95, 22, 0.45);
     border-radius: 999px;
     background: rgba(255, 253, 247, 0.6);
@@ -1122,12 +1333,12 @@
     align-self: center;
     gap: 10px;
     margin-top: 20px;
-    padding: 12px 20px;
+    padding: 11px 16px;
     border: 1px solid rgba(138, 95, 22, 0.5);
     border-radius: 999px;
     background: rgba(255, 253, 247, 0.55);
     color: #171512;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 500;
     letter-spacing: 0.01em;
     text-transform: none;
@@ -1168,8 +1379,8 @@
   .hero-meta {
     order: 4;
     display: grid;
-    grid-template-columns: 47% 53%;
-    margin: 22px 22px 0;
+    grid-template-columns: 45% 55%;
+    margin: 8px 15px 0;
     padding: 13px 18px;
     border-radius: 18px;
     background: rgba(250, 243, 230, 0.94);
@@ -1235,7 +1446,7 @@
     align-items: center;
     justify-content: flex-start;
     gap: 14px;
-    margin: 20px 10px 0;
+    margin: 10px 22px 0;
     padding: 16px 22px;
     border-radius: 16px;
     background: linear-gradient(110deg, #7c4a19, #8a551f 55%, #64370d);
@@ -1265,6 +1476,11 @@
     white-space: nowrap;
   }
 
+  .hero-kicker .kicker-line {
+    flex: none;
+    width: 102px;
+  }
+
   .scroll-cue {
     position: relative;
     z-index: 2;
@@ -1273,7 +1489,7 @@
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    margin: 30px auto 8px;
+    margin: 8px auto 8px;
     color: #6d6250;
     font-size: 12.5px;
     font-weight: 500;
@@ -1309,7 +1525,7 @@
     order: 3;
     display: block;
     width: 1px;
-    height: 88px;
+    height: 62px;
     background: rgba(169, 126, 47, 0.55);
   }
 
@@ -1318,7 +1534,7 @@
     z-index: 1;
     order: 8;
     display: block;
-    margin-top: 4px;
+    margin-top: -70px;
   }
 
   .mobile-scenery svg,

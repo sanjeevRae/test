@@ -125,6 +125,11 @@ export default function App() {
           </span>
         </a>
 
+        <a className="tickets-btn nav-contact" href="#contact">
+          Contact Us
+          <ArrowIcon />
+        </a>
+
         <a className="tickets-btn" href="#contact">
           Contact Us
           <ArrowIcon />
@@ -267,6 +272,20 @@ export default function App() {
             <ArrowIcon />
           </span>
         </a>
+
+        <div className="slider-ui" aria-hidden="true">
+          <span className="slider-count">
+            01 <span className="slider-total">/ 03</span>
+          </span>
+          <span className="slider-arrows">
+            <span className="slider-arrow prev">
+              <ArrowIcon />
+            </span>
+            <span className="slider-arrow">
+              <ArrowIcon />
+            </span>
+          </span>
+        </div>
 
         <div className="scroll-cue" aria-hidden="true">
           <span className="scroll-text">Scroll Down</span>
