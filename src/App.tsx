@@ -193,8 +193,9 @@ export default function App() {
           </h1>
 
           <p className="hero-sub">
-            A retrospective exhibition of Samundra Man Singh Shrestha by
-            Bodhisattva International.
+            A retrospective exhibition of Samundra Man Singh Shrestha{' '}
+            <br className="sub-break" />
+            by Bodhisattva International.
           </p>
 
           <div className="hero-meta">

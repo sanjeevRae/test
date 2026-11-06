@@ -257,6 +257,10 @@
   color: #c19a3f;
 }
 
+.sub-break {
+  display: none;
+}
+
 .hero-sub {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-weight: 500;
@@ -630,7 +634,7 @@
   }
 
   .site-header {
-    padding: 34px 54px 0 83px;
+    padding: min(34px, 2.125vw) min(54px, 3.375vw) 0 min(83px, 5.1875vw);
   }
 
   .site-header .nav-contact {
@@ -641,8 +645,8 @@
 
   .slider-ui {
     position: absolute;
-    top: 106px;
-    right: 12px;
+    top: min(106px, 6.625vw);
+    right: min(12px, 0.75vw);
     z-index: 4;
     display: flex;
     align-items: center;
@@ -689,40 +693,44 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    max-width: 660px;
-    padding: 52px 30px 52px 110px;
+    max-width: min(660px, 41.25vw);
+    padding: min(52px, 3.25vw) min(30px, 1.875vw) min(52px, 3.25vw) min(110px, 6.875vw);
   }
 
   .hero-title {
-    margin-top: 20px;
+    margin-top: min(20px, 1.25vw);
     font-size: clamp(52px, 5vw, 80px);
     line-height: 0.97;
   }
 
   .hero-sub {
-    max-width: 520px;
-    margin-top: 10px;
-    font-size: 21px;
+    max-width: min(520px, 32.5vw);
+    margin-top: min(10px, 0.625vw);
+    font-size: min(21px, 1.3125vw);
     line-height: 1.45;
   }
 
   .hero-meta {
     display: flex;
-    margin-top: 22px;
+    margin-top: min(22px, 1.375vw);
   }
 
   .meta-item {
     display: flex;
     align-items: flex-start;
-    gap: 14px;
+    gap: min(14px, 0.875vw);
+  }
+
+  .meta-value {
+    font-size: min(15px, 0.9375vw);
   }
 
   .meta-item:first-child {
-    min-width: 222px;
+    min-width: min(222px, 13.875vw);
   }
 
   .meta-item:last-child .meta-value {
-    font-size: 18px;
+    font-size: min(18px, 1.09vw);
   }
 
   .meta-value {
@@ -730,20 +738,20 @@
   }
 
   .meta-item + .meta-item {
-    margin-left: 26px;
-    padding-left: 26px;
+    margin-left: min(26px, 1.625vw);
+    padding-left: min(26px, 1.625vw);
     border-left: 1px solid rgba(23, 21, 18, 0.18);
   }
 
   .hero-actions {
     display: flex;
     align-items: center;
-    gap: 34px;
-    margin-top: 24px;
+    gap: min(34px, 2.125vw);
+    margin-top: min(24px, 1.5vw);
   }
 
   .map-btn {
-    padding: 19px 33px;
+    padding: min(19px, 1.1875vw) min(33px, 2.0625vw);
   }
 
   .map-btn:hover {
@@ -773,8 +781,8 @@
     right: 0;
     bottom: auto;
     left: auto;
-    width: 1080px;
-    height: 800px;
+    width: min(1160px, 72.5vw);
+    height: min(800px, 50vw);
     max-width: none;
     object-fit: unset;
   }
@@ -799,41 +807,41 @@
     bottom: 0;
     left: 0;
     z-index: 1;
-    height: 110px;
+    height: min(110px, 6.875vw);
     background: linear-gradient(0deg, rgba(242, 232, 222, 0.85) 0%, rgba(242, 232, 222, 0.3) 45%, rgba(242, 232, 222, 0) 100%);
     content: '';
     pointer-events: none;
   }
 
   .art-rings .ring-1 {
-    top: 20px;
-    right: 378px;
-    width: 380px;
-    height: 380px;
+    top: min(20px, 1.25vw);
+    right: min(378px, 23.625vw);
+    width: min(380px, 23.75vw);
+    height: min(380px, 23.75vw);
   }
 
   .art-rings .ring-2 {
-    top: 88px;
-    right: 448px;
-    width: 240px;
-    height: 240px;
+    top: min(88px, 5.5vw);
+    right: min(448px, 28vw);
+    width: min(240px, 15vw);
+    height: min(240px, 15vw);
   }
 
   .hero-clouds {
     position: absolute;
-    bottom: 26px;
-    left: -30px;
+    bottom: min(26px, 1.625vw);
+    left: max(-30px, -1.875vw);
     z-index: 1;
     display: block;
-    width: 440px;
+    width: min(440px, 27.5vw);
     opacity: 0.5;
     pointer-events: none;
   }
 
   .slider-ui {
     position: absolute;
-    top: 106px;
-    right: 12px;
+    top: min(106px, 6.625vw);
+    right: min(12px, 0.75vw);
     z-index: 3;
     display: flex;
     align-items: center;
@@ -842,8 +850,8 @@
 
   .scroll-cue {
     position: absolute;
-    right: 16px;
-    bottom: 174px;
+    right: min(16px, 1vw);
+    bottom: min(174px, 10.875vw);
     z-index: 3;
     display: flex;
     align-items: center;
@@ -875,7 +883,7 @@
   .scroll-line {
     display: block;
     width: 1px;
-    height: 96px;
+    height: min(96px, 6vw);
     background: rgba(255, 255, 255, 0.5);
   }
 
@@ -888,46 +896,64 @@
   }
 
   .opening-arrow::before {
-    width: 54px;
+    width: min(54px, 3.375vw);
     height: 1px;
-    margin-right: 18px;
+    margin-right: min(18px, 1.125vw);
     background: rgba(255, 255, 255, 0.55);
     content: '';
+  }
+
+  .opening-date {
+    font-size: min(30px, 1.875vw);
   }
 
   .opening-block {
     position: absolute;
     right: 0;
-    bottom: 42px;
+    bottom: min(42px, 2.625vw);
     z-index: 3;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 20px;
+    gap: min(20px, 1.25vw);
     width: min(470px, 36vw);
-    padding: 28px 38px;
+    padding: min(28px, 1.75vw) min(38px, 2.375vw);
     background: linear-gradient(100deg, #96682c, #a57137 55%, #98652f);
     color: #fff7e8;
     text-decoration: none;
   }
 
   .foot-line {
-    width: 84px;
+    width: min(84px, 5.25vw);
   }
 
   .hero-foot {
     position: absolute;
-    bottom: 48px;
-    left: 72px;
+    bottom: min(48px, 3vw);
+    left: min(72px, 4.5vw);
     z-index: 3;
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: min(14px, 0.875vw);
     color: #6d6250;
     font-size: 10px;
     font-weight: 500;
     letter-spacing: 0.3em;
     text-transform: uppercase;
+  }
+}
+
+/* Laptop widths between the two reference bands: keep the meta row
+   from squeezing the venue into extra lines. */
+@media (min-width: 1281px) and (max-width: 1449px) {
+  .meta-item:first-child {
+    min-width: 172px;
+  }
+
+  .meta-note {
+    font-size: 8px;
+    letter-spacing: 0.14em;
+    white-space: nowrap;
   }
 }
 
@@ -970,7 +996,7 @@
   }
 
   .hero-art img.art-img-desktop {
-    width: min(68.9vw, 1080px);
+    width: min(74.1vw, 1160px);
     height: auto;
     max-width: none;
   }
@@ -1071,7 +1097,7 @@
 @media (max-width: 900px) {
   .site-header {
     justify-content: space-between;
-    padding: 20px 14px;
+    padding: 14px 14px 20px;
   }
 
   .brand-mark {
@@ -1207,20 +1233,23 @@
     display: none;
   }
 
+  /* the reference crop already contains the gold rings */
+  .hero-art .art-rings {
+    display: none;
+  }
+
   .hero-art img.art-img-mobile {
     display: block;
-    top: 56px;
-    right: -17vw;
+    top: 0;
+    right: 0;
     bottom: auto;
     left: auto;
-    width: 62vw;
-    max-width: 280px;
+    width: 51.9vw;
+    max-width: 275px;
     height: auto;
     object-fit: unset;
-    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 80px), linear-gradient(180deg, transparent 0, #000 46px);
-    mask-image: linear-gradient(90deg, transparent 0, #000 80px), linear-gradient(180deg, transparent 0, #000 46px);
-    -webkit-mask-composite: source-in;
-    mask-composite: intersect;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 60px);
+    mask-image: linear-gradient(90deg, transparent 0, #000 60px);
   }
 
   .art-rings .ring-1 {
@@ -1271,7 +1300,7 @@
 
   .hero-kicker {
     order: 1;
-    margin: 16px 22px 0;
+    margin: 8px 22px 0;
     font-size: 10px;
     letter-spacing: 0.3em;
   }
@@ -1292,9 +1321,13 @@
     order: 3;
     max-width: 262px;
     margin: 14px 22px 0;
-    font-size: 19.5px;
+    font-size: 17.5px;
     font-style: normal;
-    line-height: 1.45;
+    line-height: 27px;
+  }
+
+  .hero-sub .sub-break {
+    display: block;
   }
 
   .hero-actions {
@@ -1332,7 +1365,7 @@
     order: 6;
     align-self: center;
     gap: 10px;
-    margin-top: 20px;
+    margin-top: 32px;
     padding: 11px 16px;
     border: 1px solid rgba(138, 95, 22, 0.5);
     border-radius: 999px;
@@ -1381,7 +1414,7 @@
     display: grid;
     grid-template-columns: 45% 55%;
     margin: 8px 15px 0;
-    padding: 13px 18px;
+    padding: 20px 18px;
     border-radius: 18px;
     background: rgba(250, 243, 230, 0.94);
     box-shadow: 0 18px 40px rgba(60, 45, 15, 0.14);
@@ -1446,7 +1479,7 @@
     align-items: center;
     justify-content: flex-start;
     gap: 14px;
-    margin: 10px 22px 0;
+    margin: 16px 22px 0;
     padding: 16px 22px;
     border-radius: 16px;
     background: linear-gradient(110deg, #7c4a19, #8a551f 55%, #64370d);
@@ -1489,7 +1522,7 @@
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    margin: 8px auto 8px;
+    margin: 18px auto 8px;
     color: #6d6250;
     font-size: 12.5px;
     font-weight: 500;
