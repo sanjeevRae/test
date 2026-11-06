@@ -116,6 +116,7 @@ export default function App() {
 
   return (
     <div className="exhibition-page">
+      <div className="mobile-topbar">BODHISATTVA INTERNATIONAL PRESENTS</div>
       <header className="site-header">
         <a className="brand" href="#">
           <span className="brand-mark" aria-hidden="true" />
