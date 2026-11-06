@@ -227,7 +227,7 @@
 }
 
 .hero-title {
-  font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-weight: 500;
   color: #171512;
   letter-spacing: -0.01em;
@@ -403,7 +403,7 @@
 .opening-date {
   display: block;
   margin-top: 6px;
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 30px;
   font-weight: 500;
   letter-spacing: 0.06em;
@@ -521,7 +521,7 @@
 .exhibition h2 {
   margin: 16px 0 18px;
   color: #171512;
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 40px;
   font-weight: 500;
   line-height: 1.15;
@@ -626,8 +626,8 @@
 
   .hero-title {
     margin-top: 20px;
-    font-size: clamp(50px, 5vw, 80px);
-    line-height: 1.02;
+    font-size: clamp(48px, 4.4vw, 70px);
+    line-height: 1.0;
   }
 
   .hero-sub {
@@ -1039,9 +1039,9 @@
 
   .hero-title {
     order: 2;
-    max-width: 280px;
+    max-width: 300px;
     margin: 14px 22px 0;
-    font-size: clamp(28px, 7.9vw, 36px);
+    font-size: clamp(30px, 8.6vw, 38px);
     line-height: 1.08;
   }
 
@@ -1353,7 +1353,7 @@ html {
 
 .contact-info h2 {
   margin-top: 14px;
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 44px;
   font-weight: 500;
   color: #26221b;
@@ -1446,8 +1446,8 @@ html {
 }
 
 .form-head h3 {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 27px;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 28px;
   font-weight: 500;
   color: #26221b;
 }
@@ -1560,8 +1560,8 @@ html {
 }
 
 .form-success h3 {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 30px;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 31px;
   font-weight: 500;
   color: #26221b;
 }
@@ -1618,8 +1618,8 @@ html {
 
 .construction h2 {
   margin-top: 12px;
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 38px;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 40px;
   font-weight: 500;
   color: #26221b;
 }
@@ -1646,7 +1646,7 @@ html {
 /* ---------- Mobile nav (info panel) ---------- */
 
 .mobile-nav-venue {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 21px;
   color: #26221b;
 }
