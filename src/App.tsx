@@ -97,10 +97,10 @@ function PlayIcon() {
 
 function LotusMark() {
   return (
-    <svg viewBox="0 0 48 32" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" strokeLinecap="round" aria-hidden="true">
-      <path d="M24 27c-4.5-4.2-6.5-9.4-6.5-14.5 2.3 1.2 4.6 3.3 6.5 6.2 1.9-2.9 4.2-5 6.5-6.2C30.5 17.6 28.5 22.8 24 27Z" />
-      <path d="M9.5 25.5C6.8 20.8 6.8 15.9 8.6 12c2.3 2 5 4.4 7 7.4-1.9 2.6-3.9 4.6-6.1 6.1Zm29 0c2.7-4.7 2.7-9.6.9-13.5-2.3 2-5 4.4-7 7.4 1.9 2.6 3.9 4.6 6.1 6.1Z" />
-      <path d="M5 28.2c6.3 1.9 12.7 2.8 19 2.8s12.7-.9 19-2.8" />
+    <svg viewBox="0 0 48 36" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" strokeLinecap="round" aria-hidden="true">
+      <path d="M24 29.5c-4.6-5.4-6.2-12-4.8-18.6 2.2 2.3 3.8 4.9 4.8 7.6.9-2.7 2.6-5.3 4.8-7.6 1.4 6.6-.2 13.2-4.8 18.6Z" />
+      <path d="M16.8 29.8C11.4 27.2 7.9 22.2 7.2 15.9c3.4 1.8 6.6 4.3 9.3 7.4.6 2.2.7 4.4.3 6.5Zm14.4 0c5.4-2.6 8.9-7.6 9.6-13.9-3.4 1.8-6.6 4.3-9.3 7.4-.6 2.2-.7 4.4-.3 6.5Z" />
+      <path d="M5.5 32.2c6 2 12.2 3 18.5 3s12.5-1 18.5-3" />
     </svg>
   )
 }
@@ -381,6 +381,10 @@ export default function App() {
               </div>
             ) : (
               <form className="contact-form" onSubmit={handleSubmit}>
+                <div className="form-head">
+                  <h3>Send a Message</h3>
+                  <p>Tell us about your visit or enquiry.</p>
+                </div>
                 <div className="form-row">
                   <label>
                     <span>Full Name</span>
