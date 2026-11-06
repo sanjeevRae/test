@@ -144,3 +144,10 @@
 *.stl                filter=lfs diff=lfs merge=lfs -text
 *.nc                 filter=lfs diff=lfs merge=lfs -text
 *.mat                filter=lfs diff=lfs merge=lfs -text
+
+# --- Site assets: real files, NOT LFS -------------------------------------
+# Vercel serves whatever is in git; LFS pointer text files render as broken
+# images there (verified 2026-11-06 on nov15.chitratech.com.np). Keep every
+# file the website serves as a regular git blob.
+public/assets/* -filter -diff -merge
+public/poster.jpg -filter -diff -merge
