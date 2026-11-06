@@ -1,17 +1,8 @@
 import { useState } from 'react'
+import type { FormEvent } from 'react'
 
 const MAPS_URL =
   'https://www.google.com/maps/dir//Bodhisattva+International,+House+no+91,+Diamond+Marg,+Lalitpur,+Bagmati+Province+44600/@27.6837075,85.3154079,734m/data=!3m1!1e3!4m17!1m7!3m6!1s0x39eb195ea299d94b:0x5f8269dbfc793ff8!2sBodhisattva+International!8m2!3d27.6837028!4d85.3179828!16s%2Fg%2F11kpf5kjwb!4m8!1m0!1m5!1m1!1s0x39eb195ea299d94b:0x5f8269dbfc793ff8!2m2!1d85.3179958!2d27.6837017!3e0?entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D'
-
-type SlideIndex = 1 | 2 | 3
-
-const NAV_LINKS: { label: string; href: string; active?: boolean }[] = [
-  { label: 'Exhibitions', href: '#exhibitions', active: true },
-  { label: 'About', href: '#about' },
-  { label: 'Visit', href: '#visit' },
-  { label: 'Gallery', href: '#gallery' },
-  { label: 'Contact', href: '#contact' },
-]
 
 function ArrowIcon() {
   return (
@@ -25,22 +16,6 @@ function ArrowIcon() {
       aria-hidden="true"
     >
       <path d="M4 12h15M14 6l6 6-6 6" />
-    </svg>
-  )
-}
-
-function ArrowLeftIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M20 12H5M10 6l-6 6 6 6" />
     </svg>
   )
 }
@@ -79,6 +54,39 @@ function PinIcon() {
   )
 }
 
+function PhoneIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z" />
+    </svg>
+  )
+}
+
+function ClockIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 2" />
+    </svg>
+  )
+}
+
 function PlayIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -87,14 +95,24 @@ function PlayIcon() {
   )
 }
 
+function LotusMark() {
+  return (
+    <svg viewBox="0 0 48 32" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" strokeLinecap="round" aria-hidden="true">
+      <path d="M24 27c-4.5-4.2-6.5-9.4-6.5-14.5 2.3 1.2 4.6 3.3 6.5 6.2 1.9-2.9 4.2-5 6.5-6.2C30.5 17.6 28.5 22.8 24 27Z" />
+      <path d="M9.5 25.5C6.8 20.8 6.8 15.9 8.6 12c2.3 2 5 4.4 7 7.4-1.9 2.6-3.9 4.6-6.1 6.1Zm29 0c2.7-4.7 2.7-9.6.9-13.5-2.3 2-5 4.4-7 7.4 1.9 2.6 3.9 4.6 6.1 6.1Z" />
+      <path d="M5 28.2c6.3 1.9 12.7 2.8 19 2.8s12.7-.9 19-2.8" />
+    </svg>
+  )
+}
+
 export default function App() {
   const [menuOpen, setMenuOpen] = useState<boolean>(false)
-  const [slide, setSlide] = useState<SlideIndex>(1)
+  const [sent, setSent] = useState<boolean>(false)
 
-  const prevSlide = () =>
-    setSlide((current) => (current === 1 ? 3 : ((current - 1) as SlideIndex)))
-  const nextSlide = () =>
-    setSlide((current) => (current === 3 ? 1 : ((current + 1) as SlideIndex)))
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    setSent(true)
+  }
 
   return (
     <div className="exhibition-page">
@@ -107,20 +125,8 @@ export default function App() {
           </span>
         </a>
 
-        <nav className="main-nav" aria-label="Main navigation">
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className={link.active ? 'active' : undefined}
-            >
-              {link.label}
-            </a>
-          ))}
-        </nav>
-
-        <a className="tickets-btn" href="#visit">
-          Get Tickets
+        <a className="tickets-btn" href="#contact">
+          Contact Us
           <ArrowIcon />
         </a>
 
@@ -138,21 +144,31 @@ export default function App() {
       </header>
 
       {menuOpen && (
-        <nav className="mobile-nav open" aria-label="Mobile navigation">
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className={link.active ? 'active' : undefined}
-              onClick={() => setMenuOpen(false)}
-            >
-              {link.label}
-            </a>
-          ))}
-          <a href="#visit" onClick={() => setMenuOpen(false)}>
-            Get Tickets
+        <div className="mobile-nav open">
+          <p className="mobile-nav-venue">
+            Purna Museum of Newa Art &amp; Bodhisattva Gallery
+          </p>
+          <p className="mobile-nav-line">
+            House 91, Diamond Marg, Kupondole Heights, Lalitpur
+          </p>
+          <p className="mobile-nav-line">Open 11.00 AM – 6.00 PM · Closed on Sundays</p>
+          <a
+            className="mobile-nav-cta"
+            href="#contact"
+            onClick={() => setMenuOpen(false)}
+          >
+            Contact Us
+            <ArrowIcon />
           </a>
-        </nav>
+          <a
+            className="mobile-nav-map"
+            href={MAPS_URL}
+            target="_blank"
+            rel="noreferrer"
+          >
+            View on Map
+          </a>
+        </div>
       )}
 
       <section className="hero">
@@ -216,7 +232,7 @@ export default function App() {
               <ArrowIcon />
             </a>
 
-            <a className="explore-btn" href="#exhibition">
+            <a className="explore-btn" href="#contact">
               <span className="play-icon">
                 <PlayIcon />
               </span>
@@ -225,7 +241,7 @@ export default function App() {
           </div>
         </div>
 
-        <div className={slide === 1 ? 'hero-art' : `hero-art slide-${slide}`}>
+        <div className="hero-art">
           <img
             className="art-img-desktop"
             src="/assets/hero-artwork-desktop.png"
@@ -237,29 +253,11 @@ export default function App() {
             alt=""
             aria-hidden="true"
           />
-
-          <div className="slider-ui">
-            <span className="slider-count">
-              <strong>{String(slide).padStart(2, '0')}</strong> / 03
-            </span>
-            <div className="slider-btns">
-              <button type="button" aria-label="Previous" onClick={prevSlide}>
-                <ArrowLeftIcon />
-              </button>
-              <button type="button" aria-label="Next" onClick={nextSlide}>
-                <ArrowIcon />
-              </button>
-            </div>
-          </div>
         </div>
 
-        <a className="opening-block" href="#exhibition">
+        <a className="opening-block" href="#contact">
           <span className="opening-lotus" aria-hidden="true">
-            <svg viewBox="0 0 48 32" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" strokeLinecap="round">
-              <path d="M24 27c-4.5-4.2-6.5-9.4-6.5-14.5 2.3 1.2 4.6 3.3 6.5 6.2 1.9-2.9 4.2-5 6.5-6.2C30.5 17.6 28.5 22.8 24 27Z" />
-              <path d="M9.5 25.5C6.8 20.8 6.8 15.9 8.6 12c2.3 2 5 4.4 7 7.4-1.9 2.6-3.9 4.6-6.1 6.1Zm29 0c2.7-4.7 2.7-9.6.9-13.5-2.3 2-5 4.4-7 7.4 1.9 2.6 3.9 4.6 6.1 6.1Z" />
-              <path d="M5 28.2c6.3 1.9 12.7 2.8 19 2.8s12.7-.9 19-2.8" />
-            </svg>
+            <LotusMark />
           </span>
           <div>
             <p className="opening-label">Opening</p>
@@ -306,43 +304,155 @@ export default function App() {
         </div>
       </section>
 
-      <section className="exhibition" id="exhibition">
-        <div className="exhibition-inner">
-          <p className="exhibition-kicker">The Exhibition</p>
-          <h2>10 Years of Celebrating Embodied Enlightenment</h2>
-          <p className="exhibition-text">
-            This retrospective brings together a decade of work by Samundra Man
-            Singh Shrestha, presented by Bodhisattva International at the Purna
-            Museum of Newa Art &amp; Bodhisattva Gallery. The exhibition opens
-            on November 16th and welcomes visitors daily from 11.00 AM to 6.00
-            PM, remaining closed on Sundays.
-          </p>
+      <section className="contact-section" id="contact">
+        <div className="contact-inner">
+          <div className="contact-info">
+            <p className="contact-kicker">Contact Us</p>
+            <h2>Plan Your Visit</h2>
+            <p className="contact-lead">
+              Questions about the exhibition, a painting, or a private viewing?
+              Send us a message — or simply drop by the gallery.
+            </p>
 
-          <figure>
-            <img
-              src="/assets/poster-no-strip.png"
-              alt="Official exhibition poster"
-            />
-          </figure>
+            <ul className="contact-details">
+              <li>
+                <span className="contact-icon">
+                  <PinIcon />
+                </span>
+                <div>
+                  <p className="contact-detail-label">Visit Us</p>
+                  <p>
+                    Purna Museum of Newa Art &amp; Bodhisattva Gallery,
+                    <br />
+                    House 91, Diamond Marg, Kupondole Heights, Lalitpur
+                  </p>
+                  <a href={MAPS_URL} target="_blank" rel="noreferrer">
+                    View on Map →
+                  </a>
+                </div>
+              </li>
+              <li>
+                <span className="contact-icon">
+                  <PhoneIcon />
+                </span>
+                <div>
+                  <p className="contact-detail-label">Call or WhatsApp</p>
+                  <p>
+                    <a href="tel:+9779851091255">+977 98510 91255</a>
+                    <br />
+                    <a href="tel:+9779818882876">+977 981 888 2876</a>
+                  </p>
+                </div>
+              </li>
+              <li>
+                <span className="contact-icon">
+                  <ClockIcon />
+                </span>
+                <div>
+                  <p className="contact-detail-label">Opening Hours</p>
+                  <p>
+                    11.00 AM – 6.00 PM
+                    <br />
+                    Closed on Sundays
+                  </p>
+                </div>
+              </li>
+            </ul>
+          </div>
 
-          <div className="logos-strip">
-            <img
-              src="/assets/logos-strip.png"
-              alt="Bodhisattva International, Purna Museum of Newa Art, Bodhisattva Gallery, Bodhisattva Foundation and Bodhisattva Gift Shop logos"
-            />
+          <div className="contact-form-wrap">
+            {sent ? (
+              <div className="form-success" role="status">
+                <span className="success-lotus" aria-hidden="true">
+                  <LotusMark />
+                </span>
+                <h3>Thank you</h3>
+                <p>
+                  Your message has been noted. The gallery team will get back
+                  to you shortly — or visit us in Kupondole, Lalitpur.
+                </p>
+                <button
+                  type="button"
+                  className="success-again"
+                  onClick={() => setSent(false)}
+                >
+                  Send another message
+                </button>
+              </div>
+            ) : (
+              <form className="contact-form" onSubmit={handleSubmit}>
+                <div className="form-row">
+                  <label>
+                    <span>Full Name</span>
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Your name"
+                      required
+                    />
+                  </label>
+                  <label>
+                    <span>Phone</span>
+                    <input
+                      type="tel"
+                      name="phone"
+                      placeholder="+977"
+                    />
+                  </label>
+                </div>
+                <label>
+                  <span>Email</span>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="you@example.com"
+                    required
+                  />
+                </label>
+                <label>
+                  <span>Subject</span>
+                  <select name="subject" defaultValue="Visit enquiry">
+                    <option>Visit enquiry</option>
+                    <option>Artwork enquiry</option>
+                    <option>Private viewing</option>
+                    <option>Other</option>
+                  </select>
+                </label>
+                <label>
+                  <span>Message</span>
+                  <textarea
+                    name="message"
+                    rows={5}
+                    placeholder="How can we help you?"
+                    required
+                  />
+                </label>
+                <button type="submit" className="submit-btn">
+                  Send Message
+                  <ArrowIcon />
+                </button>
+              </form>
+            )}
           </div>
         </div>
+      </section>
 
-        <footer className="site-footer" id="visit">
-          <p>
-            Purna Museum of Newa Art &amp; Bodhisattva Gallery, House 91,
-            Diamond Marg, Kupondole Heights, Lalitpur —{' '}
-            <a href={MAPS_URL} target="_blank" rel="noreferrer">
-              View on Map
-            </a>
-          </p>
-          <small>© Bodhisattva International</small>
-        </footer>
+      <section className="construction">
+        <img
+          className="construction-gif"
+          src="/assets/under-construction.gif"
+          alt="Animated illustration of a building under construction with a crane"
+        />
+        <p className="construction-kicker">Bodhisattva International</p>
+        <h2>Site Under Construction</h2>
+        <p className="construction-text">
+          We are building something beautiful. The full website is on its way —
+          until then, visit us at the gallery or send a message above.
+        </p>
+        <small className="construction-copy">
+          © Bodhisattva International · Purna Museum of Newa Art &amp;
+          Bodhisattva Gallery, Kathmandu, Nepal
+        </small>
       </section>
     </div>
   )
