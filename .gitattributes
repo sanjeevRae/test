@@ -151,3 +151,4 @@
 # file the website serves as a regular git blob.
 public/assets/* -filter -diff -merge
 public/poster.jpg -filter -diff -merge
+public/fonts/* -filter -diff -merge
