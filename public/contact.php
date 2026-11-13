@@ -12,7 +12,13 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
     exit;
 }
 
-$config = require __DIR__ . '/contact-config.php';
+// Config lives one level ABOVE the web root when placed there (not
+// reachable by any browser), or beside this file as a fallback.
+$configPath = dirname(__DIR__) . '/contact-config.php';
+if (!is_file($configPath)) {
+    $configPath = __DIR__ . '/contact-config.php';
+}
+$config = require $configPath;
 
 if (empty($config['smtp_user']) || empty($config['smtp_pass'])) {
     http_response_code(500);
