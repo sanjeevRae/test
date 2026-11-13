@@ -152,3 +152,6 @@
 public/assets/* -filter -diff -merge
 public/poster.jpg -filter -diff -merge
 public/fonts/* -filter -diff -merge
+public/favicon-32.png -filter -diff -merge
+public/favicon-192.png -filter -diff -merge
+public/apple-touch-icon.png -filter -diff -merge

@@ -118,7 +118,7 @@ export default function App() {
     <div className="exhibition-page">
       <header className="site-header">
         <a className="brand" href="#">
-          <span className="brand-mark" aria-hidden="true" />
+          <img className="brand-mark" src="/assets/bodhisattva-logo.png" alt="" aria-hidden="true" />
           <span className="brand-text">
             <span>Bodhisattva</span> <span>International</span>{' '}
             <span>Presents</span>

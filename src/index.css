@@ -155,24 +155,11 @@
 }
 
 .brand-mark {
-  position: relative;
   flex: none;
-  width: 30px;
-  height: 30px;
-  border: 1.5px solid #a97e2f;
-  transform: rotate(45deg);
-}
-
-.brand-mark::after {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 5px;
-  height: 5px;
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
-  background: #a97e2f;
-  content: '';
-  transform: translate(-50%, -50%);
+  object-fit: contain;
 }
 
 .brand-text {
@@ -1244,8 +1231,8 @@
   }
 
   .brand-mark {
-    width: 28px;
-    height: 28px;
+    width: 46px;
+    height: 46px;
   }
 
   .brand-text {
@@ -1258,8 +1245,8 @@
   }
 
   .brand-mark {
-    width: 26px;
-    height: 26px;
+    width: 44px;
+    height: 44px;
   }
 
   .main-nav {
@@ -2259,8 +2246,8 @@ html {
   }
 
   .brand-mark {
-    width: 24px;
-    height: 24px;
+    width: 42px;
+    height: 42px;
   }
 
   .brand-text {
