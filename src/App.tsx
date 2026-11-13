@@ -135,28 +135,22 @@ export default function App() {
     const data = new FormData(event.currentTarget)
     setSending(true)
     try {
-      const response = await fetch(
-        'https://formsubmit.co/ajax/info@chitratech.com.np',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-          body: JSON.stringify({
-            name: data.get('name'),
-            phone: phoneDigits ? `+977 ${phoneDigits}` : 'Not provided',
-            email: data.get('email'),
-            subject: data.get('subject'),
-            message: data.get('message'),
-            _subject: `Website enquiry — ${data.get('subject')}`,
-            _template: 'table',
-            _captcha: 'false',
-          }),
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
         },
-      )
-      const result = (await response.json()) as { success?: string }
-      if (!response.ok || result.success !== 'true') {
+        body: JSON.stringify({
+          name: data.get('name'),
+          phone: phoneDigits ? `+977 ${phoneDigits}` : '',
+          email: data.get('email'),
+          subject: data.get('subject'),
+          message: data.get('message'),
+        }),
+      })
+      const result = (await response.json()) as { ok?: boolean }
+      if (!response.ok || result.ok !== true) {
         throw new Error('Submission failed')
       }
       setSent(true)
