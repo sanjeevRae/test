@@ -155,3 +155,4 @@ public/fonts/* -filter -diff -merge
 public/favicon-32.png -filter -diff -merge
 public/favicon-192.png -filter -diff -merge
 public/apple-touch-icon.png -filter -diff -merge
+nov15-nestnepal-deploy.zip !filter !diff !merge
