@@ -7,17 +7,16 @@
 // contact.php also works (the .htaccess file blocks web access to
 // it), but above the web root is the safest place.
 //
-// 1. In cPanel, open "Email Accounts" and create a mailbox only for
-//    sending, for example website@bodhisattvainternational.com
-// 2. Put that mailbox address in 'smtp_user' and its password in
-//    'smtp_pass' below.
-// 3. 'to_email' is the inbox that receives the enquiries.
+// The form sends from info@bodhisattvainternational.com to itself:
+// the mailbox emails each enquiry to its own inbox.
+// ONLY ONE value to fill in: the password of the
+// info@bodhisattvainternational.com mailbox, in 'smtp_pass' below.
 return [
     'smtp_host'   => 'localhost',
     'smtp_port'   => 465,
     'smtp_secure' => 'ssl',
-    'smtp_user'   => '', // <-- the sending mailbox, e.g. website@bodhisattvainternational.com
-    'smtp_pass'   => '', // <-- that mailbox's password
+    'smtp_user'   => 'info@bodhisattvainternational.com', // the mailbox that sends (and receives)
+    'smtp_pass'   => '', // <-- PASSWORD of info@bodhisattvainternational.com - fill this in
     'from_name'   => 'Bodhisattva Exhibition Website',
     'to_email'    => 'info@bodhisattvainternational.com', // <-- enquiries are delivered here
 ];
