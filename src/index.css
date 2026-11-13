@@ -2068,6 +2068,48 @@ html {
   color: #4c473c;
 }
 
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(23, 21, 18, 0.45);
+}
+
+.dialog-card {
+  width: 100%;
+  max-width: 330px;
+  padding: 26px 24px 22px;
+  border-radius: 16px;
+  background: #fbf6ee;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(23, 21, 18, 0.28);
+}
+
+.dialog-text {
+  margin: 0 0 18px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: #171512;
+}
+
+.dialog-btn {
+  padding: 10px 36px;
+  border: 0;
+  border-radius: 999px;
+  background: #171512;
+  color: #fff;
+  font-family: 'Montserrat', 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
 .site-footer {
   background: #fff;
 }

@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import type { FormEvent } from 'react'
+import { useRef, useState } from 'react'
+import type { ChangeEvent, FormEvent } from 'react'
 
 const MAPS_URL =
   'https://www.google.com/maps/dir//Bodhisattva+International,+House+no+91,+Diamond+Marg,+Lalitpur,+Bagmati+Province+44600/@27.6837075,85.3154079,734m/data=!3m1!1e3!4m17!1m7!3m6!1s0x39eb195ea299d94b:0x5f8269dbfc793ff8!2sBodhisattva+International!8m2!3d27.6837028!4d85.3179828!16s%2Fg%2F11kpf5kjwb!4m8!1m0!1m5!1m1!1s0x39eb195ea299d94b:0x5f8269dbfc793ff8!2m2!1d85.3179958!2d27.6837017!3e0?entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D'
@@ -108,9 +108,28 @@ function LotusMark() {
 export default function App() {
   const [menuOpen, setMenuOpen] = useState<boolean>(false)
   const [sent, setSent] = useState<boolean>(false)
+  const [phoneDigits, setPhoneDigits] = useState<string>('')
+  const [phoneFocused, setPhoneFocused] = useState<boolean>(false)
+  const [phoneError, setPhoneError] = useState<boolean>(false)
+  const phoneRef = useRef<HTMLInputElement>(null)
+
+  const handlePhoneChange = (event: ChangeEvent<HTMLInputElement>) => {
+    let digits = event.target.value.replace(/\D/g, '')
+    if (digits.startsWith('977')) digits = digits.slice(3)
+    setPhoneDigits(digits.slice(0, 10))
+  }
+
+  const closePhoneError = () => {
+    setPhoneError(false)
+    phoneRef.current?.focus()
+  }
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    if (phoneDigits.length > 0 && phoneDigits.length < 10) {
+      setPhoneError(true)
+      return
+    }
     setSent(true)
   }
 
@@ -405,9 +424,20 @@ export default function App() {
                   <label>
                     <span>Phone</span>
                     <input
+                      ref={phoneRef}
                       type="tel"
                       name="phone"
+                      inputMode="numeric"
+                      autoComplete="tel-national"
                       placeholder="+977"
+                      value={
+                        phoneFocused || phoneDigits
+                          ? `+977 ${phoneDigits}`
+                          : ''
+                      }
+                      onFocus={() => setPhoneFocused(true)}
+                      onBlur={() => setPhoneFocused(false)}
+                      onChange={handlePhoneChange}
                     />
                   </label>
                 </div>
@@ -473,6 +503,30 @@ export default function App() {
           alt="Bodhisattva International · Purna Museum of Newa Art · Bodhisattva Gallery · Bodhisattva Foundation · Bodhisattva Gift Shop"
         />
       </footer>
+
+      {phoneError && (
+        <div className="dialog-backdrop" onClick={closePhoneError}>
+          <div
+            className="dialog-card"
+            role="alertdialog"
+            aria-modal="true"
+            aria-label="Phone number error"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <p className="dialog-text">
+              Please enter the correct phone number.
+            </p>
+            <button
+              type="button"
+              className="dialog-btn"
+              onClick={closePhoneError}
+              autoFocus
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
