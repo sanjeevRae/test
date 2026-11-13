@@ -478,11 +478,15 @@ export default function App() {
         <p className="construction-text">
           We are building something beautiful. The full website is on its way.
         </p>
-        <small className="construction-copy">
-          © Bodhisattva International · Purna Museum of Newa Art &amp;
-          Bodhisattva Gallery, Kathmandu, Nepal
-        </small>
       </section>
+
+      <footer className="site-footer">
+        <img
+          className="footer-logos"
+          src="/assets/footer-logos.png"
+          alt="Bodhisattva International · Purna Museum of Newa Art · Bodhisattva Gallery · Bodhisattva Foundation · Bodhisattva Gift Shop"
+        />
+      </footer>
     </div>
   )
 }

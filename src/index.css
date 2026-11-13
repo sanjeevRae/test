@@ -2069,6 +2069,16 @@ html {
   color: #4c473c;
 }
 
+.site-footer {
+  background: #fff;
+}
+
+.footer-logos {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .construction-copy {
   display: block;
   margin-top: 40px;
