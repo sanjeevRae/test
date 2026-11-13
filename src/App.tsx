@@ -130,11 +130,6 @@ export default function App() {
           <ArrowIcon />
         </a>
 
-        <a className="tickets-btn" href="#contact">
-          Contact Us
-          <ArrowIcon />
-        </a>
-
         <button
           className="menu-btn"
           type="button"
