@@ -116,7 +116,6 @@ export default function App() {
 
   return (
     <div className="exhibition-page">
-      <div className="mobile-topbar">BODHISATTVA INTERNATIONAL PRESENTS</div>
       <header className="site-header">
         <a className="brand" href="#">
           <span className="brand-mark" aria-hidden="true" />
@@ -205,7 +204,7 @@ export default function App() {
                 <CalendarIcon />
               </span>
               <div>
-                <p className="meta-label">Date &amp; Time</p>
+                <p className="meta-label"><span className="label-full">Date &amp; Time</span><span className="label-mobile">Days &amp; Time</span></p>
                 <p className="meta-value">11.00 AM – 6.00 PM</p>
                 <p className="meta-note">(Closed on Sundays)</p>
               </div>
@@ -260,6 +259,16 @@ export default function App() {
             alt=""
             aria-hidden="true"
           />
+          <img
+            className="art-img-poster"
+            src="/assets/exhibition-poster.png"
+            alt="Exhibition poster: painting of a blue wrathful deity with the exhibition details"
+          />
+          <div className="opening-badge">
+            <span className="badge-label">Opening</span>
+            <span className="badge-day">16</span>
+            <span className="badge-month">November, 2026</span>
+          </div>
         </div>
 
         <a className="opening-block" href="#contact">
