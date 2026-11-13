@@ -151,7 +151,7 @@ export default function App() {
           <p className="mobile-nav-line">
             House 91, Diamond Marg, Kupondole Heights, Lalitpur
           </p>
-          <p className="mobile-nav-line">Open 11.00 AM – 6.00 PM · Closed on Sundays</p>
+          <p className="mobile-nav-line">Open 12.00 PM – 7.00 PM · Open 7 days a week</p>
           <a
             className="mobile-nav-cta"
             href="#contact"
@@ -200,8 +200,8 @@ export default function App() {
               </span>
               <div>
                 <p className="meta-label"><span className="label-full">Date &amp; Time</span><span className="label-mobile">Days &amp; Time</span></p>
-                <p className="meta-value">11.00 AM – 6.00 PM</p>
-                <p className="meta-note">(Closed on Sundays)</p>
+                <p className="meta-value">12.00 PM – 7.00 PM</p>
+                <p className="meta-note">(Open 7 days a week)</p>
               </div>
             </div>
 
@@ -214,7 +214,7 @@ export default function App() {
                 <p className="meta-value">
                   Purna Museum of Newa Art &amp; Bodhisattva Gallery
                 </p>
-                <p className="meta-note">Located in Kathmandu, Nepal</p>
+                <p className="meta-note">Patan, opposite Embark College</p>
               </div>
             </div>
           </div>
@@ -358,9 +358,9 @@ export default function App() {
                 <div>
                   <p className="contact-detail-label">Opening Hours</p>
                   <p>
-                    11.00 AM – 6.00 PM
+                    12.00 PM – 7.00 PM
                     <br />
-                    Closed on Sundays
+                    Open 7 days a week
                   </p>
                 </div>
               </li>
