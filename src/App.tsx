@@ -487,14 +487,9 @@ export default function App() {
           alt="Bodhisattva International · Purna Museum of Newa Art · Bodhisattva Gallery · Bodhisattva Foundation · Bodhisattva Gift Shop"
         />
         <img
-          className="footer-logos-row"
-          src="/assets/footer-logos-row1.png"
-          alt="Bodhisattva International · Purna Museum of Newa Art · Bodhisattva Gallery"
-        />
-        <img
-          className="footer-logos-row"
-          src="/assets/footer-logos-row2.png"
-          alt="Bodhisattva Foundation · Bodhisattva Gift Shop"
+          className="footer-logos-single"
+          src="/assets/footer-logos-tight.png"
+          alt="Bodhisattva International · Purna Museum of Newa Art · Bodhisattva Gallery · Bodhisattva Foundation · Bodhisattva Gift Shop"
         />
       </footer>
     </div>

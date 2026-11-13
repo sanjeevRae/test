@@ -2079,7 +2079,7 @@ html {
   height: auto;
 }
 
-.footer-logos-row {
+.footer-logos-single {
   display: none;
 }
 
@@ -2452,11 +2452,9 @@ html {
     display: none;
   }
 
-  .footer-logos-row {
+  .footer-logos-single {
     display: block;
-    width: auto;
-    height: 56px;
-    max-width: 94%;
-    margin: 8px auto;
+    width: 100%;
+    height: auto;
   }
 }
