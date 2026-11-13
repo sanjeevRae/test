@@ -242,6 +242,17 @@
   background: rgba(23, 21, 18, 0.06);
 }
 
+.site-header > .tickets-btn.nav-contact {
+  border-color: rgba(255, 255, 255, 0.85);
+  background: transparent;
+  color: #fff;
+}
+
+.site-header > .tickets-btn.nav-contact:hover {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
 .site-header > .tickets-btn:not(.nav-contact) {
   border-color: rgba(255, 255, 255, 0.7);
   background: rgba(23, 21, 18, 0.1);
@@ -701,8 +712,9 @@
 
   .site-header .nav-contact {
     position: absolute;
-    left: 37.9%;
-    transform: translateX(-50%);
+    right: min(54px, 3.375vw);
+    left: auto;
+    transform: none;
   }
 
   .slider-ui {
@@ -1078,7 +1090,7 @@
   }
 
   .site-header .nav-contact {
-    left: 37.9%;
+    right: 36px;
   }
 
   .brand-text {
