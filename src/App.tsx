@@ -111,6 +111,8 @@ export default function App() {
   const [phoneDigits, setPhoneDigits] = useState<string>('')
   const [phoneFocused, setPhoneFocused] = useState<boolean>(false)
   const [phoneError, setPhoneError] = useState<boolean>(false)
+  const [sending, setSending] = useState<boolean>(false)
+  const [submitError, setSubmitError] = useState<boolean>(false)
   const phoneRef = useRef<HTMLInputElement>(null)
 
   const handlePhoneChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -124,13 +126,45 @@ export default function App() {
     phoneRef.current?.focus()
   }
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (phoneDigits.length > 0 && phoneDigits.length < 10) {
       setPhoneError(true)
       return
     }
-    setSent(true)
+    const data = new FormData(event.currentTarget)
+    setSending(true)
+    try {
+      const response = await fetch(
+        'https://formsubmit.co/ajax/info@bodhisattvainternational.com',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify({
+            name: data.get('name'),
+            phone: phoneDigits ? `+977 ${phoneDigits}` : 'Not provided',
+            email: data.get('email'),
+            subject: data.get('subject'),
+            message: data.get('message'),
+            _subject: `Website enquiry — ${data.get('subject')}`,
+            _template: 'table',
+            _captcha: 'false',
+          }),
+        },
+      )
+      const result = (await response.json()) as { success?: string }
+      if (!response.ok || result.success !== 'true') {
+        throw new Error('Submission failed')
+      }
+      setSent(true)
+    } catch {
+      setSubmitError(true)
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
@@ -468,8 +502,8 @@ export default function App() {
                     required
                   />
                 </label>
-                <button type="submit" className="submit-btn">
-                  Send Message
+                <button type="submit" className="submit-btn" disabled={sending}>
+                  {sending ? 'Sending…' : 'Send Message'}
                   <ArrowIcon />
                 </button>
               </form>
@@ -503,6 +537,34 @@ export default function App() {
           alt="Bodhisattva International · Purna Museum of Newa Art · Bodhisattva Gallery · Bodhisattva Foundation · Bodhisattva Gift Shop"
         />
       </footer>
+
+      {submitError && (
+        <div
+          className="dialog-backdrop"
+          onClick={() => setSubmitError(false)}
+        >
+          <div
+            className="dialog-card"
+            role="alertdialog"
+            aria-modal="true"
+            aria-label="Message not sent"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <p className="dialog-text">
+              Sorry, your message could not be sent. Please try again, or
+              call us at +977 98510 91255.
+            </p>
+            <button
+              type="button"
+              className="dialog-btn"
+              onClick={() => setSubmitError(false)}
+              autoFocus
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
 
       {phoneError && (
         <div className="dialog-backdrop" onClick={closePhoneError}>
