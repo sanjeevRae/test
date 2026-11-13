@@ -339,10 +339,6 @@ export default function App() {
           <div className="contact-info">
             <p className="contact-kicker">Contact Us</p>
             <h2>Plan Your Visit</h2>
-            <p className="contact-lead">
-              Questions about the exhibition, a painting, or a private viewing?
-              Send us a message — or simply drop by the gallery.
-            </p>
 
             <ul className="contact-details">
               <li>
@@ -480,8 +476,7 @@ export default function App() {
         <p className="construction-kicker">Bodhisattva International</p>
         <h2>Site Under Construction</h2>
         <p className="construction-text">
-          We are building something beautiful. The full website is on its way —
-          until then, visit us at the gallery or send a message above.
+          We are building something beautiful. The full website is on its way.
         </p>
         <small className="construction-copy">
           © Bodhisattva International · Purna Museum of Newa Art &amp;
