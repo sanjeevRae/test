@@ -2079,6 +2079,10 @@ html {
   height: auto;
 }
 
+.footer-logos-row {
+  display: none;
+}
+
 .construction-copy {
   display: block;
   margin-top: 40px;
@@ -2438,5 +2442,21 @@ html {
 
   .mobile-scenery {
     display: none;
+  }
+
+  .site-footer {
+    padding: 8px 0;
+  }
+
+  .footer-logos {
+    display: none;
+  }
+
+  .footer-logos-row {
+    display: block;
+    width: auto;
+    height: 56px;
+    max-width: 94%;
+    margin: 8px auto;
   }
 }
