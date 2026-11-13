@@ -2270,8 +2270,8 @@ html {
   .hero-title {
     max-width: none;
     margin: 14px 24px 0;
-    font-size: clamp(33px, 10.6vw, 43px);
-    line-height: 1.12;
+    font-size: clamp(27px, 8.6vw, 34px);
+    line-height: 1.15;
   }
 
   .hero-sub {
