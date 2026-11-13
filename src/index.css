@@ -2274,6 +2274,10 @@ html {
     line-height: 1.15;
   }
 
+  .hero-title span {
+    display: inline;
+  }
+
   .hero-sub {
     max-width: none;
     margin: 16px 24px 0;

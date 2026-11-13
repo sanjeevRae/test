@@ -184,9 +184,9 @@ export default function App() {
           </p>
 
           <h1 className="hero-title">
-            <span>10 Years of</span>
-            <span>Celebrating</span>
-            <span>Embodied</span>
+            <span>10 Years of</span>{' '}
+            <span>Celebrating</span>{' '}
+            <span>Embodied</span>{' '}
             <span>
               Enlightenment<span className="gold-dot">.</span>
             </span>
