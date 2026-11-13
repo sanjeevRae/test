@@ -136,7 +136,7 @@ export default function App() {
     setSending(true)
     try {
       const response = await fetch(
-        'https://formsubmit.co/ajax/sanzeeprae@gmail.com',
+        'https://formsubmit.co/ajax/info@chitratech.com.np',
         {
           method: 'POST',
           headers: {
